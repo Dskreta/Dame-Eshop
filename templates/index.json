@@ -1,0 +1,621 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "moje_3_dlogo_UKwCaU": {
+      "type": "Moje-3Dlogo",
+      "disabled": true,
+      "name": "Star Epoch 3D Planet",
+      "settings": {
+        "planet_texture": "shopify://shop_images/asda.png",
+        "planet_color": "#ffffff",
+        "planet_size": 2.2,
+        "star_count": 1000,
+        "bg_color": "#050505"
+      }
+    },
+    "moje_logo_EEkb4Y": {
+      "type": "Moje-logo",
+      "disabled": true,
+      "name": "Moje-logo",
+      "settings": {
+        "logo_image": "shopify://shop_images/logo_zkouska_1_PNG.png",
+        "particle_size": 1.2,
+        "particle_gap": 3,
+        "mouse_radius": 40,
+        "bg_color": "#000000"
+      }
+    },
+    "moje_mys_svetlo_8jR9Ai": {
+      "type": "Moje-mys-svetlo",
+      "disabled": true,
+      "name": "Moje-myš-světlo",
+      "settings": {
+        "color_core": "#ffffff",
+        "color_inner": "#c4faff",
+        "color_outer": "#4ec7ff",
+        "hide_on_mobile": true
+      }
+    },
+    "moje_laser_video_UdnttG": {
+      "type": "Moje-laser-video",
+      "name": "Moje-laser-video",
+      "settings": {
+        "enable_intro": true,
+        "intro_video_desktop": "https://cdn.shopify.com/videos/c/o/v/f698b71736834551a8fcd790f02b61aa.mp4",
+        "intro_video_mobile": "https://cdn.shopify.com/videos/c/o/v/f698b71736834551a8fcd790f02b61aa.mp4",
+        "heading_style": "original",
+        "text_depth": 0,
+        "color_part1": "#ffffff",
+        "gradient_start": "#d946ef",
+        "gradient_end": "#22d3ee",
+        "depth_color": "#e8e1fa",
+        "video_mobile": "https://cdn.shopify.com/videos/c/o/v/41e7a2146c884d6c85b6f75141df81fd.mp4",
+        "video_tablet": "https://cdn.shopify.com/videos/c/o/v/fb67f566b7ef4b80a8f3f5dc84701e91.mp4",
+        "video_desktop": "https://cdn.shopify.com/videos/c/o/v/fb67f566b7ef4b80a8f3f5dc84701e91.mp4",
+        "video_widescreen": "https://cdn.shopify.com/videos/c/o/v/fb67f566b7ef4b80a8f3f5dc84701e91.mp4",
+        "video_x_desktop": 51,
+        "video_x_tablet": 42,
+        "video_x_mobile": 30,
+        "ratio_mobile": 0.8,
+        "ratio_tablet": 1,
+        "ratio_desktop": 1.3,
+        "bg_color": "rgba(0,0,0,0)",
+        "box_image": "shopify://shop_images/Sho_banner_JPG_91679637-f6e6-464a-a9b7-d720bc8e6b08.jpg",
+        "box_width_desktop": 54.9,
+        "box_top_desktop": 50.5,
+        "box_left_desktop": 44.5,
+        "box_width_tablet": 70,
+        "box_top_tablet": 55,
+        "box_left_tablet": 50,
+        "box_width_mobile": 97,
+        "box_top_mobile": 67.5,
+        "box_left_mobile": 52.7,
+        "text_max_top": 11,
+        "text_max_left": 18,
+        "text_widescreen_top": 11,
+        "text_widescreen_left": 18,
+        "text_desktop_top": 15,
+        "text_desktop_left": 16,
+        "text_tablet_top": 30,
+        "text_tablet_left": 3,
+        "text_mobile_top": 8,
+        "text_mobile_left": 3,
+        "text_max_size": 4,
+        "text_widescreen_size": 4,
+        "text_desktop_size": 2.2,
+        "text_tablet_size": 2.2,
+        "text_mobile_size": 1.5,
+        "headline_part1": "TVORBA WEBU",
+        "headline_part2": "PRO ZAČÍNAJÍCÍ PODNIKATELE",
+        "subheadline": "Nabízíme špičkový webdesign zaměřený na detaily a moderní technologie. Vaše značka si zaslouží zářit mezi hvězdami.\nRychlost, design, výsledky.",
+        "button_label": "Odeslat",
+        "button_link": "shopify://collections/all",
+        "text_color": "#ffffff"
+      }
+    },
+    "moje_ai_2_qmHwTH": {
+      "type": "Moje-AI-2",
+      "blocks": {
+        "feature_fPXD6R": {
+          "type": "feature",
+          "settings": {
+            "title": "EXTRÉMNÍ RYCHLOST",
+            "text": "Pomalý web = ztracený zákazník. Optimalizuji kód a obrázky tak, aby se váš e-shop načítal bleskově. To znamená lepší SEO (Google vás bude milovat) a více dokončených objednávek.",
+            "icon": "bolt",
+            "color": "#ff4d00"
+          }
+        },
+        "feature_qmwTV6": {
+          "type": "feature",
+          "settings": {
+            "title": "AI COPYWRITING & DESIGN",
+            "text": "Nevíte, co napsat? Používám pokročilé AI nástroje k vytvoření textů, které přesvědčí. Designuji unikátní vizuální prvky na míru vaší značce, žádné nudné fotobanky.",
+            "icon": "diamond",
+            "color": "#d946ef"
+          }
+        },
+        "feature_nePd3a": {
+          "type": "feature",
+          "settings": {
+            "title": "konverzní UX/UI",
+            "text": "Krása nestačí. Rozložení prvků, barvy tlačítek, cesta košíkem – vše navrhuji s jediným cílem: Aby návštěvník klikl na \"Zaplatit\". Minimalizuji tření v nákupním procesu.",
+            "icon": "star",
+            "color": "#06b6d4"
+          }
+        }
+      },
+      "block_order": [
+        "feature_fPXD6R",
+        "feature_qmwTV6",
+        "feature_nePd3a"
+      ],
+      "name": "Moje-AI-2",
+      "settings": {
+        "bg_color": "rgba(0,0,0,0)",
+        "bg_image": "shopify://shop_images/lehce_modra_mlha_bottom.png",
+        "bg_position": "center bottom",
+        "title": "PROČ SHOPIFY MISE?",
+        "subtitle": "Váš e-shop nebude jen digitální vizitka. Bude to stroj na peníze. Zde je důvod, proč jsem lepší volba než agentury nebo šablonová řešení.",
+        "btn_text": "Prozkoumat nabídku",
+        "btn_url": ""
+      }
+    },
+    "moje_cenovka_2_y3DdLV": {
+      "type": "Moje-cenovka-2",
+      "custom_css": [],
+      "name": "Moje-cenovka-2",
+      "settings": {
+        "heading": "SELECT DIMENSION",
+        "subheading": "Vyberte si úroveň své digitální existence",
+        "image_lava": "shopify://shop_images/666.jpg",
+        "image_crystal": "shopify://shop_images/999.jpg",
+        "image_city": "shopify://shop_images/333.jpg",
+        "shadow_color": "#020005",
+        "title_1": "START",
+        "price_1": "15 000 Kč",
+        "desc_1": "Odolný základ pro přežití. Rychlé nasazení v nepřátelském prostředí trhu.",
+        "features_1": "<li>\n<span class=\"material-symbols-outlined text-lg\">grid_view</span> One-page Design</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">speed</span> Hyper-rychlost</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">devices</span> Plná Responzivita</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">security</span> SSL Štít</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">send</span> Kontakt. Formulář</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">radar</span> SEO Indexace</li>",
+        "title_2": "BUSINESS",
+        "price_2": "30 000 Kč",
+        "desc_2": "Organický růst a expanze. Krystalická struktura webu s vlastním systémem.",
+        "features_2": "<li>\n<span class=\"material-symbols-outlined text-lg text-fuchsia-400\">check_circle</span> Balíček Start</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">layers</span> 5x Podstránka</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">edit_document</span> CMS Systém</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">motion_mode</span> Motion Design</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">monitoring</span> Analytics Dashboard</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">news</span> Blog Sekce</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">admin_panel_settings</span> GDPR Modul</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">admin_panel_settings</span> GDPR Modul</li>",
+        "title_3": "CUSTOM",
+        "price_3": "60 000+ Kč",
+        "desc_3": "Vrchol civilizace. Komplexní ekosystémy a inteligentní aplikace.",
+        "features_3": "<li>\n<span class=\"material-symbols-outlined text-lg\">all_inclusive</span> Neomezený Rozsah</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">shopping_cart</span> E-commerce Jádro</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">group</span> Uživatelské Zóny</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">api</span> API Integrace</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">smart_toy</span> AI Asistenti</li>\n<li>\n<span class=\"material-symbols-outlined text-lg\">support_agent</span> Prioritní Linka</li>"
+      }
+    },
+    "moje_info_CECHjy": {
+      "type": "Moje-info",
+      "blocks": {
+        "detail_item_hXEzCB": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "1",
+            "icon": "check_circle",
+            "title": "Vlastnost",
+            "subtitle": "INFO",
+            "badge": "",
+            "content": "<p>Popis.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_Y4nUAN": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "1",
+            "icon": "check_circle",
+            "title": "Vlastnost balíčku",
+            "subtitle": "SPECIFIKACE",
+            "badge": "",
+            "content": "<p>Zde popište výhody této služby nebo funkce.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_6ViNyk": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "1",
+            "icon": "check_circle",
+            "title": "Vlastnost balíčku",
+            "subtitle": "SPECIFIKACE",
+            "badge": "",
+            "content": "<p>Zde popište výhody této služby nebo funkce.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_HnWBAy": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "2",
+            "icon": "bolt",
+            "title": "Rychlost",
+            "subtitle": "OPTIMALIZACE",
+            "badge": "",
+            "content": "<p>Zde napište detailní informace.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_hDkbcB": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "2",
+            "icon": "bolt",
+            "title": "Rychlost",
+            "subtitle": "OPTIMALIZACE",
+            "badge": "",
+            "content": "<p>Zde napište detailní informace.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_46rYbQ": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "2",
+            "icon": "bolt",
+            "title": "Rychlost",
+            "subtitle": "OPTIMALIZACE",
+            "badge": "",
+            "content": "<p>Zde napište detailní informace.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_49iRYM": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "2",
+            "icon": "bolt",
+            "title": "Rychlost",
+            "subtitle": "OPTIMALIZACE",
+            "badge": "",
+            "content": "<p>Zde napište detailní informace.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_BnBrdH": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "2",
+            "icon": "check_circle",
+            "title": "Vlastnost balíčku",
+            "subtitle": "SPECIFIKACE",
+            "badge": "",
+            "content": "<p>Zde popište výhody této služby nebo funkce.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_YaKgft": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "3",
+            "icon": "bolt",
+            "title": "Rychlost",
+            "subtitle": "OPTIMALIZACE",
+            "badge": "",
+            "content": "<p>Zde napište detailní informace.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_aVJTbx": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "3",
+            "icon": "bolt",
+            "title": "Rychlost",
+            "subtitle": "OPTIMALIZACE",
+            "badge": "",
+            "content": "<p>Zde napište detailní informace.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_dwQAQD": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "3",
+            "icon": "bolt",
+            "title": "Rychlost",
+            "subtitle": "OPTIMALIZACE",
+            "badge": "",
+            "content": "<p>Zde napište detailní informace.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_CtMgNB": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "3",
+            "icon": "check_circle",
+            "title": "Vlastnost balíčku",
+            "subtitle": "SPECIFIKACE",
+            "badge": "",
+            "content": "<p>Zde popište výhody této služby nebo funkce.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_mXQqUT": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "3",
+            "icon": "bolt",
+            "title": "Rychlost",
+            "subtitle": "OPTIMALIZACE",
+            "badge": "",
+            "content": "<p>Zde napište detailní informace.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_4UXAig": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "3",
+            "icon": "bolt",
+            "title": "Rychlost",
+            "subtitle": "OPTIMALIZACE",
+            "badge": "",
+            "content": "<p>Zde napište detailní informace.</p>",
+            "open_default": false
+          }
+        },
+        "detail_item_N8CFqy": {
+          "type": "detail_item",
+          "settings": {
+            "tab_select": "3",
+            "icon": "bolt",
+            "title": "Rychlost",
+            "subtitle": "OPTIMALIZACE",
+            "badge": "",
+            "content": "<p>Zde napište detailní informace.</p>",
+            "open_default": false
+          }
+        }
+      },
+      "block_order": [
+        "detail_item_hXEzCB",
+        "detail_item_Y4nUAN",
+        "detail_item_6ViNyk",
+        "detail_item_HnWBAy",
+        "detail_item_hDkbcB",
+        "detail_item_46rYbQ",
+        "detail_item_49iRYM",
+        "detail_item_BnBrdH",
+        "detail_item_YaKgft",
+        "detail_item_aVJTbx",
+        "detail_item_dwQAQD",
+        "detail_item_CtMgNB",
+        "detail_item_mXQqUT",
+        "detail_item_4UXAig",
+        "detail_item_N8CFqy"
+      ],
+      "name": "Moje-info",
+      "settings": {
+        "bg_image": "shopify://shop_images/mlha_2_zrcadlene.png",
+        "bg_position": "center top",
+        "title": "System Specifications SYSTEM",
+        "subtitle": "Analyzuji data sektorů... Vyberte modul pro zobrazení technických detailů.",
+        "tab_1_name": "SECTOR 1: START",
+        "tab_1_title": "Základní řešení",
+        "icon_1": "landscape",
+        "image_1": "shopify://shop_images/fdf.png",
+        "tab_2_name": "SECTOR 2: BUSINESS",
+        "tab_2_title": "Pokročilé funkce",
+        "icon_2": "diamond",
+        "tab_3_name": "SECTOR 3: CUSTOM",
+        "tab_3_title": "Enterprise řešení",
+        "icon_3": "apartment"
+      }
+    },
+    "moje_plan_HkmKPY": {
+      "type": "Moje-plan",
+      "blocks": {
+        "step_h6hAiz": {
+          "type": "step",
+          "settings": {
+            "color_theme": "orange",
+            "icon": "graphic_eq",
+            "title": "Nadpis fáze",
+            "text": "Spojíme se a probereme vaši vizi. Definujeme cíle mise."
+          }
+        },
+        "step_QVNWtz": {
+          "type": "step",
+          "settings": {
+            "color_theme": "orange",
+            "icon": "satellite_alt",
+            "title": "Nadpis fáze",
+            "text": "Zašlete mi nezávaznou poptávku. Stručně popište svůj záměr."
+          }
+        },
+        "step_cYt8qx": {
+          "type": "step",
+          "settings": {
+            "color_theme": "orange",
+            "icon": "architecture",
+            "title": "Nadpis fáze",
+            "text": "Programování struktury, nastavení CMS a tvorba unikátního designu."
+          }
+        },
+        "step_DUxYpY": {
+          "type": "step",
+          "settings": {
+            "color_theme": "purple",
+            "icon": "satellite_alt",
+            "title": "Nadpis fáze",
+            "text": "Popis kroku..."
+          }
+        },
+        "step_bJabaL": {
+          "type": "step",
+          "settings": {
+            "color_theme": "purple",
+            "icon": "satellite_alt",
+            "title": "Nadpis fáze",
+            "text": "Popis kroku..."
+          }
+        },
+        "step_EiAtxJ": {
+          "type": "step",
+          "settings": {
+            "color_theme": "purple",
+            "icon": "satellite_alt",
+            "title": "Nadpis fáze",
+            "text": "Popis kroku..."
+          }
+        },
+        "step_jPFWja": {
+          "type": "step",
+          "settings": {
+            "color_theme": "cyan",
+            "icon": "satellite_alt",
+            "title": "Nadpis fáze",
+            "text": "Popis kroku..."
+          }
+        },
+        "step_fGknTP": {
+          "type": "step",
+          "settings": {
+            "color_theme": "cyan",
+            "icon": "satellite_alt",
+            "title": "Nadpis fáze",
+            "text": "Popis kroku..."
+          }
+        },
+        "step_wBeT6E": {
+          "type": "step",
+          "settings": {
+            "color_theme": "cyan",
+            "icon": "satellite_alt",
+            "title": "Nadpis fáze",
+            "text": "Popis kroku..."
+          }
+        }
+      },
+      "block_order": [
+        "step_h6hAiz",
+        "step_QVNWtz",
+        "step_cYt8qx",
+        "step_DUxYpY",
+        "step_bJabaL",
+        "step_EiAtxJ",
+        "step_jPFWja",
+        "step_fGknTP",
+        "step_wBeT6E"
+      ],
+      "name": "Moje-plan",
+      "settings": {
+        "bg_position": "right center",
+        "title": "LETOVÝ PLÁN",
+        "subtitle_left": "INIT.SEQ",
+        "subtitle_center": "PHASE: 1-9",
+        "subtitle_right": "ONLINE",
+        "show_button": false,
+        "button_text": "ZAHÁJIT ODPOČET",
+        "button_link": ""
+      }
+    },
+    "moje_kontakt_ap3Fb4": {
+      "type": "Moje-kontakt",
+      "name": "Moje-kontakt",
+      "settings": {
+        "bg_image": "shopify://shop_images/pozadi_5_stred_2.png",
+        "bg_position": "left center",
+        "status_text": "Status: Online",
+        "title_line_1": "READY FOR",
+        "title_line_2": "LIFTOFF?",
+        "description": "Vyplňte letový plán a já připravím motory. Vaše cesta k digitální dominanci začíná jednou zprávou.",
+        "badge_title": "Rychlá odezva",
+        "badge_subtitle": "Odpovídám do 24 hodin",
+        "form_title": "Nezávazná poptávka",
+        "select_label": "O co máte zájem?",
+        "select_options": "🚀 Start (15 000 Kč), 💎 Business (30 000 Kč), 🏙️ Custom (60 000+ Kč), 🤔 Nevím / Jiné",
+        "btn_text": "Odeslat",
+        "phone_number": "+420 739 547 398"
+      }
+    },
+    "moje_paticka_7gdy8R": {
+      "type": "Moje-paticka",
+      "name": "Moje-paticka",
+      "settings": {
+        "bg_color": "rgba(0,0,0,0)",
+        "bg_image": "shopify://shop_images/lehce_modra_mlha_bottom.png",
+        "bg_position": "center bottom",
+        "card_image": "shopify://shop_images/Daniel_Skreta.jpg",
+        "card_title": "Daniel Škréta",
+        "card_subtitle": "Lead Developer",
+        "card_desc": "Full-stack dev se zaměřením na React a Shopify.",
+        "main_title": "COSMIC WEB",
+        "subtitle": "End of Line // Transmission Complete",
+        "description": "Jsme digitální architekti budoucnosti. Spojujeme design a technologii do jednoho plynulého zážitku.",
+        "instagram_url": "shopify://collections/all",
+        "custom_icon_url": "",
+        "text_1_content": "",
+        "text_1_url": "",
+        "text_2_content": "",
+        "text_2_url": "",
+        "terms_text": "Obchodní podmínky",
+        "terms_url": "shopify://collections",
+        "privacy_text": "Ochrana dat",
+        "privacy_url": "shopify://collections",
+        "copyright_text": "CosmicWeb",
+        "made_by_text": "Dáňa"
+      }
+    },
+    "moje_animace_8ykVGN": {
+      "type": "Moje-animace",
+      "name": "Moje-animace",
+      "settings": {
+        "delay_between": 35,
+        "obj_1": "shopify://shop_images/D_PNG.png",
+        "size_min_1": 80,
+        "size_max_1": 180,
+        "rot_speed_1": 15,
+        "is_rocket_1": false,
+        "obj_2": "shopify://shop_images/G_PNG.png",
+        "size_min_2": 70,
+        "size_max_2": 130,
+        "rot_speed_2": 60,
+        "is_rocket_2": false,
+        "obj_3": "shopify://shop_images/I_PNG.png",
+        "size_min_3": 70,
+        "size_max_3": 90,
+        "rot_speed_3": 60,
+        "is_rocket_3": false,
+        "obj_4": "shopify://shop_images/F_PNG.png",
+        "size_min_4": 70,
+        "size_max_4": 150,
+        "rot_speed_4": 30,
+        "is_rocket_4": false,
+        "obj_5": "shopify://shop_images/H_PNG.png",
+        "size_min_5": 70,
+        "size_max_5": 130,
+        "rot_speed_5": 60,
+        "is_rocket_5": false,
+        "obj_6": "shopify://shop_images/C_PNG.png",
+        "size_min_6": 70,
+        "size_max_6": 150,
+        "rot_speed_6": 30,
+        "is_rocket_6": false,
+        "obj_7": "shopify://shop_images/CH_PNG.png",
+        "size_min_7": 70,
+        "size_max_7": 130,
+        "rot_speed_7": 60,
+        "is_rocket_7": false,
+        "obj_8": "shopify://shop_images/E_PNG.png",
+        "size_min_8": 70,
+        "size_max_8": 130,
+        "rot_speed_8": 25,
+        "is_rocket_8": false
+      }
+    },
+    "moje_baterka_9MjVyA": {
+      "type": "Moje-baterka",
+      "name": "Moje-baterka",
+      "settings": {
+        "glow_color": "#bef3ff",
+        "size": 400,
+        "blend_mode": "color-dodge"
+      }
+    }
+  },
+  "order": [
+    "moje_3_dlogo_UKwCaU",
+    "moje_logo_EEkb4Y",
+    "moje_mys_svetlo_8jR9Ai",
+    "moje_laser_video_UdnttG",
+    "moje_ai_2_qmHwTH",
+    "moje_cenovka_2_y3DdLV",
+    "moje_info_CECHjy",
+    "moje_plan_HkmKPY",
+    "moje_kontakt_ap3Fb4",
+    "moje_paticka_7gdy8R",
+    "moje_animace_8ykVGN",
+    "moje_baterka_9MjVyA"
+  ]
+}

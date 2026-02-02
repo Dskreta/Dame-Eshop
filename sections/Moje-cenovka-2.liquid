@@ -1,0 +1,1215 @@
+<script src="https://cdn.tailwindcss.com" defer></script>
+
+
+
+<script>
+
+    window.addEventListener('DOMContentLoaded', () => {
+
+        if (window.tailwind) {
+
+            tailwind.config = {
+
+                theme: {
+
+                    extend: {
+
+                        fontFamily: {
+
+                            sans: ['Rajdhani', 'sans-serif'],
+
+                            display: ['Orbitron', 'sans-serif'],
+
+                        },
+
+                        colors: {
+
+                            space: { 950: '#020005', 900: '#0a0514' },
+
+                            lava: '#ff4d00',
+
+                            crystal: '#d946ef',
+
+                            city: '#06b6d4',
+
+                            'feature-header-bg': 'rgba(15, 15, 25, 0.8)'
+
+                        },
+
+                        animation: {
+
+                            'scanline': 'scanline 2s linear infinite',
+
+                            'zoom-in': 'zoomIn 3s ease-in forwards',
+
+                            'spin-slow': 'spin 10s linear infinite',
+
+                            'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+
+                        },
+
+                        keyframes: {
+
+                            scanline: {
+
+                                '0%': { transform: 'translateY(-100%)' },
+
+                                '100%': { transform: 'translateY(100%)' }
+
+                            },
+
+                            zoomIn: {
+
+                                '0%': { transform: 'scale(1)' },
+
+                                '100%': { transform: 'scale(3)' }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
+
+
+<style>
+
+  
+
+    /* --- MAGNETICKÝ EFEKT (SCROLL SNAP) --- */
+    /* Na html i body – scroll kontejner může být podle tématu/pořadí sekcí buď html nebo body */
+    html, body {
+
+        scroll-snap-type: y proximity; 
+
+    }
+
+
+
+    .cosmic-wrapper { 
+
+        background-color: #020005; 
+
+        color: white; 
+
+        overflow: hidden; 
+
+        position: relative;
+
+        /* Z-index 10 zajistí, že tato sekce bude nad hvězdami (z-index 0) */
+
+        z-index: 2000;
+
+        width: 100%;
+
+        min-height: 100vh;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        
+
+        /* Magnetický bod */
+
+        scroll-snap-align: start; 
+
+        scroll-margin-top: 0px; 
+
+    }
+
+    
+
+    .glass-panel {
+
+        background: rgba(5, 5, 10, 0.7);
+
+        backdrop-filter: blur(15px);
+
+        -webkit-backdrop-filter: blur(15px);
+
+        border: 2px solid rgba(255, 255, 255, 0.05);
+
+        transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+
+        position: relative;
+
+        overflow: hidden;
+
+        user-select: none; 
+
+        cursor: pointer;
+
+        display: flex;
+
+        flex-direction: column;
+
+    }
+
+
+
+    /* --- THEMES --- */
+
+    .theme-lava .icon-box { background: rgba(255, 77, 0, 0.1); color: #ff4d00; border: 2px solid rgba(255, 77, 0, 0.3); }
+
+    .theme-lava li span { color: #ff4d00; }
+
+    
+
+    .card-active-1 {
+
+        border-color: #ff4d00;
+
+        background: linear-gradient(180deg, rgba(255, 77, 0, 0.1) 0%, rgba(10, 5, 5, 0.9) 100%);
+
+        box-shadow: 0 0 50px rgba(255, 77, 0, 0.2);
+
+        transform: translateY(-20px) scale(1.02);
+
+        z-index: 20;
+
+        opacity: 1 !important;
+
+    }
+
+
+
+    .theme-crystal .icon-box { background: rgba(217, 70, 239, 0.1); color: #d946ef; border: 2px solid rgba(217, 70, 239, 0.3); }
+
+    .theme-crystal li span { color: #d946ef; }
+
+    
+
+    .card-active-2 {
+
+        border-color: #d946ef;
+
+        background: linear-gradient(180deg, rgba(217, 70, 239, 0.1) 0%, rgba(10, 5, 10, 0.9) 100%);
+
+        box-shadow: 0 0 50px rgba(217, 70, 239, 0.2);
+
+        transform: translateY(-20px) scale(1.05);
+
+        z-index: 20;
+
+        opacity: 1 !important;
+
+    }
+
+
+
+    .theme-city .icon-box { background: rgba(6, 182, 212, 0.1); color: #06b6d4; border: 2px solid rgba(6, 182, 212, 0.3); }
+
+    .theme-city li span { color: #06b6d4; }
+
+    
+
+    .card-active-3 {
+
+        border-color: #06b6d4;
+
+        background: linear-gradient(180deg, rgba(6, 182, 212, 0.1) 0%, rgba(5, 10, 15, 0.9) 100%);
+
+        box-shadow: 0 0 50px rgba(6, 182, 212, 0.2);
+
+        transform: translateY(-20px) scale(1.02);
+
+        z-index: 20;
+
+        opacity: 1 !important;
+
+    }
+
+
+
+    .card-dimmed { opacity: 0.5 !important; transform: scale(0.95) !important; }
+
+    .card-hover-highlight { opacity: 1 !important; transform: translateY(-30px) scale(1.08) !important; z-index: 50 !important; }
+
+    
+
+    .theme-lava.card-hover-highlight { border-color: #ff4d00; box-shadow: 0 0 60px rgba(255, 77, 0, 0.5); }
+
+    .theme-crystal.card-hover-highlight { border-color: #d946ef; box-shadow: 0 0 60px rgba(217, 70, 239, 0.5); }
+
+    .theme-city.card-hover-highlight { border-color: #06b6d4; box-shadow: 0 0 60px rgba(6, 182, 212, 0.5); }
+
+
+
+    .hover-action-overlay {
+
+        position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center;
+
+        opacity: 0; transition: opacity 0.3s ease; z-index: 60; pointer-events: none; flex-direction: column;
+
+    }
+
+    .card-hover-highlight .hover-action-overlay { opacity: 1; }
+
+
+
+    #ui-container { transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); transform: translateY(0); opacity: 1; filter: blur(0); }
+
+    .dissolve-down { transform: translateY(150px) scale(0.9) !important; opacity: 0 !important; filter: blur(20px) !important; transition: all 1.5s ease-out !important; }
+
+    .video-layer { position: absolute; inset: 0; z-index: 30; display: none; background: black; }
+
+    .video-active { display: block; }
+
+    
+
+    .scan-line {
+
+        width: 100%; height: 100px;
+
+        background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent);
+
+        position: absolute; top: 0; left: 0;
+
+        animation: scanline 2s linear infinite;
+
+    }
+
+    .bg-layer { transition: none !important; }
+
+    
+
+    .feature-list-content::-webkit-scrollbar { width: 5px; }
+
+    .feature-list-content::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+
+    .feature-list-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 5px; }
+
+    .feature-list-content::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+
+    
+
+    .feature-block {
+
+        background: rgba(15, 15, 25, 0.6); border: 1.5px solid rgba(255, 255, 255, 0.08); border-radius: 0.9rem;
+
+        padding: 1.75rem; position: relative; display: flex; flex-direction: column; overflow: hidden;
+
+    }
+
+
+
+    .feature-list-content { list-style: none; padding-left: 0; margin-top: 0.5rem; flex-grow: 1; overflow-y: auto; padding-right: 8px; line-height: 1.25rem; }
+
+    .feature-list-content li { display: flex; align-items: center; gap: 0.5rem; font-size: 1.0rem; }
+
+    .feature-list-content li .material-symbols-outlined { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+
+    .icon-box { display: flex; align-items: center; justify-content: center; }
+
+    .cosmic-wrapper video { width: 100%; height: 100%; object-fit: cover; }
+
+    h1, h2, h3, p, span, li, div { cursor: inherit; }
+
+
+
+/* --- NOVÉ STYLY PRO ČERNOU MLHU A BAREVNÉ LINKY --- */
+
+    .cyber-overlay {
+
+        position: absolute;
+
+        left: 0;
+
+        width: 100%;
+
+        height: 100px; 
+
+        pointer-events: none;
+
+        z-index: 35; 
+
+    }
+
+
+
+    .top-overlay {
+
+        top: 0;
+
+        /* Vícekrokový gradient pro "neviditelný" přechod */
+
+        background: linear-gradient(to bottom, 
+
+            {{ section.settings.shadow_color }} 0%, 
+
+            {{ section.settings.shadow_color | color_modify: 'alpha', 0.8 }} 30%,
+
+            {{ section.settings.shadow_color | color_modify: 'alpha', 0.4 }} 65%,
+
+            {{ section.settings.shadow_color | color_modify: 'alpha', 0.1 }} 85%,
+
+            transparent 100%
+
+        );
+
+    }
+
+
+
+    .bottom-overlay {
+
+        bottom: 0;
+
+        /* Vícekrokový gradient otočený nahoru */
+
+        background: linear-gradient(to top, 
+
+            {{ section.settings.shadow_color }} 0%, 
+
+            {{ section.settings.shadow_color | color_modify: 'alpha', 0.8 }} 30%,
+
+            {{ section.settings.shadow_color | color_modify: 'alpha', 0.4 }} 65%,
+
+            {{ section.settings.shadow_color | color_modify: 'alpha', 0.1 }} 85%,
+
+            transparent 100%
+
+        );
+
+        display: flex;
+
+        align-items: flex-end; 
+
+    }
+
+
+
+    .cyber-line {
+
+        width: 100%;
+
+        height: 2.0px; /* Velmi tenká linka */
+
+        /* Defaultní fialová, ztrácející se do krajů */
+
+        background: linear-gradient(90deg, transparent, #d946ef, transparent);
+
+        /* Zamlžený efekt */
+
+        box-shadow: 0 0 15px #d946ef, 0 0 30px rgba(217, 70, 239, 0.5);
+
+        opacity: 0.85;
+
+        filter: blur(1.5px); /* Lehké rozmazání pro "mlhavý" vzhled */
+
+        transition: all 2.0s ease-in-out; /* Plynulá změna barvy */
+
+        display: block !important;
+
+    }
+
+</style>
+
+
+
+<div id="app-root-{{ section.id }}" class="cosmic-wrapper flex flex-col items-center justify-center select-none">
+
+        
+
+        <div class="absolute inset-0 z-0 pointer-events-none">
+
+            {% if section.settings.image_lava != blank %}
+
+                {{ section.settings.image_lava | image_url: width: 2000 | image_tag: class: 'bg-layer absolute inset-0 w-full h-full object-cover opacity-0', id: 'bg-1', loading: 'lazy' }}
+
+            {% else %}
+
+                <div id="bg-1" class="bg-layer absolute inset-0 w-full h-full bg-red-900 opacity-0"></div>
+
+            {% endif %}
+
+            
+
+            {% if section.settings.image_crystal != blank %}
+
+                {{ section.settings.image_crystal | image_url: width: 2000 | image_tag: class: 'bg-layer absolute inset-0 w-full h-full object-cover', id: 'bg-2', style: 'opacity: 1;', loading: 'eager' }}
+
+            {% else %}
+
+                 <div id="bg-2" class="bg-layer absolute inset-0 w-full h-full bg-purple-900" style="opacity: 1;"></div>
+
+            {% endif %}
+
+            
+
+            {% if section.settings.image_city != blank %}
+
+                {{ section.settings.image_city | image_url: width: 2000 | image_tag: class: 'bg-layer absolute inset-0 w-full h-full object-cover opacity-0', id: 'bg-3', loading: 'lazy' }}
+
+             {% else %}
+
+                <div id="bg-3" class="bg-layer absolute inset-0 w-full h-full bg-cyan-900" style="opacity: 0;"></div>
+
+            {% endif %}
+
+        </div>
+
+
+
+        <div id="video-container" class="video-layer">
+
+            <div id="intro-video-wrapper" class="absolute inset-0 w-full h-full z-50 bg-black">
+
+                <video class="w-full h-full object-cover" muted playsinline>
+
+                    <source src="https://cdn.shopify.com/videos/c/o/v/bc4ec51ddaa74ea783260599bfcf37f8.mp4" type="video/mp4">
+
+                </video>
+
+            </div>
+
+
+
+            {%- comment -%} VIDEA S PŘECHODY {%- endcomment -%}
+
+            <div id="custom-video-wrapper" class="hidden absolute inset-0 w-full h-full z-20 bg-black">
+
+                <div id="video-source-1-2" class="hidden w-full h-full absolute inset-0"><video class="w-full h-full object-cover" muted playsinline preload="auto"><source src="https://cdn.shopify.com/videos/c/o/v/ebe4f6246f6147d7b5a192278251a993.mp4" type="video/mp4"></video></div>
+
+                <div id="video-source-1-3" class="hidden w-full h-full absolute inset-0"><video class="w-full h-full object-cover" muted playsinline preload="auto"><source src="https://cdn.shopify.com/videos/c/o/v/b2135a844f18482a8ee39c15deb75018.mp4" type="video/mp4"></video></div>
+
+                <div id="video-source-2-1" class="hidden w-full h-full absolute inset-0"><video class="w-full h-full object-cover" muted playsinline preload="auto"><source src="https://cdn.shopify.com/videos/c/o/v/e0603828175c43b4889d2acd3c0e71a8.mp4" type="video/mp4"></video></div>
+
+                <div id="video-source-2-3" class="hidden w-full h-full absolute inset-0"><video class="w-full h-full object-cover" muted playsinline preload="auto"><source src="https://cdn.shopify.com/videos/c/o/v/a1f98941b70c48e59a8fcf798faab3ae.mp4" type="video/mp4"></video></div>
+
+                <div id="video-source-3-1" class="hidden w-full h-full absolute inset-0"><video class="w-full h-full object-cover" muted playsinline preload="auto"><source src="https://cdn.shopify.com/videos/c/o/v/ef9fa34c36284b05b6c16fa7eb1a14fd.mp4" type="video/mp4"></video></div>
+
+                <div id="video-source-3-2" class="hidden w-full h-full absolute inset-0"><video class="w-full h-full object-cover" muted playsinline preload="auto"><source src="https://cdn.shopify.com/videos/c/o/v/8f95f483de40456fa3ee3c2dde04c0b6.mp4" type="video/mp4"></video></div>
+
+            </div>
+
+
+
+            <div id="video-content-terra" class="absolute inset-0 flex flex-col items-center justify-center bg-black/95 z-40 hidden">
+
+                <div class="absolute inset-0 opacity-20 animate-pulse bg-cover bg-center" style="background-image: url('https://cdn.tailwindcss.com/img/beams-home@95.jpg');"></div>
+
+                <div class="scan-line z-10"></div>
+
+                <div class="z-20 text-center space-y-6">
+
+                    <div id="terra-status" class="text-4xl md:text-5xl font-display font-bold uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">INIT: SECTOR 3</div>
+
+                    <div class="w-96 h-1.5 bg-gray-800 rounded-full overflow-hidden mx-auto border border-gray-700">
+
+                        <div id="terra-progress" class="h-full w-0 transition-all duration-[2000ms] ease-linear"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div id="video-content-main" class="absolute inset-0 overflow-hidden">
+
+                 {% if section.settings.image_intro != blank %}
+
+                    {{ section.settings.image_intro | image_url: width: 2000 | image_tag: class: 'w-full h-full object-cover animate-zoom-in', loading: 'eager' }}
+
+                {% else %}
+
+                    <div class="w-full h-full bg-black animate-zoom-in"></div>
+
+                {% endif %}
+
+                <div class="absolute inset-0 flex items-center justify-center bg-black/40">
+
+                    <h2 class="text-6xl font-display font-black tracking-[0.2em] text-white animate-pulse">SYSTEM INIT</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        
+
+        <div id="cyber-overlay-top" class="cyber-overlay top-overlay">
+
+            <div class="cyber-line"></div>
+
+        </div>
+
+        <div id="cyber-overlay-bottom" class="cyber-overlay bottom-overlay">
+
+             <div class="cyber-line"></div>
+
+        </div>
+
+        <div id="ui-container" class="relative z-40 mx-auto px-6 w-full opacity-0 dissolve-down">
+
+            <div class="text-center mb-12">
+
+                <h2 class="text-5xl md:text-7xl font-display font-black mb-4 tracking-tighter text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+
+                    {{ section.settings.heading }}
+
+                </h2>
+
+                <p class="text-gray-400 font-display text-sm md:text-base uppercase tracking-[0.3em]">
+
+                    {{ section.settings.subheading }}
+
+                </p>
+
+            </div>
+
+
+
+            <div class="grid lg:grid-cols-3 gap-10 items-end max-w-7xl mx-auto lg:min-h-[600px] pb-10 lg:pb-0 w-full">
+
+                <div id="card-1" onclick="requestTransition(1)" class="glass-panel theme-lava rounded-3xl p-2 group flex flex-col h-[500px]" style="opacity: 0.5;">
+
+                    <div class="hover-action-overlay rounded-[15px]">
+
+                        <span class="material-symbols-outlined text-5xl mb-2 text-lava animate-bounce">touch_app</span>
+
+                        <div class="text-2xl font-display font-bold tracking-widest text-center text-white drop-shadow-md">SPUSTIT<br>TERAFORMACI</div>
+
+                    </div>
+
+                    <div class="relative h-full flex flex-col bg-space-950/60 rounded-[15px] px-12 py-9 overflow-hidden">
+
+                        <div class="flex justify-between items-start mb-6">
+
+                            <div class="icon-box p-4 rounded-xl"><span class="material-symbols-outlined text-5xl">volcano</span></div>
+
+                            <div class="text-right"><div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 font-display">Sector 1</div><div class="text-2xl font-bold font-display text-white">{{ section.settings.price_1 }}</div></div>
+
+                        </div>
+
+                        <h3 class="text-3xl font-display font-bold text-white mb-2 group-hover:text-lava transition-colors">{{ section.settings.title_1 }}</h3>
+
+                        <p class="text-gray-400 text-sm mb-6 font-medium">{{ section.settings.desc_1 }}</p>
+
+                        <div class="feature-block flex-1 mb-4">
+
+                            <ul class="feature-list-content space-y-3">{{ section.settings.features_1 }}</ul>
+
+                        </div>
+
+                        <button class="w-full py-3 rounded-xl border border-lava hover:bg-lava hover:text-white transition-all font-display font-bold tracking-widest text-sm text-lava">INITIALIZE</button>
+
+                    </div>
+
+                </div>
+
+                <div id="card-2" onclick="requestTransition(2)" class="glass-panel theme-crystal rounded-3xl p-2 group flex flex-col h-[560px] z-10 border-fuchsia-500/30 card-active-2 w-full" style="opacity: 1;">
+
+                     <div class="hover-action-overlay rounded-[15px]">
+
+                        <span class="material-symbols-outlined text-5xl mb-2 text-crystal animate-bounce">touch_app</span>
+
+                        <div class="text-2xl font-display font-bold tracking-widest text-center text-white drop-shadow-md">SPUSTIT<br>TERAFORMACI</div>
+
+                    </div>
+
+                    <div class="relative h-full w-full flex flex-col bg-space-950/60 rounded-[15px] px-12 py-9 overflow-hidden">
+
+                        <div class="absolute top-0 left-1/2 -translate-x-1/2 bg-fuchsia-600 px-10 py-1.5 z-50 text-[10px] font-display font-bold tracking-[0.25em] text-white" style="clip-path: polygon(0 0, 100% 0, 85% 100%, 15% 100%); filter: drop-shadow(0 0 15px rgba(217,70,239,0.8));">POPULAR</div>
+
+                        <div class="flex justify-between items-start mb-6 pt-6">
+
+                            <div class="icon-box p-5 rounded-xl"><span class="material-symbols-outlined text-6xl">diamond</span></div>
+
+                            <div class="text-right"><div class="text-xs font-bold text-fuchsia-400 uppercase tracking-wider mb-1 font-display">Sector 2</div><div class="text-2xl font-bold font-display text-white drop-shadow-[0_0_10px_rgba(217,70,239,0.5)]">{{ section.settings.price_2 }}</div></div>
+
+                        </div>
+
+                        <h3 class="text-4xl font-display font-bold text-white mb-2 group-hover:text-crystal transition-colors">{{ section.settings.title_2 }}</h3>
+
+                        <p class="text-gray-300 text-sm mb-6 font-medium">{{ section.settings.desc_2 }}</p>
+
+                        <div class="feature-block flex-1 mb-4">
+
+                            <ul class="feature-list-content space-y-3">{{ section.settings.features_2 }}</ul>
+
+                        </div>
+
+                        <button class="w-full py-4 rounded-xl bg-crystal hover:bg-fuchsia-600 hover:shadow-[0_0_30px_rgba(217,70,239,0.4)] transition-all font-display font-bold tracking-widest text-sm text-white">EVOLVE</button>
+
+                    </div>
+
+                </div>
+
+                <div id="card-3" onclick="requestTransition(3)" class="glass-panel theme-city rounded-3xl p-2 group flex flex-col h-[500px]" style="opacity: 0.5;">
+
+                     <div class="hover-action-overlay rounded-[15px]">
+
+                        <span class="material-symbols-outlined text-5xl mb-2 text-city animate-bounce">touch_app</span>
+
+                        <div class="text-2xl font-display font-bold tracking-widest text-center text-white drop-shadow-md">SPUSTIT<br>TERAFORMACI</div>
+
+                    </div>
+
+                    <div class="relative h-full flex flex-col bg-space-950/60 rounded-[15px] px-12 py-9 overflow-hidden">
+
+                        <div class="flex justify-between items-start mb-6">
+
+                            <div class="icon-box p-4 rounded-xl"><span class="material-symbols-outlined text-5xl">apartment</span></div>
+
+                            <div class="text-right"><div class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1 font-display">Sector 3</div><div class="text-2xl font-bold font-display text-white">{{ section.settings.price_3 }}</div></div>
+
+                        </div>
+
+                        <h3 class="text-3xl font-display font-bold text-white mb-2 group-hover:text-city transition-colors">{{ section.settings.title_3 }}</h3>
+
+                        <p class="text-gray-400 text-sm mb-6 font-medium">{{ section.settings.desc_3 }}</p>
+
+                        <div class="feature-block flex-1 mb-4">
+
+                            <ul class="feature-list-content space-y-3">{{ section.settings.features_3 }}</ul>
+
+                        </div>
+
+                        <button class="w-full py-3 rounded-xl border border-city hover:bg-city hover:text-white transition-all font-display font-bold tracking-widest text-sm text-city">CONTACT</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+</div>
+
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function() {
+
+        let currentStage = 0; 
+
+        let isTransitioning = false;
+
+        
+
+        const appRoot = document.getElementById('app-root-{{ section.id }}');
+
+        const bg1 = document.getElementById('bg-1');
+
+        const bg2 = document.getElementById('bg-2');
+
+        const bg3 = document.getElementById('bg-3');
+
+        const videoContainer = document.getElementById('video-container');
+
+        const introWrapper = document.getElementById('intro-video-wrapper');
+
+        const videoTerraContent = document.getElementById('video-content-terra');
+
+        const terraStatus = document.getElementById('terra-status');
+
+        const terraProgress = document.getElementById('terra-progress');
+
+        const customVideoWrapper = document.getElementById('custom-video-wrapper');
+
+        const uiContainer = document.getElementById('ui-container');
+
+        const cards = [null, document.getElementById('card-1'), document.getElementById('card-2'), document.getElementById('card-3')];
+
+        
+
+        // --- ELEMENTY PRO LINKY ---
+
+        const topCyberLine = document.querySelector('#cyber-overlay-top .cyber-line');
+
+        const bottomCyberLine = document.querySelector('#cyber-overlay-bottom .cyber-line');
+
+
+
+        // Zde schválně zobrazíme "Loading" screen, aby sekce nebyla prázdná
+
+        const videoContentMain = document.getElementById('video-content-main');
+
+        if(videoContentMain) videoContentMain.classList.remove('hidden');
+
+
+
+        // === HOVER EFFEKTY ===
+
+        cards.forEach((card, index) => {
+
+            if(!card) return;
+
+            const stageId = index;
+
+            card.addEventListener('mouseenter', () => {
+
+                if (!isTransitioning && currentStage !== stageId) {
+
+                    card.classList.add('card-hover-highlight');
+
+                    if(cards[currentStage]) cards[currentStage].classList.add('card-dimmed');
+
+                }
+
+            });
+
+            card.addEventListener('mouseleave', () => {
+
+                card.classList.remove('card-hover-highlight');
+
+                if(cards[currentStage]) cards[currentStage].classList.remove('card-dimmed');
+
+            });
+
+        });
+
+
+
+        // === EVENT LISTENER PRO SPUŠTĚNÍ ===
+
+        document.addEventListener('triggerCosmicIntro', function() {
+
+            // Jakmile přijde signál, skryjeme loading screen a spustíme video
+
+            if(videoContentMain) videoContentMain.classList.add('hidden');
+
+            playMainIntro();
+
+        });
+
+
+
+        function playMainIntro() {
+
+            isTransitioning = true;
+
+            if (videoContainer) videoContainer.classList.add('video-active');
+
+            
+
+            const introVideo = introWrapper ? introWrapper.querySelector('video') : null;
+
+
+
+            if (introWrapper && introVideo) {
+
+                introWrapper.classList.remove('hidden');
+
+                introVideo.currentTime = 0;
+
+                introVideo.play().catch(e => finishIntroSetup());
+
+                introVideo.onended = () => {
+
+                    introWrapper.classList.add('hidden');
+
+                    finishIntroSetup();
+
+                };
+
+            } else {
+
+                finishIntroSetup();
+
+            }
+
+        }
+
+
+
+        function finishIntroSetup() {
+
+            if (videoContainer) videoContainer.classList.remove('video-active');
+
+            if(bg2) bg2.style.opacity = '1';
+
+            if(uiContainer) uiContainer.classList.remove('dissolve-down');
+
+            currentStage = 2;
+
+            updateCardStyles(2);
+
+            isTransitioning = false;
+
+        }
+
+
+
+        window.requestTransition = function(targetStage) {
+
+    if (currentStage === targetStage || isTransitioning) return;
+
+    cards.forEach(c => { if(c) c.classList.remove('card-hover-highlight', 'card-dimmed'); });
+
+    
+
+    // 1. Změna linek v této sekci
+
+    updateLineColors(targetStage);
+
+
+
+    // 2. ODESLÁNÍ SIGNÁLU PRO OSTATNÍ SEKCE (MLHU)
+
+    let mistColor = 'purple'; // Default
+
+    if (targetStage === 1) mistColor = 'orange';
+
+    if (targetStage === 3) mistColor = 'cyan';
+
+    
+
+    const event = new CustomEvent('changeMistColor', { detail: { color: mistColor } });
+
+    document.dispatchEvent(event);
+
+
+
+    isTransitioning = true;
+
+    if(uiContainer) uiContainer.classList.add('dissolve-down');
+
+    playTransitionVideo(currentStage, targetStage);
+
+}
+
+
+
+        function updateLineColors(targetStage) {
+
+            let activeColor = '#d946ef'; // Default (Purple)
+
+            if (targetStage === 1) activeColor = '#ff4d00'; // Lava
+
+            if (targetStage === 3) activeColor = '#06b6d4'; // City
+
+
+
+            const gradient = `linear-gradient(90deg, transparent, ${activeColor}, transparent)`;
+
+            const shadow = `0 0 15px ${activeColor}, 0 0 30px ${activeColor}80`; // Hex s 50% alpha
+
+
+
+            [topCyberLine, bottomCyberLine].forEach(line => {
+
+                if (line) {
+
+                    line.style.background = gradient;
+
+                    line.style.boxShadow = shadow;
+
+                }
+
+            });
+
+        }
+
+
+
+
+
+        function playTransitionVideo(from, to) {
+
+            videoContainer.classList.add('video-active');
+
+            const videoWrapper = document.getElementById(`video-source-${from}-${to}`);
+
+            
+
+            if (videoWrapper) {
+
+                const videoEl = videoWrapper.querySelector('video');
+
+                if(customVideoWrapper) customVideoWrapper.classList.remove('hidden');
+
+                document.querySelectorAll('[id^="video-source-"]').forEach(el => el.classList.add('hidden'));
+
+                videoWrapper.classList.remove('hidden');
+
+                
+
+                if (videoEl) {
+
+                    videoEl.currentTime = 0; videoEl.style.display = 'block'; videoEl.play();
+
+                    videoEl.onended = () => {
+
+                        videoWrapper.classList.add('hidden');
+
+                        if(customVideoWrapper) customVideoWrapper.classList.add('hidden');
+
+                        videoContainer.classList.remove('video-active');
+
+                        finishTransition(to);
+
+                    };
+
+                } else setTimeout(() => finishTransition(to), 1000);
+
+            } else {
+
+                if(videoTerraContent) videoTerraContent.classList.remove('hidden');
+
+                let statusText = "", colorHex = "";
+
+                if (to === 1) { statusText = "INIT: SECTOR 1"; colorHex = "#ff4d00"; }
+
+                else if (to === 2) { statusText = "INIT: SECTOR 2"; colorHex = "#d946ef"; }
+
+                else if (to === 3) { statusText = "INIT: SECTOR 3"; colorHex = "#06b6d4"; }
+
+
+
+                if(terraStatus) { terraStatus.innerText = statusText; terraStatus.style.color = colorHex; }
+
+                if(terraProgress) {
+
+                    terraProgress.className = `h-full w-0 transition-all duration-[2000ms] ease-linear`;
+
+                    terraProgress.style.backgroundColor = colorHex;
+
+                    setTimeout(() => { terraProgress.style.width = "100%"; }, 50);
+
+                }
+
+                setTimeout(() => {
+
+                    if(videoTerraContent) videoTerraContent.classList.add('hidden');
+
+                    if(terraProgress) terraProgress.style.width = "0%";
+
+                    videoContainer.classList.remove('video-active');
+
+                    finishTransition(to);
+
+                }, 2000);
+
+            }
+
+        }
+
+
+
+        function finishTransition(toStage) {
+
+            if (toStage === 1 && bg1) bg1.style.opacity = '1';
+
+            if (toStage === 2 && bg2) bg2.style.opacity = '1';
+
+            if (toStage === 3 && bg3) bg3.style.opacity = '1';
+
+            if (toStage !== 1 && bg1) bg1.style.opacity = '0';
+
+            if (toStage !== 2 && bg2) bg2.style.opacity = '0';
+
+            if (toStage !== 3 && bg3) bg3.style.opacity = '0';
+
+            updateCardStyles(toStage);
+
+            if(uiContainer) uiContainer.classList.remove('dissolve-down');
+
+            currentStage = toStage;
+
+            isTransitioning = false;
+
+        }
+
+
+
+        function updateCardStyles(activeStage) {
+
+            cards.forEach(c => {
+
+                if(!c) return;
+
+                c.classList.remove('card-active-1', 'card-active-2', 'card-active-3', 'card-hover-highlight', 'card-dimmed');
+
+                c.style.opacity = '0.5';
+
+            });
+
+            const activeCard = cards[activeStage];
+
+            if (activeCard) {
+
+                activeCard.style.opacity = '1';
+
+                if (activeStage === 1) activeCard.classList.add('card-active-1');
+
+                if (activeStage === 2) activeCard.classList.add('card-active-2');
+
+                if (activeStage === 3) activeCard.classList.add('card-active-3');
+
+            }
+
+            // Linky už jsou aktualizované hned při kliknutí funkcí updateLineColors
+
+        }
+
+    });
+
+</script>
+{% schema %}
+{
+  "name": "Moje-cenovka-2",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hlavní texty"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Nadpis",
+      "default": "SELECT DIMENSION"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Podnadpis",
+      "default": "Vyberte si úroveň své digitální existence"
+    },
+    {
+      "type": "header",
+      "content": "Obrázky pozadí a Intro"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_intro",
+      "label": "Intro obrázek (Vesmír)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_lava",
+      "label": "Pozadí 1: Láva (Start)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_crystal",
+      "label": "Pozadí 2: Krystal (Business)"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_city",
+      "label": "Pozadí 3: Město (Custom)"
+    },
+
+{
+      "type": "color",
+      "id": "shadow_color",
+      "label": "Barva stínu (Přechod)",
+      "default": "#020005",
+      "info": "Barva, která překrývá video nahoře a dole."
+    },
+
+    {
+      "type": "header",
+      "content": "Karta 1: START (Láva)"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Název karty",
+      "default": "START"
+    },
+    {
+      "type": "text",
+      "id": "price_1",
+      "label": "Cena",
+      "default": "15 000"
+    },
+    {
+      "type": "textarea",
+      "id": "desc_1",
+      "label": "Popis",
+      "default": "Odolný základ pro přežití. Rychlé nasazení v nepřátelském prostředí trhu."
+    },
+    {
+      "type": "html",
+      "id": "features_1",
+      "label": "Seznam funkcí (HTML)",
+      "default": "<li class='text-xs text-gray-300 font-medium'><span class='material-symbols-outlined text-sm'>grid_view</span> One-page Design</li>\n<li class='text-xs text-gray-300 font-medium'><span class='material-symbols-outlined text-sm'>speed</span> Hyper-rychlost</li>"
+    },
+    {
+      "type": "header",
+      "content": "Karta 2: BUSINESS (Krystal)"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Název karty",
+      "default": "BUSINESS"
+    },
+    {
+      "type": "text",
+      "id": "price_2",
+      "label": "Cena",
+      "default": "30 000"
+    },
+    {
+      "type": "textarea",
+      "id": "desc_2",
+      "label": "Popis",
+      "default": "Organický růst a expanze. Krystalická struktura webu s vlastním systémem."
+    },
+    {
+      "type": "html",
+      "id": "features_2",
+      "label": "Seznam funkcí (HTML)",
+      "default": "<li class='text-xs text-white font-bold'><span class='material-symbols-outlined text-sm text-fuchsia-400'>check_circle</span> Balíček Start</li>"
+    },
+    {
+      "type": "header",
+      "content": "Karta 3: CUSTOM (Město)"
+    },
+    {
+      "type": "text",
+      "id": "title_3",
+      "label": "Název karty",
+      "default": "CUSTOM"
+    },
+    {
+      "type": "text",
+      "id": "price_3",
+      "label": "Cena",
+      "default": "60 000+"
+    },
+    {
+      "type": "textarea",
+      "id": "desc_3",
+      "label": "Popis",
+      "default": "Vrchol civilizace. Komplexní ekosystémy a inteligentní aplikace."
+    },
+    {
+      "type": "html",
+      "id": "features_3",
+      "label": "Seznam funkcí (HTML)",
+      "default": "<li class='text-xs text-gray-300 font-medium'><span class='material-symbols-outlined text-sm'>all_inclusive</span> Neomezený Rozsah</li>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-cenovka-2",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

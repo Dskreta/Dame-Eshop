@@ -1,0 +1,318 @@
+{% schema %}
+{
+  "name": "Black Hole Warp",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Barva vesmíru",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "particle_color",
+      "label": "Barva hvězd",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "glow_color",
+      "label": "Barva záře černé díry",
+      "default": "#63a4ff"
+    },
+    {
+      "type": "range",
+      "id": "particle_count",
+      "min": 100,
+      "max": 800,
+      "step": 50,
+      "label": "Počet hvězd",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "hole_size",
+      "min": 20,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Velikost černé díry",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "warp_intensity",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Intenzita rozmazání u středu",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "min": 300,
+      "max": 900,
+      "step": 50,
+      "unit": "px",
+      "label": "Výška sekce",
+      "default": 600
+    },
+    {
+        "type": "header",
+        "content": "Obsah"
+    },
+    {
+        "type": "text",
+        "id": "heading",
+        "label": "Nadpis",
+        "default": "EVENT HORIZON"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Barva textu",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Black Hole Warp"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="blackhole-container" style="background-color: {{ section.settings.bg_color }}; height: {{ section.settings.height }}px;">
+  <canvas id="bh-canvas-{{ section.id }}"></canvas>
+  
+  {% if section.settings.heading != blank %}
+    <div class="bh-content" style="color: {{ section.settings.text_color }};">
+        <h1>{{ section.settings.heading }}</h1>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .blackhole-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .blackhole-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .bh-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    pointer-events: none;
+  }
+  
+  .bh-content h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: 8px;
+    margin: 0;
+    text-transform: uppercase;
+    /* Dvojitý stín pro lepší čitelnost nad středem */
+    text-shadow: 0 0 10px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.8);
+  }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const canvas = document.getElementById('bh-canvas-{{ section.id }}');
+    const ctx = canvas.getContext('2d');
+    
+    let width, height, centerX, centerY;
+    
+    // Nastavení
+    const particleColorHex = "{{ section.settings.particle_color }}";
+    const glowColorHex = "{{ section.settings.glow_color }}";
+    const particleCount = {{ section.settings.particle_count }};
+    const holeRadius = {{ section.settings.hole_size }};
+    const warpIntensity = {{ section.settings.warp_intensity }};
+    
+    function hexToRgb(hex) {
+        hex = hex.replace(/^#/, '');
+        let bigint = parseInt(hex, 16);
+        let r = (bigint >> 16) & 255;
+        let g = (bigint >> 8) & 255;
+        let b = bigint & 255;
+        return `${r},${g},${b}`;
+    }
+    const particleRGB = hexToRgb(particleColorHex);
+    const glowColor = glowColorHex;
+
+    let particlesArray = [];
+
+    function resize() {
+        width = canvas.parentElement.clientWidth;
+        height = canvas.parentElement.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+        centerX = width / 2;
+        centerY = height / 2;
+    }
+    resize();
+
+    class Star {
+        constructor(startAtEdge = false) {
+            const maxDist = Math.sqrt(width*width + height*height) / 2;
+            
+            if (startAtEdge) {
+                this.radius = maxDist;
+            } else {
+                this.radius = Math.random() * (maxDist - holeRadius) + holeRadius;
+            }
+
+            this.angle = Math.random() * Math.PI * 2;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedOffset = Math.random() * 0.5 + 0.5; // Variabilita rychlosti
+            
+            // Ukládáme si předchozí souřadnice pro výpočet vektoru pohybu
+            this.x = centerX + Math.cos(this.angle) * this.radius;
+            this.y = centerY + Math.sin(this.angle) * this.radius;
+            this.prevX = this.x;
+            this.prevY = this.y;
+        }
+
+        update() {
+            // Uložíme aktuální pozici jako "předchozí"
+            this.prevX = this.x;
+            this.prevY = this.y;
+
+            // 1. Fyzika pohybu
+            // Rychlost rotace (čím blíž, tím rychleji)
+            let angularVelocity = 300 / (this.radius * this.radius);
+            // Omezovač, aby to uprostřed nebylo nesmyslně rychlé
+            if (angularVelocity > 0.15) angularVelocity = 0.15;
+            
+            this.angle += angularVelocity * this.speedOffset;
+
+            // Gravitace (pád do středu) - čím blíž, tím rychleji padá
+            let gravity = 200 / this.radius;
+            if(gravity > 4) gravity = 4; // Max pádová rychlost
+            if(gravity < 0.5) gravity = 0.5; // Min pádová rychlost
+            
+            this.radius -= gravity;
+
+            // Výpočet nové pozice
+            this.x = centerX + Math.cos(this.angle) * this.radius;
+            this.y = centerY + Math.sin(this.angle) * this.radius;
+
+            // 2. Resetování hvězdy, pokud spadne do díry
+            if (this.radius <= holeRadius) {
+                const maxDist = Math.sqrt(width*width + height*height) / 2;
+                this.radius = maxDist;
+                this.prevX = centerX + Math.cos(this.angle) * this.radius; // Reset prevX, aby neudělala čáru přes celou obrazovku
+                this.prevY = centerY + Math.sin(this.angle) * this.radius;
+            }
+        }
+
+        draw() {
+            // Vzdálenost hvězdy od středu (relativní k velikosti okna)
+            const maxDist = Math.sqrt(width*width + height*height) / 2;
+            
+            // distanceRatio: 0 = u díry, 1 = na okraji obrazovky
+            let distanceRatio = (this.radius - holeRadius) / (maxDist - holeRadius);
+            if (distanceRatio < 0) distanceRatio = 0;
+            
+            // Nastavení barvy
+            ctx.strokeStyle = `rgba(${particleRGB}, ${0.5 + (0.5 * (1-distanceRatio))})`; // Blíž středu = jasnější
+            ctx.fillStyle = `rgba(${particleRGB}, 1)`;
+            
+            // LOGIKA ROZMAZÁNÍ
+            // Pokud je hvězda v dálce (např. v horních 60% vzdálenosti), kreslíme tečku.
+            // Pokud je blíže (spodních 40%), kreslíme čáru, která se prodlužuje.
+            
+            const blurThreshold = 0.5; // Hranice, kdy začíná rozmazání (0.5 = v polovině cesty k díře)
+            
+            if (distanceRatio > blurThreshold) {
+                // --- Ostrá hvězda (daleko) ---
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            } else {
+                // --- Rozmazaná hvězda (blízko - Motion Blur) ---
+                
+                // Spočítáme vektor pohybu (rozdíl mezi aktuální a minulou pozicí)
+                let dx = this.x - this.prevX;
+                let dy = this.y - this.prevY;
+                
+                // Faktor natažení: Čím blíž k nule (středu), tím větší natažení
+                // (1 - distanceRatio) roste směrem ke středu
+                let stretchFactor = (1 - distanceRatio) * warpIntensity;
+                
+                ctx.lineWidth = this.size;
+                ctx.lineCap = 'round'; // Kulaté konce čar, aby to vypadalo jako natažená tečka
+                
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                // Kreslíme čáru "dozadu" proti směru pohybu
+                ctx.lineTo(this.x - dx * stretchFactor, this.y - dy * stretchFactor);
+                ctx.stroke();
+            }
+        }
+    }
+
+    function drawBlackHole() {
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, holeRadius, 0, Math.PI * 2);
+        ctx.fillStyle = "#000000";
+        
+        // Záře
+        ctx.shadowColor = glowColor;
+        ctx.shadowBlur = 40; 
+        ctx.fill();
+        ctx.shadowBlur = 0; // Reset
+    }
+
+    function init() {
+        particlesArray = [];
+        for (let i = 0; i < particleCount; i++) {
+            particlesArray.push(new Star());
+        }
+    }
+
+    function animate() {
+        // ZÁSADNÍ ZMĚNA: Používáme clearRect pro perfektní ostrost vzdálených hvězd
+        ctx.clearRect(0, 0, width, height);
+        
+        // 1. Vykreslení černé díry (aby byla vespod, pokud chceme, aby hvězdy padaly "před ní" i "za ní")
+        // Ale pro lepší efekt pohlcení ji vykreslíme až nakonec, nebo:
+        // Vykreslíme jen záři pod hvězdami, a černý kruh nad hvězdami.
+        
+        // Pro jednoduchost: Černá díra uprostřed
+        // Aby hvězdy mizely "v ní", musí se díra vykreslit přes ně.
+        
+        for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+            particlesArray[i].draw();
+        }
+        
+        drawBlackHole();
+
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    window.addEventListener('resize', () => {
+        resize();
+        init();
+    });
+});
+</script>

@@ -1,0 +1,166 @@
+{% schema %}
+{
+  "name": "Jemná Bludička",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Nastavení barev (mlha)"
+    },
+    {
+      "type": "color",
+      "id": "color_core",
+      "label": "Jádro (nejsvětlejší bod)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_inner",
+      "label": "Vnitřní záře",
+      "default": "#53efef"
+    },
+    {
+      "type": "color",
+      "id": "color_outer",
+      "label": "Vnější záře",
+      "default": "#7c3aed"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_mobile",
+      "label": "Skrýt na mobilu",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Jemná Bludička"
+    }
+  ]
+}
+{% endschema %}
+
+<div id="cursor-light-follower" class="wisp-light"></div>
+
+<style>
+  .wisp-light {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 50px; /* ZMENŠENO NA 100px */
+    height: 50px;
+    border-radius: 50%;
+    pointer-events: none; /* Klikání skrz */
+    z-index: 21474; /* Nejvyšší vrstva */
+    
+    /* Vycentrování transformace */
+    transform: translate(-50%, -50%);
+    
+    /* Míchání barev pro efekt světla */
+    mix-blend-mode: screen; 
+    
+    opacity: 0; /* Startuje neviditelné */
+    transition: opacity 2.8s ease; /* Pomalé rozsvícení */
+    will-change: transform; /* Optimalizace pro GPU */
+    display: block !important;
+
+    /* DESIGN MLHY:
+       4 kroky gradientu pro maximální jemnost.
+       Používáme RGBA pro průhlednost uvnitř barev.
+    */
+    background: radial-gradient(
+      circle,
+      {{ section.settings.color_core | color_modify: 'alpha', 0.9 }} 0%, 
+      {{ section.settings.color_inner | color_modify: 'alpha', 0.4 }} 20%, 
+      {{ section.settings.color_outer | color_modify: 'alpha', 0.15 }} 42%,
+      rgba(0,0,0,0) 70% /* Okraj do ztracena */
+    );
+    
+    /* Jemné rozostření celého elementu pro efekt plynu */
+    filter: blur(3px);
+  }
+
+  {% if section.settings.hide_on_mobile %}
+  @media (max-width: 768px) {
+    .wisp-light { display: none !important; }
+  }
+  {% endif %}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const light = document.getElementById('cursor-light-follower');
+  if (!light) return;
+
+  // Kontrola mobilu
+  if (window.innerWidth < 768 && {{ section.settings.hide_on_mobile }}) return;
+
+  // --- NASTAVENÍ CHOVÁNÍ ---
+  const followSpeed = 0.10; // Jak rychle dobíhá myš (0.1 = pomalejší/plavnější, 0.2 = rychlejší)
+  const maxOrbitRadius = 9; // Jak velké kruhy dělá (v pixelech) - malé decentní kroužení
+  const orbitSpeed = 0.03;   // Rychlost otáčení
+  const orbitGrowSpeed = 0.04; // Jak rychle se kroužení "nafoukne" po zastavení
+
+  // Proměnné
+  let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  let current = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  
+  let angle = 0; // Úhel kroužení (běží pořád)
+  let currentRadius = 0; // Aktuální velikost kruhu (0 = stojí na místě, >0 = krouží)
+  
+  let isIdle = false;
+  let idleTimer = null;
+
+  // Sledování myši
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+
+    // Rozsvítit při prvním pohybu
+    if (light.style.opacity === '0' || light.style.opacity === '') {
+       light.style.opacity = '1';
+    }
+
+    // Když hýbu myší, NENÍ idle
+    isIdle = false;
+    clearTimeout(idleTimer);
+
+    // Pokud se myš zastaví na 150ms, považujeme to za idle
+    idleTimer = setTimeout(() => {
+      isIdle = true;
+    }, 150);
+  });
+
+  function animate() {
+    // 1. HLAVNÍ POHYB (LERP)
+    // Světlo plynule následuje myš
+    current.x += (mouse.x - current.x) * followSpeed;
+    current.y += (mouse.y - current.y) * followSpeed;
+
+    // 2. VÝPOČET KROUŽENÍ (ORBIT)
+    // Úhel se mění neustále (aby to neškublo)
+    angle += orbitSpeed;
+
+    // Cílový poloměr: Pokud stojíme (idle), chceme 15px. Pokud hýbeme, chceme 0px.
+    let targetRadius = isIdle ? maxOrbitRadius : 0;
+    
+    // Plynulá změna poloměru (to odstraní to skákání!)
+    // Poloměr se pomalu zvětšuje nebo zmenšuje
+    currentRadius += (targetRadius - currentRadius) * orbitGrowSpeed;
+
+    // Vypočítáme odchylku kroužení
+    const offsetX = Math.cos(angle) * currentRadius;
+    const offsetY = Math.sin(angle) * currentRadius;
+
+    // 3. FINÁLNÍ POZICE
+    // Pozice myši + zpoždění + kroužení
+    const finalX = current.x + offsetX;
+    const finalY = current.y + offsetY;
+
+    light.style.transform = `translate(${finalX}px, ${finalY}px) translate(-50%, -50%)`;
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+});
+</script>

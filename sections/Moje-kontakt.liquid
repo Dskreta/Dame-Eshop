@@ -1,0 +1,358 @@
+<script src="https://cdn.tailwindcss.com" defer></script>
+
+{%- style -%}
+  /* SCOPED CSS pro tuto sekci */
+  #shopify-section-{{ section.id }} {
+      background-color: #020005;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      
+      /* DEFINICE PROMĚNNÝCH PRO BARVY (Default: Cyan/City) */
+      --accent-color: #22d3ee; /* Barva ikonek a textu */
+      --btn-bg: linear-gradient(90deg, #06b6d4, #2563eb);
+      --btn-shadow: 0 0 30px rgba(6, 182, 212, 0.4);
+  }
+
+  /* Třída pro dynamickou změnu barvy textu/ikonek */
+  .dynamic-accent {
+      color: var(--accent-color) !important;
+      transition: color 0.5s ease;
+  }
+  
+  /* Třída pro dynamickou změnu pozadí (např. tečka statusu) */
+  .dynamic-bg-accent {
+      background-color: var(--accent-color) !important;
+      transition: background-color 0.5s ease;
+  }
+
+  /* Glass Form Panel */
+  .glass-form-{{ section.id }} {
+      background: rgba(10, 10, 15, 0.6);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Input Styling */
+  .cosmic-input-{{ section.id }} {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      transition: all 0.3s ease;
+      width: 100%;
+  }
+  .cosmic-input-{{ section.id }}:focus {
+      border-color: var(--accent-color); /* Také reaguje na barvu */
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.6);
+      outline: none;
+  }
+
+  /* Custom Select Arrow Styling */
+  .select-wrapper-{{ section.id }} { position: relative; }
+  .select-wrapper-{{ section.id }} select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+  }
+  .select-arrow-{{ section.id }} {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      transition: transform 0.3s ease;
+  }
+  .select-wrapper-{{ section.id }}:focus-within .select-arrow-{{ section.id }} {
+      transform: translateY(-50%) rotate(180deg);
+      color: var(--accent-color); /* Šipka se přebarví při focusu */
+  }
+
+  /* Button Glow */
+  .btn-cosmic-{{ section.id }} {
+      background: var(--btn-bg) !important;
+      box-shadow: none; 
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s ease;
+  }
+  .btn-cosmic-{{ section.id }}:hover {
+      box-shadow: var(--btn-shadow);
+      transform: translateY(-2px);
+  }
+  .btn-cosmic-{{ section.id }}::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+  }
+  .btn-cosmic-{{ section.id }}:hover::after { left: 100%; }
+
+  /* Animace */
+  @keyframes float-cosmic {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+  }
+  .animate-float-cosmic {
+      animation: float-cosmic 6s ease-in-out infinite;
+  }
+
+  .font-display { font-family: 'Orbitron', sans-serif; }
+{%- endstyle -%}
+
+<section id="contact-section-root" class="relative w-full py-24 px-6 flex items-center justify-center overflow-hidden">
+    
+  <div class="absolute inset-0 z-0 pointer-events-none">
+        
+        {% if section.settings.bg_image != blank %}
+            {%- assign pos_style = 'object-position: ' | append: section.settings.bg_position -%}
+            
+            {{ section.settings.bg_image | image_url: width: 2000 | image_tag: class: 'w-full h-full object-cover opacity-60', style: pos_style, loading: 'lazy' }}
+        {% else %}
+            <div class="w-full h-full bg-gradient-to-br from-[#0f172a] via-[#1e1b4b] to-[#020617] opacity-80"></div>
+        {% endif %}
+        
+        <div class="absolute inset-0 bg-gradient-to-b from-[#020005]/80 via-transparent to-[#020005]/90"></div>
+        
+        <div class="absolute bottom-[-20%] left-1/2 -translate-x-1/2 w-[80%] h-[400px] bg-cyan-500/10 blur-[100px] rounded-full"></div>
+    </div>
+
+    <div class="max-w-[1300px] mx-auto w-full relative z-10 grid lg:grid-cols-2 gap-16 items-center">
+        
+        <div class="space-y-8 animate-float-cosmic">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-gray-300 text-xs font-bold tracking-widest uppercase">
+                <span class="w-2 h-2 rounded-full dynamic-bg-accent animate-pulse"></span>
+                {{ section.settings.status_text }}
+            </div>
+            
+            <h2 class="text-5xl md:text-7xl font-display font-black text-white leading-tight">
+                {{ section.settings.title_line_1 }} <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-400">{{ section.settings.title_line_2 }}</span>
+            </h2>
+            
+            <p class="text-gray-400 text-lg leading-relaxed max-w-2xl">
+                {{ section.settings.description }}
+            </p>
+
+            <div class="flex items-center gap-4 text-gray-500">
+                <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+                    <span class="material-symbols-outlined dynamic-accent">rocket_launch</span>
+                </div>
+                <div class="text-sm">
+                    <div class="text-white font-bold">{{ section.settings.badge_title }}</div>
+                    <div>{{ section.settings.badge_subtitle }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-form-{{ section.id }} rounded-3xl p-8 md:p-12 relative">
+            <div class="absolute inset-0 rounded-3xl border border-white/10 pointer-events-none"></div>
+            
+            <h3 class="text-2xl font-display font-bold text-white mb-6 flex items-center gap-3">
+                <span class="material-symbols-outlined dynamic-accent">mail</span>
+                {{ section.settings.form_title }}
+            </h3>
+
+            {% form 'contact' %}
+                {% if form.posted_successfully? %}
+                    <div class="bg-green-500/20 border border-green-500/50 text-green-300 p-4 rounded-xl text-center animate-pulse">
+                        <h4 class="font-bold text-lg mb-1">Signál přijat! 🚀</h4>
+                        <p>Zpráva byla úspěšně odeslána do vesmíru. Ozvu se brzy.</p>
+                    </div>
+                {% else %}
+                    {{ form.errors | default_errors }}
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Váš Email</label>
+                            <input type="email" name="contact[email]" id="ContactForm-email" placeholder="kapitan@firma.cz" required class="cosmic-input-{{ section.id }} w-full rounded-xl px-5 py-4 placeholder:text-gray-600 focus:placeholder:text-gray-500">
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">{{ section.settings.select_label }}</label>
+                            <div class="select-wrapper-{{ section.id }}">
+                                <select name="contact[Topic]" id="ContactForm-topic" required class="cosmic-input-{{ section.id }} w-full rounded-xl px-5 py-4 cursor-pointer text-gray-300 focus:text-white appearance-none">
+                                    <option value="" disabled selected class="bg-gray-900">Vyberte možnost...</option>
+                                    {% assign options = section.settings.select_options | split: ',' %}
+                                    {% for option in options %}
+                                        <option value="{{ option | strip }}" class="bg-[#0a0a0f]">{{ option | strip }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="material-symbols-outlined select-arrow-{{ section.id }} text-gray-500">expand_circle_down</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Zpráva (Nepovinné)</label>
+                            <textarea rows="3" name="contact[body]" id="ContactForm-body" placeholder="Detaily o vašem projektu..." class="cosmic-input-{{ section.id }} w-full rounded-xl px-5 py-4 placeholder:text-gray-600 resize-none"></textarea>
+                        </div>
+
+                        <button type="submit" id="contact-submit-btn" class="btn-cosmic-{{ section.id }} w-full py-4 rounded-xl text-white font-display font-bold text-lg tracking-widest uppercase flex items-center justify-center gap-2 group">
+                            {{ section.settings.btn_text }}
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">send</span>
+                        </button>
+                    </div>
+                {% endif %}
+            {% endform %}
+
+            {% if section.settings.phone_number != blank %}
+            <div class="mt-8 pt-6 border-t border-white/10 text-center">
+                <p class="text-gray-400 text-sm">
+                    Preferujete hlasový kontakt?
+                    <br>
+                    <a href="tel:{{ section.settings.phone_number | replace: ' ', '' }}" class="text-white font-bold text-lg hover:text-white transition-colors mt-1 inline-block tracking-wide">
+                        <span class="dynamic-accent mr-1">Volejte:</span> {{ section.settings.phone_number }}
+                    </a>
+                </p>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const sectionRoot = document.getElementById('shopify-section-{{ section.id }}');
+    const contactBtn = document.getElementById('contact-submit-btn');
+
+    // Defaultní nastavení (pokud by někdo přišel přímo sem) - FIALOVÁ
+    if (contactBtn && sectionRoot) {
+        contactBtn.style.setProperty('--btn-bg', 'linear-gradient(90deg, rgb(235, 37, 192), rgba(68, 6, 212, 0.93))');
+        contactBtn.style.setProperty('--btn-shadow', '0 0 30px rgba(205, 6, 212, 0.4)');
+        sectionRoot.style.setProperty('--accent-color', '#d946ef'); // Fialová
+    }
+
+    // Posluchač události z cenové sekce
+    document.addEventListener('changeMistColor', function(e) {
+        if (!contactBtn || !sectionRoot) return;
+        
+        const newColor = e.detail.color; // 'orange', 'purple', 'cyan'
+
+        if (newColor === 'orange') {
+            // LAVA STYLE
+            contactBtn.style.setProperty('--btn-bg', 'linear-gradient(90deg, #ff4d00, #9a3412)');
+            contactBtn.style.setProperty('--btn-shadow', '0 0 30px rgba(255, 77, 0, 0.6)');
+            sectionRoot.style.setProperty('--accent-color', '#ff4d00');
+        } else if (newColor === 'purple') {
+            // CRYSTAL STYLE
+            contactBtn.style.setProperty('--btn-bg', 'linear-gradient(90deg, rgb(235, 37, 192), rgba(68, 6, 212, 0.93))');
+            contactBtn.style.setProperty('--btn-shadow', '0 0 30px rgba(205, 6, 212, 0.4)');
+            sectionRoot.style.setProperty('--accent-color', '#d946ef');
+        } else {
+            // CITY STYLE (Cyan/Blue)
+            contactBtn.style.setProperty('--btn-bg', 'linear-gradient(90deg, #06b6d4, #2563eb)');
+            contactBtn.style.setProperty('--btn-shadow', '0 0 30px rgba(6, 182, 212, 0.4)');
+            sectionRoot.style.setProperty('--accent-color', '#22d3ee');
+        }
+    });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Moje-kontakt",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Obrázek na pozadí"
+    },
+    {
+      "type": "select",
+      "id": "bg_position",
+      "label": "Zarovnání pozadí",
+      "options": [
+        { "value": "center center", "label": "Střed (Center)" },
+        { "value": "left center", "label": "Vlevo (Left)" },
+        { "value": "right center", "label": "Vpravo (Right)" },
+        { "value": "center top", "label": "Nahoru (Top)" },
+        { "value": "center bottom", "label": "Dolů (Bottom)" }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "header",
+      "content": "Levá strana (Texty)"
+    },
+    {
+      "type": "text",
+      "id": "status_text",
+      "label": "Status Text",
+      "default": "Status: Online"
+    },
+    {
+      "type": "text",
+      "id": "title_line_1",
+      "label": "Nadpis - 1. řádek",
+      "default": "READY FOR"
+    },
+    {
+      "type": "text",
+      "id": "title_line_2",
+      "label": "Nadpis - 2. řádek (Gradient)",
+      "default": "LIFTOFF?"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Popis",
+      "default": "Vyplňte letový plán a já připravím motory. Vaše cesta k digitální dominanci začíná jednou zprávou."
+    },
+    {
+      "type": "text",
+      "id": "badge_title",
+      "label": "Odznak - Nadpis",
+      "default": "Rychlá odezva"
+    },
+    {
+      "type": "text",
+      "id": "badge_subtitle",
+      "label": "Odznak - Podnadpis",
+      "default": "Odpovídám do 24 hodin"
+    },
+    {
+      "type": "header",
+      "content": "Pravá strana (Formulář)"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Nadpis formuláře",
+      "default": "Nezávazná poptávka"
+    },
+    {
+      "type": "text",
+      "id": "select_label",
+      "label": "Popisek výběru",
+      "default": "O co máte zájem?"
+    },
+    {
+      "type": "textarea",
+      "id": "select_options",
+      "label": "Možnosti výběru (oddělené čárkou)",
+      "default": "🚀 Start (15 000 Kč), 💎 Business (30 000 Kč), 🏙️ Custom (60 000+ Kč), 🤔 Nevím / Jiné",
+      "info": "Možnosti oddělte čárkou."
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Text tlačítka",
+      "default": "Odeslat"
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Telefonní číslo",
+      "default": "+420 739 547 398"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-kontakt"
+    }
+  ]
+}
+{% endschema %}

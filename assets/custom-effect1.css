@@ -1,0 +1,19 @@
+
+.html, body, .wrap {
+  height: 100%;
+}
+
+body {
+  background: black;
+  background-image: radial-gradient(circle at center, white 0%, #222 10%, black 60%);
+  overflow: hidden;
+}
+
+.wrap {
+  transform-style: preserve-3d;
+  perspective: 800px;
+  position: relative; /* důležité pro kontejnery */
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}

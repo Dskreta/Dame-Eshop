@@ -1,0 +1,65 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "image_P6LMrE": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/fialove_logo_bez_pozadi.png",
+            "image_width": 250,
+            "alignment": "center"
+          }
+        },
+        "link_list_AMJT9d": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Rychlé odkazy",
+            "menu": "customer-account-main-menu"
+          }
+        },
+        "text_9dm4KC": {
+          "type": "text",
+          "settings": {
+            "heading": "",
+            "subtext": "<h3>Daniel Škréta</h3><p>IČO: 17087589</p><p>Uherčice 14,691 62 Uherčice</p><p>Registrován v živnostenském rejstříku</p>"
+          }
+        }
+      },
+      "block_order": [
+        "image_P6LMrE",
+        "link_list_AMJT9d",
+        "text_9dm4KC"
+      ],
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-dfdd828c-2c0e-497f-b86f-8f7b6ca3bdb6",
+        "newsletter_enable": false,
+        "newsletter_heading": "Subscribe to our emails",
+        "enable_follow_on_shop": false,
+        "show_social": false,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "payment_enable": false,
+        "show_policy": false,
+        "margin_top": 0,
+        "padding_top": 44,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

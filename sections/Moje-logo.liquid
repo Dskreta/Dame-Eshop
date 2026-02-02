@@ -1,0 +1,223 @@
+{% schema %}
+{
+  "name": "Moje-logo",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo (PNG Transparent)",
+      "info": "Barvy budou převzaty přímo z obrázku."
+    },
+    {
+      "type": "range",
+      "id": "particle_size",
+      "min": 1,
+      "max": 5,
+      "step": 0.1,
+      "unit": "px",
+      "label": "Velikost částic",
+      "default": 1.5
+    },
+    {
+      "type": "range",
+      "id": "particle_gap",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "label": "Hustota (Mezera mezi body)",
+      "default": 4,
+      "info": "Menší číslo = detailnější logo (větší zátěž)."
+    },
+    {
+      "type": "range",
+      "id": "mouse_radius",
+      "min": 20,
+      "max": 200,
+      "step": 10,
+      "label": "Poloměr interakce myši",
+      "default": 80
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Barva pozadí sekce",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-logo"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  #particle-container {
+    position: relative;
+    width: 100%;
+    height: 400px; /* Výška pro testování */
+    background-color: {{ section.settings.bg_color }};
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  canvas {
+    display: block;
+  }
+</style>
+
+<div id="particle-container">
+  {% if section.settings.logo_image != blank %}
+    {{ section.settings.logo_image | image_url: width: 600 | image_tag: id: 'source-image', crossorigin: 'anonymous', style: 'display: none;' }}
+  {% else %}
+    <p style="color: white; z-index: 10;">Prosím nahrajte logo v nastavení sekce.</p>
+  {% endif %}
+  
+  <canvas id="particle-canvas"></canvas>
+</div>
+
+<script>
+  window.addEventListener('load', function() {
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const image = document.getElementById('source-image');
+    
+    // Nastavení ze Shopify
+    const config = {
+      particleSize: {{ section.settings.particle_size }},
+      gap: {{ section.settings.particle_gap }},
+      mouseRadius: {{ section.settings.mouse_radius }}
+    };
+
+    let particlesArray = [];
+    let mouse = {
+      x: null,
+      y: null,
+      radius: config.mouseRadius
+    };
+
+    const container = document.getElementById('particle-container');
+    container.addEventListener('mousemove', function(event) {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = event.x - rect.left;
+      mouse.y = event.y - rect.top;
+    });
+    
+    container.addEventListener('mouseleave', function() {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.originX = x; 
+        this.originY = y;
+        this.color = color; // Zde se ukládá originální barva z obrázku
+        this.size = config.particleSize;
+        this.vx = 0;
+        this.vy = 0;
+        this.friction = 0.90;
+        this.ease = 0.08;
+        this.dx = 0;
+        this.dy = 0;
+        this.distance = 0;
+        this.force = 0;
+        this.angle = 0;
+      }
+
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      update() {
+        this.dx = mouse.x - this.x;
+        this.dy = mouse.y - this.y;
+        this.distance = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+        
+        if (mouse.x != null && this.distance < mouse.radius) {
+          this.force = -mouse.radius / this.distance;
+          this.angle = Math.atan2(this.dy, this.dx);
+          this.vx += this.force * Math.cos(this.angle) * 5;
+          this.vy += this.force * Math.sin(this.angle) * 5;
+        }
+
+        this.x += (this.originX - this.x) * this.ease;
+        this.y += (this.originY - this.y) * this.ease;
+
+        this.x += this.vx;
+        this.y += this.vy;
+
+        this.vx *= this.friction;
+        this.vy *= this.friction;
+
+        this.draw();
+      }
+    }
+
+    function init() {
+      if (!image.complete || image.naturalWidth === 0) return;
+
+      const aspectRatio = image.height / image.width;
+      const displayWidth = Math.min(window.innerWidth, 500); 
+      const displayHeight = displayWidth * aspectRatio;
+
+      canvas.width = displayWidth;
+      canvas.height = displayHeight;
+
+      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      
+      const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particlesArray = [];
+      
+      for (let y = 0; y < canvas.height; y += config.gap) {
+        for (let x = 0; x < canvas.width; x += config.gap) {
+          const index = (y * 4 * canvas.width) + (x * 4);
+          const alpha = pixels[index + 3];
+
+          // Pokud je pixel viditelný
+          if (alpha > 128) {
+            const red = pixels[index];
+            const green = pixels[index + 1];
+            const blue = pixels[index + 2];
+            // Vytvoření RGB barvy z původního obrázku
+            const color = 'rgb(' + red + ',' + green + ',' + blue + ')';
+
+            particlesArray.push(new Particle(x, y, color));
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+      }
+      requestAnimationFrame(animate);
+    }
+
+    if (image.complete) {
+      init();
+      animate();
+    } else {
+      image.onload = () => {
+        init();
+        animate();
+      };
+    }
+    
+    window.addEventListener('resize', function(){
+       // Pro ostrý provoz zde bude debounce funkce pro překreslení
+    });
+  });
+</script>

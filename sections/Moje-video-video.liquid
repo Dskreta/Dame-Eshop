@@ -1,0 +1,279 @@
+{% comment %}
+  Sekce: Intro Video to Loop Video with Overlay Image (Dynamická šířka, mobilní výška a zarovnání)
+{% endcomment %}
+
+<style>
+  .intro-section-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: transparent;
+  }
+
+  .intro-media-container {
+    width: 100%; /* Vždy 100% šířky kontejneru */
+    height: 0; 
+    padding-bottom: {{ padding_bottom }}%; /* Default pro desktop - zachovává poměr stran */
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Zde se aplikuje nastavení pro mobil */
+  @media screen and (max-width: 768px) { /* Běžný breakpoint pro mobilní zařízení */
+    .intro-media-container {
+      height: {{ section.settings.mobile_height_vh }}vh !important; /* Přepíše padding-bottom pevnou výškou */
+      padding-bottom: 0 !important; /* Zruší poměr stran založený na paddingu */
+    }
+    .intro-content { /* Aplikováno na video i obrázek */
+      object-position: left center; /* Zarovná obsah videa/obrázku doleva */
+    }
+  }
+
+  .intro-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+  }
+
+  /* Loop video je na nejnižší vrstvě (z-index 1) */
+  .loop-video {
+    z-index: 1;
+    display: block;
+    opacity: 1; /* Je vždy viditelné, ale může být zakryté */
+  }
+
+  /* Překryvný obrázek je nad loop videem (z-index 2) */
+  .overlay-image {
+    z-index: 2;
+    opacity: 1; /* Zpočátku je neviditelný, aby nezakrýval intro video */
+    display: block; 
+  }
+
+  .overlay-image.is-visible {
+    opacity: 1; /* Jakmile ho JS aktivuje, stane se viditelným */
+  }
+
+  /* Intro video je na nejvyšší vrstvě (z-index 3) a zakrývá vše na začátku */
+  .intro-video {
+    z-index: 3;
+    transition: opacity 0.5s ease; /* Plynulé zmizení */
+  }
+
+  .video-hidden {
+    opacity: 0 !important; /* Důležité pro vynucení skrytí */
+    pointer-events: none; /* Zakáže interakci s prvkem */
+  }
+</style>
+
+<div class="intro-section-wrapper">
+  {%- if section.settings.intro_video != blank -%}
+    {%- assign video_ratio = section.settings.intro_video.aspect_ratio -%}
+    {%- assign padding_bottom = 100 | divided_by: video_ratio -%}
+  {%- else -%}
+    {%- assign padding_bottom = 56.25 -%} {% comment %} Fallback 16:9 (16:9 poměr stran) {% endcomment %}
+  {%- endif -%}
+
+  <div class="intro-media-container" style="padding-bottom: {{ padding_bottom }}%;">
+    
+    {% comment %} 
+      VYTVOŘENÍ ID DO PROMĚNNÝCH PRO ROBUSTNOST
+    {% endcomment %}
+    {%- assign loop_video_html_id = 'LoopVideo-' | append: section.id -%}
+    {%- assign intro_video_html_id = 'IntroVideo-' | append: section.id -%}
+    {%- assign overlay_image_html_id = 'OverlayImage-' | append: section.id -%}
+
+    {% comment %} 
+      1. Smyčkové video (Loop) - nejspodnější vrstva
+    {% endcomment %}
+    {%- if section.settings.loop_video != blank -%}
+      {{ section.settings.loop_video | video_tag: 
+        autoplay: false, 
+        loop: true, 
+        muted: true, 
+        preload: 'auto',
+        playsinline: true, 
+        controls: false, 
+        class: 'intro-content loop-video',
+        id: loop_video_html_id
+      }}
+    {%- endif -%}
+
+    {% comment %} 
+      2. Překryvný obrázek - střední vrstva (nad smyčkovým videem)
+    {% endcomment %}
+    {%- if section.settings.overlay_image != blank -%}
+      {{ section.settings.overlay_image | image_url: width: 2000 | image_tag: 
+        class: 'intro-content overlay-image', 
+        loading: 'eager', 
+        alt: section.settings.overlay_image.alt | default: 'Intro Overlay Image',
+        id: overlay_image_html_id
+      }}
+    {%- endif -%}
+
+    {% comment %} 
+      3. Úvodní video (Intro) - nejvyšší vrstva (na začátku)
+    {% endcomment %}
+    {%- if section.settings.intro_video != blank -%}
+      {{ section.settings.intro_video | video_tag: 
+        autoplay: true, 
+        loop: false, 
+        muted: true, 
+        preload: 'auto',
+        playsinline: true, 
+        controls: false, 
+        class: 'intro-content intro-video',
+        id: intro_video_html_id
+      }}
+    {%- endif -%}
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Odstranil jsem setTimeout, protože problém s ID byl vyřešen v Liquid
+    var introVideo = document.getElementById('IntroVideo-{{ section.id }}');
+    var loopVideo = document.getElementById('LoopVideo-{{ section.id }}');
+    var overlayImage = document.getElementById('OverlayImage-{{ section.id }}'); 
+    
+    // Funkce pro bezpečné skrytí intra
+    function hideIntro() {
+       if (introVideo) {
+         console.log("DEBUG: hideIntro() - Zastínění intro videa.");
+         introVideo.classList.add('video-hidden');
+         // Po dokončení CSS animace (0.5s) skryjeme prvek úplně
+         setTimeout(() => { 
+            introVideo.style.display = 'none'; 
+            console.log("DEBUG: hideIntro() - Intro video nastaveno na display: none.");
+         }, 500); // Mělo by odpovídat CSS transition duration
+       } else {
+         console.log("DEBUG: hideIntro() - Intro video prvek nenalezen (uvnitř hideIntro).");
+       }
+    }
+
+    // Funkce pro zviditelnění překryvného obrázku
+    function showOverlay() {
+      if (overlayImage) {
+        console.log("DEBUG: showOverlay() - Zobrazuji překryvný obrázek. Element:", overlayImage);
+        overlayImage.classList.add('is-visible');
+        console.log("DEBUG: showOverlay() - Třída 'is-visible' přidána. Aktuální třídy:", overlayImage.className);
+      } else {
+        console.log("DEBUG: showOverlay() - Overlay image prvek nenalezen (uvnitř showOverlay).");
+      }
+    }
+
+    // Funkce pro spuštění smyčky
+    function playLoop() {
+      console.log("DEBUG: playLoop() - Pokus o spuštění smyčkového videa.");
+      if (loopVideo) {
+        // Kritické: Vynucujeme ztlumení pro povolené autoplay
+        loopVideo.muted = true; 
+        // Zajistíme, že video začne od začátku
+        loopVideo.currentTime = 0;
+
+        var playPromise = loopVideo.play();
+
+        if (playPromise !== undefined) {
+          playPromise.then(_ => {
+            console.log("SUCCESS: Loop video se začalo přehrávat.");
+            hideIntro(); // Skryjeme intro video
+            showOverlay(); // Zobrazíme překryvný obrázek
+          })
+          .catch(error => {
+            console.error("ERROR: Loop video selhalo při pokusu o přehrání:", error);
+            // I když loop video selže, stále chceme skrýt intro a zobrazit overlay
+            hideIntro(); 
+            showOverlay(); 
+          });
+        } else {
+            console.warn("WARNING: playPromise je undefined pro loop video. Možná není platný video prvek.");
+            hideIntro(); // Skryjeme intro i v tomto případě
+            showOverlay();
+        }
+      } else {
+        console.log("DEBUG: playLoop() - Smyčkové video (loopVideo) nebylo v HTML nalezeno (uvnitř playLoop). Skrývám intro a zobrazuji overlay.");
+        hideIntro();
+        showOverlay(); // Pokud není loop video, alespoň zobrazit overlay
+      }
+    }
+
+    if (introVideo) {
+      console.log("DEBUG: Intro video nalezeno (na začátku scriptu). Nastavuji událost 'onended'. ID:", introVideo.id);
+      introVideo.muted = true; // Ztlumení intra
+      introVideo.currentTime = 0; // Začíná vždy od začátku
+
+      introVideo.onended = function() {
+        console.log("DEBUG: Intro video skončilo. Volám playLoop().");
+        playLoop();
+      };
+
+      // Spuštění prvního videa. Zpracování promise pro robustní chování při autoplay.
+      var introPlayPromise = introVideo.play();
+      if (introPlayPromise !== undefined) {
+        introPlayPromise.then(_ => {
+          console.log("SUCCESS: Intro video se začalo přehrávat.");
+        })
+        .catch(error => {
+          console.warn("WARNING: Intro video autoplay selhalo:", error);
+          // Pokud se intro video nespustí (často kvůli omezením autoplay),
+          // okamžitě ho skryjeme a zkusíme spustit loop video.
+          hideIntro(); 
+          playLoop();
+        });
+      } else {
+          console.warn("WARNING: playPromise je undefined pro intro video. Možná není platný video prvek.");
+          hideIntro();
+          playLoop();
+      }
+
+    } else {
+      console.log("DEBUG: Intro video (introVideo) nebylo v HTML nalezeno (na začátku scriptu). Spouštím loop video přímo.");
+      playLoop(); // Pokud není intro video, rovnou přejdeme na loop a overlay
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Moje-video-video",
+  "settings": [
+    {
+      "type": "video",
+      "id": "intro_video",
+      "label": "1. video (Intro)",
+      "info": "Toto video se přehraje jednou a následně zmizí."
+    },
+    {
+      "type": "video",
+      "id": "loop_video",
+      "label": "2. video (Smyčka)",
+      "info": "Toto video navazuje a hraje ve smyčce. Mělo by být bez zvuku."
+    },
+    {
+      "type": "image_picker",
+      "id": "overlay_image",
+      "label": "Obrázek přes video ve smyčce",
+      "info": "Tento obrázek se zobrazí přes druhé video, jakmile úvodní video zmizí. Měl by obsahovat průhlednou oblast (např. PNG s alfa kanálem), aby byla vidět část smyčkového videa pod ním."
+    },
+    {
+      "type": "range",
+      "id": "mobile_height_vh",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "label": "Výška na mobilu (pro video na šířku)",
+      "default": 60,
+      "info": "Pokud je video širší než obrazovka, tato hodnota nastaví jeho výšku na mobilních zařízeních. Video se zarovná doleva. Použijte s opatrností, může uříznout část videa."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-video-video"
+    }
+  ]
+}
+{% endschema %}

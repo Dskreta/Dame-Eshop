@@ -1,0 +1,494 @@
+{% schema %}
+
+{
+
+  "name": "Moje-animace",
+
+  "settings": [
+
+    {
+
+      "type": "range",
+
+      "id": "delay_between",
+
+      "min": 1,
+
+      "max": 100,
+
+      "step": 1,
+
+      "unit": "s",
+
+      "label": "Pauza mezi generováním",
+
+      "default": 10
+
+    },
+
+    { "type": "header", "content": "NASTAVENÍ OBJEKTŮ" },
+
+    { "type": "paragraph", "content": "--- OBJEKT 1 ---" },
+
+    { "type": "image_picker", "id": "obj_1", "label": "Obrázek 1" },
+
+    { "type": "range", "id": "size_min_1", "min": 20, "max": 300, "step": 10, "unit": "px", "label": "Min. velikost 1", "default": 70 },
+
+    { "type": "range", "id": "size_max_1", "min": 50, "max": 600, "step": 10, "unit": "px", "label": "Max. velikost 1", "default": 150 },
+
+    { "type": "range", "id": "rot_speed_1", "min": 2, "max": 60, "step": 1, "unit": "s", "label": "Doba otočky 1", "default": 10 },
+
+    { "type": "checkbox", "id": "is_rocket_1", "label": "Použít jen jemné houpání (pro rakety)", "default": false },
+
+
+
+    { "type": "paragraph", "content": "--- OBJEKT 2 ---" },
+
+    { "type": "image_picker", "id": "obj_2", "label": "Obrázek 2" },
+
+    { "type": "range", "id": "size_min_2", "min": 20, "max": 300, "step": 10, "unit": "px", "label": "Min. velikost 2", "default": 70 },
+
+    { "type": "range", "id": "size_max_2", "min": 50, "max": 600, "step": 10, "unit": "px", "label": "Max. velikost 2", "default": 150 },
+
+    { "type": "range", "id": "rot_speed_2", "min": 2, "max": 60, "step": 1, "unit": "s", "label": "Doba otočky 2", "default": 10 },
+
+    { "type": "checkbox", "id": "is_rocket_2", "label": "Použít jen jemné houpání (pro rakety)", "default": false },
+
+
+
+    { "type": "paragraph", "content": "--- OBJEKT 3 ---" },
+
+    { "type": "image_picker", "id": "obj_3", "label": "Obrázek 3" },
+
+    { "type": "range", "id": "size_min_3", "min": 20, "max": 300, "step": 10, "unit": "px", "label": "Min. velikost 3", "default": 70 },
+
+    { "type": "range", "id": "size_max_3", "min": 50, "max": 600, "step": 10, "unit": "px", "label": "Max. velikost 3", "default": 150 },
+
+    { "type": "range", "id": "rot_speed_3", "min": 2, "max": 60, "step": 1, "unit": "s", "label": "Doba otočky 3", "default": 10 },
+
+    { "type": "checkbox", "id": "is_rocket_3", "label": "Použít jen jemné houpání (pro rakety)", "default": false },
+
+
+
+    { "type": "paragraph", "content": "--- OBJEKT 4 ---" },
+
+    { "type": "image_picker", "id": "obj_4", "label": "Obrázek 4" },
+
+    { "type": "range", "id": "size_min_4", "min": 20, "max": 300, "step": 10, "unit": "px", "label": "Min. velikost 4", "default": 70 },
+
+    { "type": "range", "id": "size_max_4", "min": 50, "max": 600, "step": 10, "unit": "px", "label": "Max. velikost 4", "default": 150 },
+
+    { "type": "range", "id": "rot_speed_4", "min": 2, "max": 60, "step": 1, "unit": "s", "label": "Doba otočky 4", "default": 10 },
+
+    { "type": "checkbox", "id": "is_rocket_4", "label": "Použít jen jemné houpání (pro rakety)", "default": false },
+
+
+
+    { "type": "paragraph", "content": "--- OBJEKT 5 ---" },
+
+    { "type": "image_picker", "id": "obj_5", "label": "Obrázek 5" },
+
+    { "type": "range", "id": "size_min_5", "min": 20, "max": 300, "step": 10, "unit": "px", "label": "Min. velikost 5", "default": 70 },
+
+    { "type": "range", "id": "size_max_5", "min": 50, "max": 600, "step": 10, "unit": "px", "label": "Max. velikost 5", "default": 150 },
+
+    { "type": "range", "id": "rot_speed_5", "min": 2, "max": 60, "step": 1, "unit": "s", "label": "Doba otočky 5", "default": 10 },
+
+    { "type": "checkbox", "id": "is_rocket_5", "label": "Použít jen jemné houpání (pro rakety)", "default": false },
+
+
+
+    { "type": "paragraph", "content": "--- OBJEKT 6 ---" },
+
+    { "type": "image_picker", "id": "obj_6", "label": "Obrázek 6" },
+
+    { "type": "range", "id": "size_min_6", "min": 20, "max": 300, "step": 10, "unit": "px", "label": "Min. velikost 6", "default": 70 },
+
+    { "type": "range", "id": "size_max_6", "min": 50, "max": 600, "step": 10, "unit": "px", "label": "Max. velikost 6", "default": 150 },
+
+    { "type": "range", "id": "rot_speed_6", "min": 2, "max": 60, "step": 1, "unit": "s", "label": "Doba otočky 6", "default": 10 },
+
+    { "type": "checkbox", "id": "is_rocket_6", "label": "Použít jen jemné houpání (pro rakety)", "default": false },
+
+
+
+    { "type": "paragraph", "content": "--- OBJEKT 7 ---" },
+
+    { "type": "image_picker", "id": "obj_7", "label": "Obrázek 7" },
+
+    { "type": "range", "id": "size_min_7", "min": 20, "max": 300, "step": 10, "unit": "px", "label": "Min. velikost 7", "default": 70 },
+
+    { "type": "range", "id": "size_max_7", "min": 50, "max": 600, "step": 10, "unit": "px", "label": "Max. velikost 7", "default": 150 },
+
+    { "type": "range", "id": "rot_speed_7", "min": 2, "max": 60, "step": 1, "unit": "s", "label": "Doba otočky 7", "default": 10 },
+
+    { "type": "checkbox", "id": "is_rocket_7", "label": "Použít jen jemné houpání (pro rakety)", "default": false },
+
+
+
+    { "type": "paragraph", "content": "--- OBJEKT 8 ---" },
+
+    { "type": "image_picker", "id": "obj_8", "label": "Obrázek 8" },
+
+    { "type": "range", "id": "size_min_8", "min": 20, "max": 300, "step": 10, "unit": "px", "label": "Min. velikost 8", "default": 70 },
+
+    { "type": "range", "id": "size_max_8", "min": 50, "max": 600, "step": 10, "unit": "px", "label": "Max. velikost 8", "default": 150 },
+
+    { "type": "range", "id": "rot_speed_8", "min": 2, "max": 60, "step": 1, "unit": "s", "label": "Doba otočky 8", "default": 10 },
+
+    { "type": "checkbox", "id": "is_rocket_8", "label": "Použít jen jemné houpání (pro rakety)", "default": false }
+
+  ],
+
+  "presets": [
+
+    { "name": "Moje-animace" }
+
+  ]
+
+}
+
+{% endschema %}
+
+
+
+<style>
+
+  /* Pouze html – ne body – aby scroll kontejner zůstal html a magnet (scroll-snap) v Moje-cenovka-2 fungoval */
+  html { 
+
+    overflow-x: hidden !important; 
+
+    position: relative; 
+
+    width: 100%; 
+
+    max-width: 100vw;
+
+  }
+
+  body { 
+
+    position: relative; 
+
+    width: 100%; 
+
+    max-width: 100vw;
+
+  }
+
+  
+
+  .space-objects-abs-container {
+
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    overflow: hidden; 
+
+    pointer-events: none;
+
+    max-width: 100vw;
+
+  }
+
+  /* Velké objekty (>100px): před vším kromě Moje-cenovka-2 */
+  .space-objects-abs-container--front {
+
+    z-index: 1999;
+
+  }
+
+  /* Malé objekty (≤100px): za vším obsahem, nad pozadím s hvězdami */
+  .space-objects-abs-container--back {
+
+    z-index: 1;
+
+  }
+
+  
+
+  .space-flyer-root { 
+
+    position: absolute; 
+
+    will-change: transform; 
+
+    pointer-events: none; 
+
+  }
+
+  
+
+  .space-flyer-abs { 
+
+    width: 100%; 
+
+    height: auto; 
+
+    will-change: transform; 
+
+    user-select: none;
+
+  }
+
+</style>
+
+
+
+<div id="space-spawner-{{ section.id }}" class="space-objects-abs-container space-objects-abs-container--front"></div>
+
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function() {
+
+  const containerFront = document.getElementById("space-spawner-{{ section.id }}");
+
+  if (!containerFront) return;
+
+  
+
+  // Kontejner pro malé objekty (za obsahem), přidáme do body jako první
+
+  const containerBack = document.createElement('div');
+
+  containerBack.id = 'space-spawner-back-{{ section.id }}';
+
+  containerBack.className = 'space-objects-abs-container space-objects-abs-container--back';
+
+  document.body.appendChild(containerBack);
+
+  document.body.appendChild(containerFront);
+
+
+
+  const configObjects = [];
+
+  {% for i in (1..8) %}
+
+    {% capture img_key %}obj_{{ i }}{% endcapture %}
+
+    {% capture s_min_key %}size_min_{{ i }}{% endcapture %}
+
+    {% capture s_max_key %}size_max_{{ i }}{% endcapture %}
+
+    {% capture rot_key %}rot_speed_{{ i }}{% endcapture %}
+
+    {% capture rock_key %}is_rocket_{{ i }}{% endcapture %}
+
+
+
+    {% if section.settings[img_key] != blank %}
+
+      configObjects.push({
+
+        src: '{{ section.settings[img_key] | image_url: width: 600 }}',
+
+        sMin: {{ section.settings[s_min_key] | default: 70 }},
+
+        sMax: {{ section.settings[s_max_key] | default: 150 }},
+
+        rotSpeed: {{ section.settings[rot_key] | default: 10 }},
+
+        isRocket: {{ section.settings[rock_key] | json }}
+
+      });
+
+    {% endif %}
+
+  {% endfor %}
+
+
+
+  if (configObjects.length === 0) return;
+
+
+
+  let currentIndex = 0;
+
+
+
+  function spawn() {
+
+    const pageHeight = document.documentElement.scrollHeight + 'px';
+
+    containerBack.style.height = pageHeight;
+
+    containerFront.style.height = pageHeight;
+
+    
+
+    const data = configObjects[currentIndex];
+
+    currentIndex = (currentIndex + 1) % configObjects.length;
+
+
+
+    const root = document.createElement('div');
+
+    const pivot = document.createElement('div');
+
+    const img = document.createElement('img');
+
+    
+
+    root.className = 'space-flyer-root';
+
+    img.className = 'space-flyer-abs';
+
+    img.src = data.src;
+
+    
+
+    const size = Math.floor(Math.random() * (data.sMax - data.sMin + 1) + data.sMin);
+
+    root.style.width = size + 'px';
+
+
+
+    // Velké (>100px) → kontejner --front (před vším kromě cenovky), malé → kontejner --back (za obsahem, nad hvězdami)
+
+    const targetContainer = size > 100 ? containerFront : containerBack;
+
+    if (size > 100) {
+
+      img.style.opacity = "1";
+
+    } else {
+
+      img.style.opacity = "0.7";
+
+    }
+
+
+
+    const vWidth = window.innerWidth;
+
+    const vHeight = window.innerHeight;
+
+    const scrollY = window.scrollY || window.pageYOffset;
+
+    
+
+    let startX, startY, endX, endY;
+
+    const startEdge = Math.floor(Math.random() * 3); 
+
+
+
+    if (startEdge === 0) { // ZLEVA
+
+      startX = -size - 50; startY = scrollY + (Math.random() * vHeight);
+
+      endX = vWidth + size + 50; endY = startY + (Math.random() * 600 - 300);
+
+    } else if (startEdge === 1) { // ZPRAVA
+
+      startX = vWidth + size + 50; startY = scrollY + (Math.random() * vHeight);
+
+      endX = -size - 50; endY = startY + (Math.random() * 600 - 300);
+
+    } else { // NAHOŘE
+
+      startX = Math.random() * vWidth; startY = scrollY - size - 50;
+
+      endX = (startX < vWidth/2) ? vWidth + 50 : -50; endY = scrollY + vHeight + 50;
+
+    }
+
+
+
+    const duration = 15 + Math.random() * 15; 
+
+    const animId = Math.floor(Math.random() * 1000000);
+
+    const curveIntensity = Math.random() * 300 - 150;
+
+    const rotationRange = data.isRocket ? (Math.random() * 20 - 10) : (Math.random() > 0.5 ? 360 : -360);
+
+
+
+    const styleSheet = document.createElement("style");
+
+    styleSheet.innerText = `
+
+      @keyframes move-${animId} {
+
+        from { transform: translate(${startX}px, ${startY}px); }
+
+        to { transform: translate(${endX}px, ${endY}px); }
+
+      }
+
+      @keyframes curve-${animId} {
+
+        0%, 100% { transform: translateX(0px); }
+
+        50% { transform: translateX(${curveIntensity}px); }
+
+      }
+
+      @keyframes spin-${animId} {
+
+        from { transform: rotate(0deg); }
+
+        to { transform: rotate(${rotationRange}deg); }
+
+      }
+
+    `;
+
+    document.head.appendChild(styleSheet);
+
+
+
+    root.style.animation = `move-${animId} ${duration}s linear forwards`;
+
+    pivot.style.animation = `curve-${animId} ${duration}s ease-in-out forwards`;
+
+    img.style.animation = `spin-${animId} ${data.rotSpeed}s linear ${data.isRocket ? 'infinite alternate' : 'infinite'}`;
+
+
+
+    pivot.appendChild(img);
+
+    root.appendChild(pivot);
+
+    targetContainer.appendChild(root);
+
+
+
+    // Čištění po skončení letu
+
+    setTimeout(() => { 
+
+      root.remove(); 
+
+      styleSheet.remove(); 
+
+    }, duration * 1000 + 1000);
+
+
+
+    // Další spuštění podle nastaveného zpoždění
+
+    setTimeout(spawn, {{ section.settings.delay_between | default: 10 }} * 1000);
+
+  }
+
+
+
+  // První objekt vylétne až po 20 s od spuštění webu (po úvodním videu a zobrazení obsahu)
+
+  setTimeout(spawn, 20000);
+
+});
+
+</script>

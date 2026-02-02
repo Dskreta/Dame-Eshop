@@ -1,0 +1,540 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+{%- style -%}
+  /* 1. IMPORTS - Vynucení načtení fontů a ikon */
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
+
+  /* 2. HLAVNÍ KONTEJNER SEKCE */
+  #shopify-section-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    background-color: {{ section.settings.bg_color }}; /* Černá z nastavení */
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+  }
+
+    /* 3. POZADÍ - Hvězdy a Záře */
+  
+  /* Musíme zajistit, že wrapper vyplní celou sekci */
+  .cosmic-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 600px; /* Zajišťuje minimální výšku, i když je obsah malý */
+    overflow: hidden;
+
+    display: block !important; 
+  }
+
+  /* Toto vytvoří vesmírné pozadí */
+  .cosmic-bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    background: radial-gradient(circle at 50% 100%, #1a1b26 0%, {{ section.settings.bg_color }} 100%);
+    pointer-events: none;
+
+    display: block !important; 
+  }
+  
+  /* Hvězdičky generované přes JS budou v tomto kontejneru */
+  .stars-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+
+    display: block !important; 
+  }
+
+  
+  .star-dot {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: starPulse 3s infinite alternate;
+
+    display: block !important; 
+  }
+
+  @keyframes starPulse { 0% { opacity: 0.3; } 100% { opacity: 1; } }
+
+  /* 4. OBSAH SEKCE */
+  .hero-container {
+    position: relative;
+    z-index: 2; /* Musí být nad pozadím */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 6rem 1.5rem;
+    display: grid;
+    gap: 4rem;
+  }
+
+  @media(min-width: 768px) {
+    .hero-container {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      min-height: 80vh;
+    }
+  }
+
+  /* 5. TYPOGRAFIE - PŘEPIS SHOPIFY STYLŮ */
+  /* Používám !important, abychom přebili šablonu Dawn */
+  #shopify-section-{{ section.id }} h1 {
+    font-family: 'Orbitron', sans-serif !important;
+    font-size: 3rem !important;
+    line-height: 1.1 !important;
+    font-weight: 900 !important;
+    margin-bottom: 1.5rem !important;
+    color: #ffffff;
+  }
+  
+  @media(min-width: 768px) {
+    #shopify-section-{{ section.id }} h1 {
+      font-size: 4.5rem !important; /* Velký text na desktopu */
+    }
+  }
+
+  .text-gradient {
+    background: linear-gradient(to right, {{ section.settings.accent_color }}, #06b6d4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} p {
+    color: #9ca3af;
+    font-size: 1.125rem !important;
+    max-width: 32rem;
+    margin-bottom: 2rem;
+  }
+  
+  .hero-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid rgba(6,182,212,0.3);
+    background: rgba(6,182,212,0.1);
+    color: #06b6d4;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* 6. TLAČÍTKA */
+  .btn-wrapper { display: flex; flex-direction: column; gap: 1rem; }
+  @media(min-width: 640px) { .btn-wrapper { flex-direction: row; } }
+
+  .btn-primary {
+    background: linear-gradient(to right, {{ section.settings.accent_color }}, #4f46e5);
+    color: white !important;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    box-shadow: 0 0 20px rgba(124,58,237,0.4);
+    transition: transform 0.2s;
+    cursor: pointer;
+  }
+  
+  .btn-secondary {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white !important;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+  
+  .btn-primary:hover, .btn-secondary:hover { transform: scale(1.05); }
+
+  /* 7. VIZUÁL & LASER */
+  .target-block {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .target-block:hover { transform: rotateY(4deg) rotateX(4deg); }
+  
+  .hero-img {
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 20px 50px rgba(55, 142, 214, 0.5);
+    display: block;
+  }
+
+  /* IKONY A BADGES */
+  .floating-badge {
+    position: absolute;
+    background: rgba(20, 20, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 0.75rem;
+    z-index: 20;
+    min-width: 120px;
+    animation: floatBadge 6s ease-in-out infinite;
+  }
+  
+  @keyframes floatBadge {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  /* Zajištění zobrazení ikonek */
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+  }
+
+  .badge-val {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: white;
+    display: block;
+    margin-top: 0.25rem;
+  }
+  
+  .badge-label { font-size: 0.75rem; color: #9ca3af; }
+
+  canvas.laser-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10; /* Laser je nad pozadím ale pod UI */
+  }
+{%- endstyle -%}
+
+<div class="cosmic-wrapper">
+  <!-- Pozadí (Layer 0 & 1) -->
+  <div class="cosmic-bg-layer"></div>
+  <div id="stars-{{ section.id }}" class="stars-container"></div>
+
+  <!-- Obsah (Layer 3) -->
+  <div class="hero-container">
+    
+    <!-- Levá část: Text -->
+    <div>
+      {% if section.settings.badge != blank %}
+        <span class="hero-badge">{{ section.settings.badge }}</span>
+      {% endif %}
+      
+      <h1>
+        {{ section.settings.title_line1 }}<br>
+        <span class="text-gradient">{{ section.settings.title_line2 }}</span>
+      </h1>
+      
+      <p>{{ section.settings.description }}</p>
+      
+      <div class="btn-wrapper">
+        <a href="{{ section.settings.link_primary }}" class="btn-primary">{{ section.settings.text_primary }}</a>
+        <a href="{{ section.settings.link_secondary }}" class="btn-secondary">{{ section.settings.text_secondary }}</a>
+      </div>
+    </div>
+
+    <!-- Pravá část: Obrázek -->
+    <div style="perspective: 1000px;">
+      <div id="target-block-{{ section.id }}" class="target-block">
+        <!-- Glow za obrázkem -->
+        <div style="position:absolute; inset:0; background: linear-gradient(45deg, {{ section.settings.accent_color }}, #06b6d4); filter: blur(40px); opacity: 0.4; border-radius: 1rem; z-index: -1;"></div>
+        
+        {% if section.settings.image != blank %}
+          {{ section.settings.image | image_url: width: 800 | image_tag: class: 'hero-img', loading: 'eager' }}
+        {% else %}
+          {{ 'lifestyle-1' | placeholder_svg_tag: 'hero-img' }}
+        {% endif %}
+
+        <!-- Badge 1: Rocket -->
+        <div class="floating-badge" style="top: -20px; right: -20px;">
+          <span class="material-symbols-outlined" style="color: #4ade80; font-size: 2rem;">rocket_launch</span>
+          <span class="badge-label">{{ section.settings.stat1_label }}</span>
+          <span class="badge-val">{{ section.settings.stat1_value }}</span>
+        </div>
+
+        <!-- Badge 2: Speed -->
+        <div class="floating-badge" style="bottom: -20px; left: -20px; animation-delay: 1s;">
+          <span class="material-symbols-outlined" style="color: #22d3ee; font-size: 2rem;">speed</span>
+          <span class="badge-label">{{ section.settings.stat2_label }}</span>
+          <span class="badge-val">{{ section.settings.stat2_value }}</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  (function() {
+    const sectionId = "{{ section.id }}";
+    const starsContainerId = "stars-" + sectionId;
+    
+    function initSectionEffects() {
+      // ------------------------------------------------
+      // 1. GENERACE HVĚZD
+      // ------------------------------------------------
+      const starsEl = document.getElementById(starsContainerId);
+      
+      if (starsEl) {
+        starsEl.innerHTML = ''; 
+        // Pokud má kontejner nulovou výšku, hvězdy nebudou vidět.
+        // Pro jistotu nastavíme display block
+        starsEl.style.display = 'block';
+
+        for(let i=0; i<70; i++) {
+            const star = document.createElement('div');
+            star.className = 'star-dot';
+            const size = Math.random() * 2 + 1; 
+            
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            star.style.animationDelay = Math.random() + 's';
+            
+            starsEl.appendChild(star);
+        }
+      }
+
+      // ------------------------------------------------
+      // 2. LASER EFEKT
+      // ------------------------------------------------
+      // Hledáme canvas podle ID, které jsme mu dali v HTML
+      const canvas = document.getElementById("laser-canvas-" + sectionId);
+      
+      if(canvas) {
+          const ctx = canvas.getContext('2d');
+          // Wrapper je rodič canvasu (.cosmic-wrapper)
+          const wrapper = canvas.parentElement; 
+          // Target block s unikátním ID
+          const targetBlock = document.getElementById("target-block-" + sectionId); 
+          
+          if (!wrapper || !targetBlock) return;
+
+          let width, height;
+
+          function resize() {
+              width = canvas.width = wrapper.offsetWidth;
+              height = canvas.height = wrapper.offsetHeight;
+          }
+          
+          resize();
+          const resizeObserver = new ResizeObserver(resize);
+          resizeObserver.observe(wrapper);
+
+          function drawLaser() {
+              // Musíme zkontrolovat, jestli prvky stále existují (pro editor)
+              if(!document.contains(targetBlock)) return;
+
+              const wrapperRect = wrapper.getBoundingClientRect();
+              const blockRect = targetBlock.getBoundingClientRect();
+
+              // Výpočet souřadnic
+              const startX = 0; 
+              const startY = height * 0.3; 
+              
+              // Relativní pozice středu target-blocku vůči wrapperu
+              const endX = (blockRect.left - wrapperRect.left) + (blockRect.width / 2);
+              const endY = (blockRect.top - wrapperRect.top) + (blockRect.height / 2);
+
+              ctx.clearRect(0, 0, width, height);
+
+              // 1. Vnější záře (Glow)
+              ctx.beginPath();
+              ctx.moveTo(startX, startY);
+              ctx.lineTo(endX, endY);
+              ctx.shadowBlur = 15;
+              ctx.shadowColor = "#06b6d4";
+              ctx.strokeStyle = "rgba(255,255,255,0.3)"; // Trochu průhlednější
+              ctx.lineWidth = 3;
+              ctx.stroke();
+
+              // 2. Jádro paprsku (Core)
+              ctx.beginPath(); // Důležité: reset cesty pro nový styl
+              ctx.moveTo(startX, startY);
+              ctx.lineTo(endX, endY);
+              ctx.shadowBlur = 0;
+              ctx.strokeStyle = "#a5f3fc";
+              ctx.lineWidth = 1;
+              ctx.stroke();
+
+              // 3. Jiskry
+              for(let i=0; i<3; i++) {
+                  const len = Math.random() * 30;
+                  const ang = Math.random() * Math.PI * 2;
+                  ctx.beginPath();
+                  ctx.moveTo(endX, endY);
+                  ctx.lineTo(endX + Math.cos(ang) * len, endY + Math.sin(ang) * len);
+                  ctx.strokeStyle = "rgba(124, 58, 237, " + Math.random() + ")";
+                  ctx.stroke();
+              }
+
+              requestAnimationFrame(drawLaser);
+          }
+          
+          drawLaser();
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", initSectionEffects);
+    
+    document.addEventListener("shopify:section:load", function(event) {
+      if (event.detail.sectionId === sectionId) {
+        initSectionEffects();
+      }
+    });
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      initSectionEffects();
+    }
+  })();
+</script>
+
+
+
+{% schema %}
+{
+  "name": "Moje-AI-1",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#050505"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#7c3aed"
+    },
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "label": "Badge Text",
+      "default": "SHOPIFY EXPERT"
+    },
+    {
+      "type": "text",
+      "id": "title_line1",
+      "label": "Headline Line 1",
+      "default": "TVORBA WEBU"
+    },
+    {
+      "type": "text",
+      "id": "title_line2",
+      "label": "Headline Line 2",
+      "default": "RYCHLOSTÍ SVĚTLA"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Vystřelte svůj byznys do vesmíru s moderním e-shopem na Shopify."
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "text_primary",
+      "label": "Primary Button",
+      "default": "Zobrazit nabídku"
+    },
+    {
+      "type": "url",
+      "id": "link_primary",
+      "label": "Primary Link"
+    },
+    {
+      "type": "text",
+      "id": "text_secondary",
+      "label": "Secondary Button",
+      "default": "Kontaktovat"
+    },
+    {
+      "type": "url",
+      "id": "link_secondary",
+      "label": "Secondary Link"
+    },
+    {
+      "type": "header",
+      "content": "Image & Stats"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "text",
+      "id": "stat1_label",
+      "label": "Stat 1 Label",
+      "default": "Konverze"
+    },
+    {
+      "type": "text",
+      "id": "stat1_value",
+      "label": "Stat 1 Value",
+      "default": "+240%"
+    },
+    {
+      "type": "text",
+      "id": "stat2_label",
+      "label": "Stat 2 Label",
+      "default": "Rychlost"
+    },
+    {
+      "type": "text",
+      "id": "stat2_value",
+      "label": "Stat 2 Value",
+      "default": "0.4s"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-AI-1"
+    }
+  ]
+}
+{% endschema %}

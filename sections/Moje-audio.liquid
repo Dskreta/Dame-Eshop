@@ -1,0 +1,213 @@
+{% schema %}
+{
+  "name": "Moje-audio",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Zvukové soubory"
+    },
+    {
+      "type": "text",
+      "id": "bg_music_url",
+      "label": "URL hudby na pozadí (MP3)",
+      "info": "Nahraj soubor do Content > Files a zkopíruj sem URL."
+    },
+    {
+      "type": "text",
+      "id": "hover_sound_url",
+      "label": "URL zvuku při najetí (Hover)",
+      "info": "Krátký zvuk (např. pípnutí radaru)."
+    },
+    {
+      "type": "text",
+      "id": "click_sound_url",
+      "label": "URL zvuku při kliknutí",
+      "info": "Zvuk potvrzení."
+    },
+    {
+      "type": "header",
+      "content": "Nastavení tlačítka"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Barva ikonky",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Pozadí tlačítka",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "volume_bg",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Hlasitost hudby (%)",
+      "default": 30
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-audio"
+    }
+  ]
+}
+{% endschema %}
+
+<div id="space-audio-controller">
+  <audio id="bg-music" loop preload="auto">
+    <source src="{{ section.settings.bg_music_url }}" type="audio/mpeg">
+  </audio>
+  
+  <audio id="hover-sound" preload="auto">
+    <source src="{{ section.settings.hover_sound_url }}" type="audio/mpeg">
+  </audio>
+  
+  <audio id="click-sound" preload="auto">
+    <source src="{{ section.settings.click_sound_url }}" type="audio/mpeg">
+  </audio>
+
+  <button id="audio-toggle-btn" aria-label="Toggle Sound">
+    <svg id="icon-sound-on" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </svg>
+    
+    <svg id="icon-sound-off" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <line x1="23" y1="9" x2="17" y2="15"></line>
+      <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+  </button>
+</div>
+
+<style>
+  #space-audio-controller {
+    position: fixed;
+    bottom: 20px; /* Umístění dole */
+    right: 20px;  /* Umístění vpravo */
+    z-index: 9999; /* Aby to bylo nad vším ostatním */
+  }
+
+  /* Pokud chceš ikonku v menu nahoře, změň bottom na top a uprav pixely */
+  
+  #audio-toggle-btn {
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.icon_color }};
+    border: 1px solid {{ section.settings.icon_color }};
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }
+
+  #audio-toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px {{ section.settings.icon_color }};
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const bgMusic = document.getElementById('bg-music');
+  const hoverSound = document.getElementById('hover-sound');
+  const clickSound = document.getElementById('click-sound');
+  const toggleBtn = document.getElementById('audio-toggle-btn');
+  const iconOn = document.getElementById('icon-sound-on');
+  const iconOff = document.getElementById('icon-sound-off');
+
+  // Nastavení hlasitosti z administrace
+  bgMusic.volume = {{ section.settings.volume_bg }} / 100;
+  hoverSound.volume = 0.4; // Efekty mohou být hlasitější
+  clickSound.volume = 0.5;
+
+  let isPlaying = false;
+
+  // Funkce pro aktualizaci ikonky
+  function updateIcon(playing) {
+    if (playing) {
+      iconOn.classList.remove('hidden');
+      iconOff.classList.add('hidden');
+    } else {
+      iconOn.classList.add('hidden');
+      iconOff.classList.remove('hidden');
+    }
+  }
+
+  // Zkontrolovat preference uživatele (Local Storage)
+  // Pokud uživatel už zvuk povolil, pokusíme se ho zapnout
+  if (localStorage.getItem('spaceAudioAllowed') === 'true') {
+    // Prohlížeče blokují autoplay, dokud uživatel neklikne. 
+    // Zkusíme přehrát, pokud to selže, čekáme na kliknutí.
+    const playPromise = bgMusic.play();
+    if (playPromise !== undefined) {
+      playPromise.then(_ => {
+        isPlaying = true;
+        updateIcon(true);
+      }).catch(error => {
+        // Autoplay byl zablokován
+        isPlaying = false;
+        updateIcon(false);
+      });
+    }
+  } else {
+    updateIcon(false);
+  }
+
+  // Kliknutí na tlačítko zvuku (Mute/Unmute)
+  toggleBtn.addEventListener('click', function() {
+    if (isPlaying) {
+      bgMusic.pause();
+      localStorage.setItem('spaceAudioAllowed', 'false');
+      isPlaying = false;
+    } else {
+      bgMusic.play();
+      localStorage.setItem('spaceAudioAllowed', 'true');
+      isPlaying = true;
+    }
+    updateIcon(isPlaying);
+  });
+
+  // --- INTERAKTIVNÍ EFEKTY ---
+
+  // Definuj elementy, které mají vydávat zvuk
+  // a, button, input[type="submit"], .clickable-card
+  const interactiveElements = document.querySelectorAll('a, button, .btn, input[type="submit"], select, .card');
+
+  interactiveElements.forEach(el => {
+    // Hover zvuk
+    el.addEventListener('mouseenter', () => {
+      if (isPlaying) {
+        hoverSound.currentTime = 0; // Reset zvuku na začátek (pro rychlé přejetí)
+        // Clone node umožní přehrát více zvuků naráz (polyfonie), 
+        // ale pro jednoduchost stačí reset currentTime.
+        const playPromise = hoverSound.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {}); // Ignorujeme chyby při rychlém hoveru
+        }
+      }
+    });
+
+    // Click zvuk
+    el.addEventListener('mousedown', () => {
+      if (isPlaying) {
+        clickSound.currentTime = 0;
+        clickSound.play();
+      }
+    });
+  });
+});
+</script>

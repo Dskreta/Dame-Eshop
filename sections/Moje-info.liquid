@@ -1,0 +1,470 @@
+<script src="https://cdn.tailwindcss.com" defer></script>
+
+<style>
+
+  .font-header { font-family: 'Rajdhani', sans-serif; }
+  .font-body { font-family: 'Inter', sans-serif; }
+  
+  /* NOVÁ TŘÍDA PRO HLAVNÍ NADPISY (Orbitron + stažené mezery) */
+  .font-display { 
+      font-family: 'Orbitron', sans-serif !important; 
+      letter-spacing: -0.05em !important;
+  }
+  
+  /* Scrollbary */
+  .scifi-scroll::-webkit-scrollbar { width: 6px; }
+  .scifi-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+  
+  .scroll-thumb-orange::-webkit-scrollbar-thumb { background: #f97316; border-radius: 3px; }
+  
+  /* UPRAVENO: Změna z růžové (#d946ef) na fialovou (#7c3aed) */
+  .scroll-thumb-purple::-webkit-scrollbar-thumb { background: #7c3aed; border-radius: 3px; }
+  
+  .scroll-thumb-cyan::-webkit-scrollbar-thumb { background: #22d3ee; border-radius: 3px; }
+
+  /* Animace Levitace Monitoru */
+  @keyframes float { 
+    0%, 100% { transform: translateY(0px); } 
+    50% { transform: translateY(-8px); } 
+  }
+  .animate-float { animation: float 7s ease-in-out infinite; }
+
+  /* Animace Scrollování Webu */
+  @keyframes websiteScroll {
+    0% { transform: translateY(0%); }
+    15% { transform: translateY(0%); } 
+    50% { transform: translateY(calc(-100% + 280px)); } 
+    65% { transform: translateY(calc(-100% + 280px)); } 
+    100% { transform: translateY(0%); } 
+  }
+
+  .scrolling-image {
+    width: 100%;
+    height: auto; 
+    display: block;
+    animation: websiteScroll 15s ease-in-out infinite;
+  }
+  
+  /* Glows a Bordery */
+  .glow-border-orange { box-shadow: 0 0 20px rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.5); }
+  .glow-border-purple { box-shadow: 0 0 20px rgba(217, 70, 239, 0.15); border: 1px solid rgba(217, 70, 239, 0.5); }
+  .glow-border-cyan { box-shadow: 0 0 20px rgba(34, 211, 238, 0.15); border: 1px solid rgba(34, 211, 238, 0.5); }
+
+  /* Aktivní tlačítko */
+  .active-tab-btn.active-orange { background-color: rgba(249, 115, 22, 0.15); border-color: rgba(249, 115, 22, 1); box-shadow: 0 0 25px rgba(249, 115, 22, 0.4); color: #f97316; }
+  .active-tab-btn.active-purple { background-color: rgba(217, 70, 239, 0.15); border-color: rgba(217, 70, 239, 1); box-shadow: 0 0 25px rgba(217, 70, 239, 0.4); color: #d946ef; }
+  .active-tab-btn.active-cyan { background-color: rgba(34, 211, 238, 0.15); border-color: rgba(34, 211, 238, 1); box-shadow: 0 0 25px rgba(34, 211, 238, 0.4); color: #22d3ee; }
+
+  /* Lišta pod nadpisem */
+  .header-glow-bar {
+    height: 4px;
+    width: 60%;
+    max-width: 800px;
+    margin: 2.5rem auto 0;
+    border-radius: 2px;
+    opacity: 0.9;
+    transition: all 0.6s ease;
+    display: block !important;
+  }
+  .header-bar-orange { background: linear-gradient(to right, transparent, #f97316, transparent); box-shadow: 0 0 25px rgba(249, 115, 22, 0.7); }
+  .header-bar-purple { background: linear-gradient(to right, transparent, #d946ef, transparent); box-shadow: 0 0 25px rgba(217, 70, 239, 0.7); }
+  .header-bar-cyan { background: linear-gradient(to right, transparent, #22d3ee, transparent); box-shadow: 0 0 25px rgba(34, 211, 238, 0.7); }
+
+  /* --- MONITOR --- */
+  .sleek-monitor-wrapper { position: relative; }
+  
+  .sleek-monitor-wrapper::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px; right: -1px; bottom: 20px;
+      background: var(--backlight-color);
+      filter: blur(10px);
+      z-index: -1;
+      border-radius: 16px;
+      opacity: 0.5;
+      transition: background 0.5s ease;
+  }
+  .sleek-monitor-screen {
+    background: #000;
+    border-radius: 16px;
+    border: 5px solid #1a1a1a;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  }
+  .sleek-monitor-stand {
+    width: 140px;
+    height: 20px;
+    background: linear-gradient(to bottom, #222, #0a0a0a);
+    margin: 0 auto;
+    border-radius: 0 0 10px 10px;
+    position: relative;
+    z-index: 1;
+    border-top: none;
+    display: block !important;
+  }
+
+  /* Accordion */
+  .detail-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .detail-content.open { max-height: 500px; opacity: 1; padding-bottom: 0.75rem; }
+  .rotate-icon { transition: transform 0.3s ease; }
+  .rotate-icon.open { transform: rotate(180deg); }
+
+
+  /* --- MLHA OD VRCHU (TOP DOWN MIST) --- */
+  .mist-top-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%; 
+      height: 150px;
+      /* Defaultní barva (Cyan) */
+      background: linear-gradient(to bottom, rgba(217, 70, 239, 0.6), rgba(217, 70, 239, 0.1), transparent);
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.6;
+      animation: mist-flicker 4s infinite alternate ease-in-out;
+      display: block !important;
+      transition: background 1.5s ease;
+  }
+
+  @keyframes mist-flicker {
+      0% { opacity: 0.3; transform: scaleY(0.9); filter: blur(30px); }
+      50% { opacity: 0.6; filter: blur(45px); }
+      100% { opacity: 0.4; transform: scaleY(1.1); filter: blur(35px); }
+  }
+  
+  /* --- OPRAVA BUGU S MLHOU NA TOPU STRÁNKY --- */
+  .section-relative-fix {
+      position: relative !important;
+  }
+</style>
+
+<div class="text-white section-relative-fix" style="position: relative; background: #010101;">
+  
+  <div style="position: absolute; inset: 0; z-index: -2; pointer-events: none;">
+      {% if section.settings.bg_image != blank %}
+          {%- assign info_bg_style = 'width: 100%; height: 100%; object-fit: cover; opacity: 0.4; object-position: ' | append: section.settings.bg_position -%}
+          {{ section.settings.bg_image | image_url: width: 2000 | image_tag: class: 'w-full h-full object-cover', style: info_bg_style, loading: 'lazy' }}
+      {% endif %}
+      <div style="position: absolute; inset: 0; background: rgba(1, 1, 1, 0.7); z-index: -1;"></div>
+  </div>
+
+  <div id="dynamic-mist-layer" class="mist-top-layer" style="z-index: 0;"></div>
+
+  <section class="relative w-full max-w-[1600px] mx-auto px-6 pt-48 pb-24 min-h-screen flex flex-col justify-center" id="main-section" style="z-index: 10;">
+    
+    <div class="text-center mb-24 relative" style="z-index: 20;">
+      <h2 class="font-display text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-100 via-white to-gray-300 tracking-tighter uppercase mb-6">
+        {{ section.settings.title }}
+      </h2>
+      <p class="text-gray-400 text-xl max-w-3xl mx-auto tracking-wide font-body">
+        {{ section.settings.subtitle }}
+      </p>
+      <div id="main-header-bar" class="header-glow-bar header-bar-purple"></div>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-8 mb-24 relative z-20">
+      
+      <button class="tab-btn group relative px-10 py-5 bg-black/60 border border-orange-900/50 hover:border-orange-500/80 transition-all duration-300 rounded skew-x-[-10deg] uppercase tracking-widest font-header font-bold text-base" data-target="0" data-color="orange">
+        <div class="absolute inset-0 bg-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded"></div>
+        <span class="block skew-x-[10deg] text-gray-400 group-hover:text-orange-400 transition-colors flex items-center gap-3">
+          <span class="material-symbols-outlined text-2xl">{{ section.settings.icon_1 }}</span> {{ section.settings.tab_1_name }}
+        </span>
+      </button>
+
+      <button class="tab-btn group relative px-10 py-5 bg-black/60 border border-fuchsia-900/50 hover:border-fuchsia-500/80 transition-all duration-300 rounded skew-x-[-10deg] uppercase tracking-widest font-header font-bold text-base" data-target="1" data-color="purple">
+        <div class="absolute inset-0 bg-fuchsia-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded"></div>
+        <span class="block skew-x-[10deg] text-gray-400 group-hover:text-fuchsia-400 transition-colors flex items-center gap-3">
+          <span class="material-symbols-outlined text-2xl">{{ section.settings.icon_2 }}</span> {{ section.settings.tab_2_name }}
+        </span>
+      </button>
+
+      <button class="tab-btn group relative px-10 py-5 bg-black/60 border border-cyan-900/50 hover:border-cyan-500/80 transition-all duration-300 rounded skew-x-[-10deg] uppercase tracking-widest font-header font-bold text-base" data-target="2" data-color="cyan">
+        <div class="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity rounded"></div>
+        <span class="block skew-x-[10deg] text-gray-400 group-hover:text-cyan-400 transition-colors flex items-center gap-3">
+          <span class="material-symbols-outlined text-2xl">{{ section.settings.icon_3 }}</span> {{ section.settings.tab_3_name }}
+        </span>
+      </button>
+    </div>
+
+    <div class="relative w-full max-w-full mx-auto flex flex-col justify-center min-h-[650px]">
+      
+      {% for i in (1..3) %}
+        {% assign current_tab = i | minus: 1 %}
+        
+        {% if i == 1 %}
+           {% assign theme_color_name = 'orange' %}
+           {% assign theme_color_hex = '#f97316' %} 
+           {% assign theme_icon = section.settings.icon_1 %}
+           {% assign theme_title = section.settings.tab_1_title %}
+           {% assign theme_img = section.settings.image_1 %}
+           {% capture fallback_svg %}data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjEyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzExMSIvPjxyZWN0IHg9IjQwIiB5PSI0MCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiM0NDQiIHJ4PSI4Ii8+PHJlY3QgeD0iNDAiIHk9IjM4MCIgd2lkdGg9IjQ0MCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2Y5NzMxNiIgcng9IjgiLz48cmVjdCB4PSI0MCIgeT0iNDYwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMzMzIiByeD0iNCIvPjxyZWN0IHg9IjQwIiB5PSI1MDAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMjAiIGZpbGw9IiMzMzMiIHJ4PSI0Ii8+PC9zdmc+{% endcapture %}
+        {% elsif i == 2 %}
+           {% assign theme_color_name = 'purple' %}
+           {% assign theme_color_hex = '#d946ef' %}
+           {% assign theme_icon = section.settings.icon_2 %}
+           {% assign theme_title = section.settings.tab_2_title %}
+           {% assign theme_img = section.settings.image_2 %}
+           {% capture fallback_svg %}data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjEyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzEwMDAyMCIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMjQwIiBmaWxsPSIjZDk0NmVmIiBvcGFjaXR5PSIwLjMiLz48cmVjdCB4PSIxMDAiIHk9IjIwMCIgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Q5NDZlZiIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHRleXQgeD0iMTAwIiB5PSI3NjAiIGZpbGw9IiNkOTQ2ZWYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iYm9sZCI+QUkgQ1JFQVRJVkU8L3RleHQ+PC9zdmc+{% endcapture %}
+        {% else %}
+           {% assign theme_color_name = 'cyan' %}
+           {% assign theme_color_hex = '#22d3ee' %}
+           {% assign theme_icon = section.settings.icon_3 %}
+           {% assign theme_title = section.settings.tab_3_title %}
+           {% assign theme_img = section.settings.image_3 %}
+           {% capture fallback_svg %}data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjEyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwMCIvPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI4MDAiIGhlaWdodD0iMTIwIiBmaWxsPSIjMGQyNTI4Ii8+PHJlY3QgeD0iNDAiIHk9IjQwIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMjJkM2VlIi8+PHJlY3QgeD0iNDAiIHk9IjE2MCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxMTIiIHJ4PSI4Ii8+PHRleXQgeD0iNDAiIHk9IjUyMCIgZmlsbD0iIzIyZDNlZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDAiPkVOVEVSUFJJU0UgU1RPUkU8L3RleHQ+PC9zdmc+{% endcapture %}
+        {% endif %}
+
+        <div class="tab-content {% unless forloop.first %}hidden{% endunless %} grid grid-cols-1 xl:grid-cols-12 gap-16 items-stretch" id="content-{{ current_tab }}">
+          
+          <div class="xl:col-span-5 flex flex-col h-full relative" style="z-index: 2;">
+            
+            <div class="flex-none pb-6 mb-4 relative">
+              <h4 class="font-display text-3xl text-white flex items-center w-full relative z-10 pl-2 tracking-tight">
+  <span class="material-symbols-outlined align-bottom mr-4 text-4xl" style="color: {{ theme_color_hex }};">{{ theme_icon }}</span>
+  {{ theme_title }}
+</h4>
+              
+              <div class="absolute bottom-0 left-0 w-full h-[2px]" 
+                   style="background: linear-gradient(90deg, {{ theme_color_hex }} 0%, rgba(0,0,0,0) 100%); opacity: 0.8; box-shadow: 0 0 10px {{ theme_color_hex }};">
+              </div>
+              <div class="absolute bottom-0 left-0 w-[5px] h-[2px]" style="background: {{ theme_color_hex }}; box-shadow: 0 0 5px {{ theme_color_hex }};"></div>
+            </div>
+
+            <div class="h-[500px] overflow-y-auto scifi-scroll scroll-thumb-{{ theme_color_name }} space-y-5 pr-4 flex flex-col justify-start pt-2">
+              {% for block in section.blocks %}
+                {% assign block_tab = block.settings.tab_select | plus: 0 %}
+                
+                {% if block_tab == i %}
+                  <div class="bg-black/50 border border-{{ theme_color_name }}-500/30 p-5 rounded-lg group hover:border-{{ theme_color_name }}-500/70 transition-colors glow-border-{{ theme_color_name }}" {{ block.shopify_attributes }}>
+                    <div class="flex justify-between items-center cursor-pointer accordion-trigger">
+                      <div class="flex items-center gap-5">
+                        <div class="p-3 bg-{{ theme_color_name }}-900/30 rounded border border-{{ theme_color_name }}-500/20">
+                          <span class="material-symbols-outlined text-2xl text-{{ theme_color_name }}-500">{{ block.settings.icon }}</span>
+                        </div>
+                        <div>
+                          <h4 class="font-header text-white text-lg tracking-wide flex items-center gap-3">
+                            {{ block.settings.title }}
+                            {% if block.settings.badge != blank %}
+                              <span class="text-[10px] bg-{{ theme_color_name }}-500 text-black px-2 py-0.5 rounded font-bold uppercase tracking-wider">{{ block.settings.badge }}</span>
+                            {% endif %}
+                          </h4>
+                          <p class="text-xs text-{{ theme_color_name }}-400/80 uppercase tracking-wider mt-1">{{ block.settings.subtitle }}</p>
+                        </div>
+                      </div>
+                      <span class="material-symbols-outlined text-gray-500 text-2xl rotate-icon group-hover:text-{{ theme_color_name }}-400 transition-colors {% if block.settings.open_default %}open{% endif %}">expand_more</span>
+                    </div>
+                    <div class="detail-content border-t border-dashed border-{{ theme_color_name }}-500/30 text-sm text-gray-300 text-justify leading-relaxed {% if block.settings.open_default %}open{% endif %}">
+                      <div class="pt-4">{{ block.settings.content }}</div>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+              
+              {% assign block_count = 0 %}
+              {% for block in section.blocks %}
+                {% assign block_tab = block.settings.tab_select | plus: 0 %}
+                {% if block_tab == i %}{% assign block_count = block_count | plus: 1 %}{% endif %}
+              {% endfor %}
+              
+              {% if block_count == 0 %}
+                <p class="text-gray-500 italic p-6 text-center text-lg">Tato kategorie je prázdná.</p>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="xl:col-span-7 flex flex-col h-full items-center relative" style="z-index: 10;">
+            
+            <div class="flex-none h-20 w-full hidden xl:block"></div> 
+
+            <div class="h-[600px] flex items-center justify-center w-full">
+              
+              <div class="relative w-full max-w-4xl animate-float flex flex-col items-center z-10" style="--backlight-color: {{ theme_color_hex }};">
+                
+                <div class="sleek-monitor-wrapper w-full">
+                  <div class="sleek-monitor-screen aspect-video">
+                      <div class="relative w-full h-full bg-black rounded relative overflow-hidden">
+                        {% if theme_img != blank %}
+                          <img src="{{ theme_img | image_url: width: 1200 }}" width="1200" height="1800" loading="lazy" class="scrolling-image object-cover object-top opacity-90 hover:opacity-100 transition-opacity" alt="{{ theme_title }}">
+                        {% else %}
+                          <img src="{{ fallback_svg }}" width="800" height="1200" class="scrolling-image object-cover object-top opacity-80" alt="Wireframe Preview">
+                        {% endif %}
+
+                        <div class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none z-10"></div>
+                        <div class="absolute top-4 right-4 bg-black/50 text-{{ theme_color_name }}-300 text-[10px] px-3 py-1 rounded-full border border-{{ theme_color_name }}-500/50 uppercase font-mono z-20 backdrop-blur-sm">
+                          ● Live Feed
+                        </div>
+                      </div>
+                  </div>
+                  <div class="sleek-monitor-stand"></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      {% endfor %}
+
+    </div>
+  </section>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const container = document.getElementById('main-section');
+  if(!container) return;
+  
+  const buttons = container.querySelectorAll('.tab-btn');
+  const contents = container.querySelectorAll('.tab-content');
+  const headerLine = container.querySelector('#main-header-bar');
+  const mistLayer = document.getElementById('dynamic-mist-layer');
+
+  // --- POSLUCHAČ UDÁLOSTI PRO ZMĚNU BARVY MLHY Z JINÉ SEKCE ---
+  document.addEventListener('changeMistColor', function(e) {
+      if (!mistLayer) return;
+      
+      const newColor = e.detail.color; // 'orange', 'purple', 'cyan'
+      let newGradient = '';
+      let targetIndex = 1; // Default Purple
+
+      if (newColor === 'orange') {
+          // LAVA (Start)
+          newGradient = 'linear-gradient(to bottom, rgba(249, 115, 22, 0.6), rgba(249, 115, 22, 0.1), transparent)';
+          targetIndex = 0; // Index prvního tabu
+      } else if (newColor === 'purple') {
+          // CRYSTAL (Business)
+          newGradient = 'linear-gradient(to bottom, rgba(217, 70, 239, 0.6), rgba(217, 70, 239, 0.1), transparent)';
+          targetIndex = 1; // Index druhého tabu
+      } else {
+          // CYAN (Default/Custom)
+          newGradient = 'linear-gradient(to bottom, rgba(88, 230, 255, 0.6), rgba(92, 230, 255, 0.1), transparent)';
+          targetIndex = 2; // Index třetího tabu
+      }
+
+      mistLayer.style.background = newGradient;
+      
+      // AUTOMATICKÉ PŘEPNUTÍ ZÁLOŽKY
+      switchTab(targetIndex);
+  });
+
+  // Zbytek existujícího kódu pro záložky...
+  function switchTab(index) {
+    contents.forEach(el => el.classList.add('hidden'));
+    
+    const targetContent = container.querySelector(`#content-${index}`);
+    if(targetContent) targetContent.classList.remove('hidden');
+
+    buttons.forEach(btn => {
+      btn.classList.remove('active-tab-btn', 'active-orange', 'active-purple', 'active-cyan');
+    });
+
+    const activeBtn = Array.from(buttons).find(btn => btn.dataset.target == index);
+    if(activeBtn) {
+       const color = activeBtn.dataset.color;
+       activeBtn.classList.add('active-tab-btn', `active-${color}`);
+       
+       if(headerLine) {
+         headerLine.className = `header-glow-bar header-bar-${color}`;
+       }
+    }
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.target));
+  });
+
+  switchTab(1); // Defaultní tab (střední)
+
+  const triggers = container.querySelectorAll('.accordion-trigger');
+  triggers.forEach(trigger => {
+    trigger.addEventListener('click', function() {
+      const detail = this.nextElementSibling;
+      const icon = this.querySelector('.rotate-icon');
+      const isOpen = detail.classList.contains('open');
+
+      if(!isOpen) {
+        detail.classList.add('open');
+        if(icon) icon.classList.add('open');
+      } else {
+        detail.classList.remove('open');
+        if(icon) icon.classList.remove('open');
+      }
+    });
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Moje-info",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Pozadí sekce"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Obrázek na pozadí"
+    },
+   {
+      "type": "select",
+      "id": "bg_position",
+      "label": "Zarovnání pozadí (Focus)",
+      "options": [
+        { "value": "center center", "label": "Střed (Center)" },
+        { "value": "left center", "label": "Vlevo (Left)" },
+        { "value": "right center", "label": "Vpravo (Right)" },
+        { "value": "center top", "label": "Nahoru (Top)" },
+        { "value": "center bottom", "label": "Dolů (Bottom)" }
+      ],
+      "default": "center center"
+    },
+    { "type": "header", "content": "Hlavní texty" },
+    { "type": "text", "id": "title", "label": "Hlavní Nadpis sekce", "default": "SYSTEM SPECIFICATIONS" },
+    { "type": "textarea", "id": "subtitle", "label": "Podnadpis sekce", "default": "Analyzuji data sektorů... Vyberte modul pro zobrazení technických detailů." },
+    { "type": "header", "content": "Sektor 1 (Orange)" },
+    { "type": "text", "id": "tab_1_name", "label": "Název na tlačítku", "default": "SECTOR 1: START" },
+    { "type": "text", "id": "tab_1_title", "label": "Nadpis uvnitř sekce", "default": "Základní řešení" },
+    { "type": "text", "id": "icon_1", "label": "Ikona", "default": "landscape" },
+    { "type": "image_picker", "id": "image_1", "label": "WebScreen 1" },
+    { "type": "header", "content": "Sektor 2 (Purple)" },
+    { "type": "text", "id": "tab_2_name", "label": "Název na tlačítku", "default": "SECTOR 2: BUSINESS" },
+    { "type": "text", "id": "tab_2_title", "label": "Nadpis uvnitř sekce", "default": "Modulární Struktura" },
+    { "type": "text", "id": "icon_2", "label": "Ikona", "default": "diamond" },
+    { "type": "image_picker", "id": "image_2", "label": "WebScreen 2" },
+    { "type": "header", "content": "Sektor 3 (Cyan)" },
+    { "type": "text", "id": "tab_3_name", "label": "Název na tlačítku", "default": "SECTOR 3: CUSTOM" },
+    { "type": "text", "id": "tab_3_title", "label": "Nadpis uvnitř sekce", "default": "Enterprise řešení" },
+    { "type": "text", "id": "icon_3", "label": "Ikona", "default": "apartment" },
+    { "type": "image_picker", "id": "image_3", "label": "WebScreen 3" }
+  ],
+  "blocks": [
+    {
+      "type": "detail_item",
+      "name": "Položka (Feature)",
+      "settings": [
+        { "type": "select", "id": "tab_select", "label": "Sektor", "options": [ { "value": "1", "label": "Sektor 1" }, { "value": "2", "label": "Sektor 2" }, { "value": "3", "label": "Sektor 3" } ], "default": "1" },
+        { "type": "text", "id": "icon", "label": "Ikona", "default": "check_circle" },
+        { "type": "text", "id": "title", "label": "Nadpis položky", "default": "Vlastnost" },
+        { "type": "text", "id": "subtitle", "label": "Podnadpis", "default": "INFO" },
+        { "type": "text", "id": "badge", "label": "Badge" },
+        { "type": "richtext", "id": "content", "label": "Popis", "default": "<p>Popis.</p>" },
+        { "type": "checkbox", "id": "open_default", "label": "Otevřeno?", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Moje-info" }
+  ]
+}
+{% endschema %}

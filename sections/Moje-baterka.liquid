@@ -1,0 +1,101 @@
+{% comment %}
+  Globální efekt žárovky/baterky přes celý web.
+  Vytvoří jednu vrstvu, která osvětluje vše pod sebou bez ohledu na hranice bloků.
+{% endcomment %}
+
+<div id="flashlight-global-overlay" aria-hidden="true"></div>
+
+<style>
+  /* Vrstva přes celý web */
+  #flashlight-global-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Důležité: propouští kliknutí na tlačítka pod sebou */
+    z-index: 9999; /* Musí být nad vším */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    display: block !important;
+    
+    /* Definice světla jako masky nebo gradientu */
+    background: radial-gradient(
+      {{ section.settings.size }}px circle at var(--cursor-x, 50%) var(--cursor-y, 50%), 
+      {{ section.settings.glow_color | color_modify: 'alpha', 0.2 }} 0%,
+      {{ section.settings.glow_color | color_modify: 'alpha', 0.05 }} 30%,
+      transparent 70%
+    );
+    
+    /* Mix-blend-mode zajistí, že barvy pod tím budou zářit */
+    mix-blend-mode: {{ section.settings.blend_mode }};
+  }
+
+  /* Aktivace efektu při pohybu myši na stránce */
+  body:hover #flashlight-global-overlay {
+    opacity: 1;
+  }
+</style>
+
+<script>
+(function() {
+  const overlay = document.getElementById('flashlight-global-overlay');
+  
+  const moveFlashlight = (e) => {
+    // Používáme clientX/Y, protože overlay je fixed
+    overlay.style.setProperty('--cursor-x', e.clientX + 'px');
+    overlay.style.setProperty('--cursor-y', e.clientY + 'px');
+  };
+
+  window.addEventListener('mousemove', moveFlashlight);
+
+  // Podpora pro Shopify editor
+  if (window.Shopify && window.Shopify.designMode) {
+    document.addEventListener('shopify:section:load', () => {
+      const newOverlay = document.getElementById('flashlight-global-overlay');
+      window.addEventListener('mousemove', moveFlashlight);
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Moje-baterka",
+  "settings": [
+    {
+      "type": "color",
+      "id": "glow_color",
+      "label": "Barva světla",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "size",
+      "min": 200,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "label": "Dosah světla",
+      "default": 600
+    },
+    {
+      "type": "select",
+      "id": "blend_mode",
+      "label": "Styl záření (Blend Mode)",
+      "options": [
+        { "value": "screen", "label": "Jemné (Screen)" },
+        { "value": "overlay", "label": "Kontrastní (Overlay)" },
+        { "value": "color-dodge", "label": "Silná záře (Color Dodge)" },
+        { "value": "soft-light", "label": "Velmi decentní (Soft Light)" }
+      ],
+      "default": "screen"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-baterka"
+    }
+  ]
+}
+{% endschema %}

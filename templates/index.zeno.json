@@ -1,0 +1,527 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "slideshow": {
+      "type": "Moje-uvodka-planeta",
+      "blocks": {
+        "slide-0": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/2_zvetseny_JPG_2.jpg",
+            "image_overlay_opacity": 0,
+            "heading": "Tvorba webových stránek",
+            "heading_size": "hxl",
+            "subheading": "weby - marketing - strategie",
+            "button_label": "",
+            "link": "shopify://collections/all",
+            "button_style_secondary": false,
+            "show_text_box": false,
+            "box_align": "middle-left",
+            "text_alignment": "left",
+            "text_alignment_mobile": "left",
+            "color_scheme": "scheme-2"
+          }
+        }
+      },
+      "block_order": [
+        "slide-0"
+      ],
+      "custom_css": [],
+      "settings": {
+        "layout": "full_bleed",
+        "slide_height": "adapt_image",
+        "slider_visual": "counter",
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "image_behavior": "none",
+        "show_text_below": false,
+        "accessibility_info": "Slideshow about our brand"
+      }
+    },
+    "slideshow_bEEgh8": {
+      "type": "Moje-uvodka-planeta",
+      "blocks": {
+        "slide_JXjTD9": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/mobil_2_zvetseny_JPG_3.jpg",
+            "image_overlay_opacity": 0,
+            "heading": "Tvorba webových stránek",
+            "heading_size": "h0",
+            "subheading": "weby - marketing - strategie",
+            "button_label": "",
+            "link": "shopify://collections/all",
+            "button_style_secondary": false,
+            "show_text_box": false,
+            "box_align": "bottom-left",
+            "text_alignment": "left",
+            "text_alignment_mobile": "left",
+            "color_scheme": "scheme-2"
+          }
+        }
+      },
+      "block_order": [
+        "slide_JXjTD9"
+      ],
+      "settings": {
+        "layout": "full_bleed",
+        "slide_height": "adapt_image",
+        "slider_visual": "counter",
+        "auto_rotate": false,
+        "change_slides_speed": 5,
+        "image_behavior": "ambient",
+        "show_text_below": false,
+        "accessibility_info": "Slideshow about our brand"
+      }
+    },
+    "rich_text_eJ9xpR": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GAUxnB": {
+          "type": "heading",
+          "settings": {
+            "heading": "Nejefektivnější start online podnikání",
+            "heading_size": "h1"
+          }
+        },
+        "text_iYKMpC": {
+          "type": "text",
+          "settings": {
+            "text": "<ul><li>Doslova<strong> </strong>za pár korun vám vytvoříme web, který vám konkurence bude závidět a za který zaplatíte zlomek ceny, kterou museli zaplatit oni.<br/>Nebude to žádné „béčko“, ale profesionálně vytvořený web.</li></ul><p></p><ul><li>Díky dlouhodobé praxi s tvorbou webů, obsahu, designu a marketingu, jsme schopni Vám zajistit komplexní a nejkvalitnější řešení na trhu.</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_GAUxnB",
+        "text_iYKMpC"
+      ],
+      "custom_css": [],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-dfdd828c-2c0e-497f-b86f-8f7b6ca3bdb6",
+        "full_width": true,
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "featured-collection-0": {
+      "type": "featured-collection",
+      "disabled": true,
+      "custom_css": [
+        ".card__badge,.card__content {display: none;}"
+      ],
+      "settings": {
+        "collection": "all",
+        "products_to_show": 3,
+        "title": "",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 3,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": false,
+        "view_all_style": "solid",
+        "color_scheme": "scheme-5",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "multicolumn_FmkF3U": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_dhDWtm": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/OnePage1_bez_okraju.png",
+            "title": "ONE PAGE",
+            "text": "<p>- Tvorba unikátního designu</p><p>- Nakódování webu</p><p>- Jednostránkový web</p><p>- Kontaktní formulář</p><p>- Optimalizace pro mobilní zařízení</p><p>- Základní SEO</p><p>- 1 korektura</p><p>- Zpracování již do 2 týdnů</p><h3>CENA: 10 000 Kč</h3>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_MAYhJb": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Standard1_bez_okraju.png",
+            "title": "STANDARD",
+            "text": "<p>- Tvorba unikátního designu</p><p>- Nakódování webu</p><p>- Do 4 podstránek</p><p>- Kontaktní formulář</p><p>- Optimalizace pro mobilní zařízení</p><p>- Základní SEO</p><p>- 3 korektury</p><p>- Zpracování již do 2 týdnů</p><h3>CENA: 15 000 Kč</h3>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_CUBFna": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Unlimited1_bez_okraju.png",
+            "title": "ULTIMATE",
+            "text": "<p>- Tvorba unikátního designu</p><p>- Nakódování webu</p><p>- Do 7 podstránek</p><p>- Kontaktní formulář</p><p>- Optimalizace pro mobilní zařízení</p><p>- Pokročilé nastavení SEO</p><p>- 5 korektur</p><p>- Zpracování již do 2 týdnů</p><p>- Editační systém</p><p>- Možnost napojení na externí služby</p><h3>CENA: 55 500 Kč</h3>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_dhDWtm",
+        "column_MAYhJb",
+        "column_CUBFna"
+      ],
+      "custom_css": [
+        ".multicolumn-card-spacing {padding-top: 0.01rem; margin-left: -0.01rem; margin-right: -0.05rem;}",
+        "@media (min-width: 767px) {.media {transition: transform 0.75s ease, box-shadow 0.75s ease !important; } .media:hover {transform: scale(1.05); box-shadow: 0 4px 12px #faf380; }}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "color_scheme": "scheme-5",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "multicolumn_yUfqND": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_E9L7jF": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/ikon_1.png",
+            "title": "Maximální efektivita",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_nVKqtP": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/ikon_2.png",
+            "title": "Nejnižší cena za web",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_qNXU3B": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/ikon_3.png",
+            "title": "Individuální přístup",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_FyHhFh": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/ikon_4.png",
+            "title": "Moderní web design",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_E9L7jF",
+        "column_nVKqtP",
+        "column_qNXU3B",
+        "column_FyHhFh"
+      ],
+      "disabled": true,
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "third",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 4,
+        "column_alignment": "center",
+        "background_style": "none",
+        "color_scheme": "scheme-1",
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "multicolumn_Pz6Xah": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_8CUaQt": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Monitor_MC.png",
+            "title": "Mona Collections",
+            "text": "<p>Zkombinujte text a obrázek, abyste zaměřili pozornost návštěvníků na zvolený produkt, kolekci či blogový příspěvek. Pak můžete připojit podrobnosti o dostupnosti a stylu, nebo dokonce recenzi.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_6xbkLi": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Monitor_GP.png",
+            "title": "GP Sport",
+            "text": "<p>Zkombinujte text a obrázek, abyste zaměřili pozornost návštěvníků na zvolený produkt, kolekci či blogový příspěvek. Pak můžete připojit podrobnosti o dostupnosti a stylu, nebo dokonce recenzi.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_JHAicB": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Monitor_BE.png",
+            "title": "Brozengi",
+            "text": "<p>Zkombinujte text a obrázek, abyste zaměřili pozornost návštěvníků na zvolený produkt, kolekci či blogový příspěvek. Pak můžete připojit podrobnosti o dostupnosti a stylu, nebo dokonce recenzi.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_8DAzqy": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Monitor_Baron.png",
+            "title": "Baron Oils",
+            "text": "<p>Zkombinujte text a obrázek, abyste zaměřili pozornost návštěvníků na zvolený produkt, kolekci či blogový příspěvek. Pak můžete připojit podrobnosti o dostupnosti a stylu, nebo dokonce recenzi.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_DMWzFV": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Monitor_Elarose.png",
+            "title": "Elarose",
+            "text": "<p>Zkombinujte text a obrázek, abyste zaměřili pozornost návštěvníků na zvolený produkt, kolekci či blogový příspěvek. Pak můžete připojit podrobnosti o dostupnosti a stylu, nebo dokonce recenzi.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_ePNCiT": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Monitor_Drazil.png",
+            "title": "Dražil Photo",
+            "text": "<p>Zkombinujte text a obrázek, abyste zaměřili pozornost návštěvníků na zvolený produkt, kolekci či blogový příspěvek. Pak můžete připojit podrobnosti o dostupnosti a stylu, nebo dokonce recenzi.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_8CUaQt",
+        "column_6xbkLi",
+        "column_JHAicB",
+        "column_8DAzqy",
+        "column_DMWzFV",
+        "column_ePNCiT"
+      ],
+      "custom_css": [
+        "@media (min-width: 767px) {.media {transition: transform 0.75s ease !important; } .media:hover {transform: scale(1.05); }}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "Tvorba",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "background_style": "none",
+        "color_scheme": "scheme-dfdd828c-2c0e-497f-b86f-8f7b6ca3bdb6",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "collapsible_content_jhxWx3": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_9FnJUb": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Sbalitelný řádek",
+            "icon": "check_mark",
+            "row_content": "",
+            "page": ""
+          }
+        },
+        "collapsible_row_kKVCdP": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Sbalitelný řádek",
+            "icon": "check_mark",
+            "row_content": "",
+            "page": ""
+          }
+        },
+        "collapsible_row_FeK7Rk": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Sbalitelný řádek",
+            "icon": "check_mark",
+            "row_content": "",
+            "page": ""
+          }
+        },
+        "collapsible_row_qjgktk": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Sbalitelný řádek",
+            "icon": "check_mark",
+            "row_content": "",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_9FnJUb",
+        "collapsible_row_kKVCdP",
+        "collapsible_row_FeK7Rk",
+        "collapsible_row_qjgktk"
+      ],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "",
+        "heading": "Často kladené otázky",
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "layout": "none",
+        "container_color_scheme": "scheme-2",
+        "color_scheme": "scheme-dfdd828c-2c0e-497f-b86f-8f7b6ca3bdb6",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "contact_form_zEewjp": {
+      "type": "contact-form",
+      "name": "t:sections.contact-form.presets.name",
+      "settings": {
+        "heading": "Pošlete nám nezávaznou poptávku",
+        "heading_size": "h1",
+        "color_scheme": "scheme-dfdd828c-2c0e-497f-b86f-8f7b6ca3bdb6",
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "multicolumn_hnwT9P": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_PiQUhn": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/3_bez_pozadi.png",
+            "title": "Sloupec",
+            "text": "<p>Zkombinujte text a obrázek, abyste zaměřili pozornost návštěvníků na zvolený produkt, kolekci či blogový příspěvek. Pak můžete připojit podrobnosti o dostupnosti a stylu, nebo dokonce recenzi.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_DHwPt8": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/4_bez_pozadi.png",
+            "title": "Sloupec",
+            "text": "<p>Zkombinujte text a obrázek, abyste zaměřili pozornost návštěvníků na zvolený produkt, kolekci či blogový příspěvek. Pak můžete připojit podrobnosti o dostupnosti a stylu, nebo dokonce recenzi.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_ymygwd": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/2_bez_pozadi.png",
+            "title": "Sloupec",
+            "text": "<p>Zkombinujte text a obrázek, abyste zaměřili pozornost návštěvníků na zvolený produkt, kolekci či blogový příspěvek. Pak můžete připojit podrobnosti o dostupnosti a stylu, nebo dokonce recenzi.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_PiQUhn",
+        "column_DHwPt8",
+        "column_ymygwd"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "Reference",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "button_label": "",
+        "button_link": "",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "color_scheme": "scheme-3",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "custom_liquid_TEemp8": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "",
+        "color_scheme": "scheme-2",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "slideshow",
+    "slideshow_bEEgh8",
+    "rich_text_eJ9xpR",
+    "featured-collection-0",
+    "multicolumn_FmkF3U",
+    "multicolumn_yUfqND",
+    "multicolumn_Pz6Xah",
+    "collapsible_content_jhxWx3",
+    "contact_form_zEewjp",
+    "multicolumn_hnwT9P",
+    "custom_liquid_TEemp8"
+  ]
+}

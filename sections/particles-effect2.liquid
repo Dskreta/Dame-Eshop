@@ -1,0 +1,298 @@
+{% schema %}
+{
+  "name": "Black Hole Singularity",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Barva vesmíru",
+      "default": "#050505"
+    },
+    {
+      "type": "color",
+      "id": "particle_color",
+      "label": "Barva hvězd",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "glow_color",
+      "label": "Barva záře černé díry",
+      "default": "#4ca1ff"
+    },
+    {
+      "type": "range",
+      "id": "particle_count",
+      "min": 100,
+      "max": 800,
+      "step": 50,
+      "label": "Počet hvězd",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "hole_size",
+      "min": 20,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Velikost černé díry",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "suck_speed",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "Síla gravitace (Rychlost pádu)",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "height",
+      "min": 300,
+      "max": 900,
+      "step": 50,
+      "unit": "px",
+      "label": "Výška sekce",
+      "default": 600
+    },
+    {
+        "type": "header",
+        "content": "Obsah"
+    },
+    {
+        "type": "text",
+        "id": "heading",
+        "label": "Nadpis",
+        "default": "SINGULARITY"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Barva textu",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Black Hole Efekt"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="blackhole-container" style="background-color: {{ section.settings.bg_color }}; height: {{ section.settings.height }}px;">
+  <canvas id="bh-canvas-{{ section.id }}"></canvas>
+  
+  {% if section.settings.heading != blank %}
+    <div class="bh-content" style="color: {{ section.settings.text_color }};">
+        <h1>{{ section.settings.heading }}</h1>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .blackhole-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .blackhole-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .bh-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    pointer-events: none;
+    /* Mix-blend-mode zajistí, že text bude čitelný i přes jasný střed, 
+       ale difference může měnit barvy. Zkusíme klasický stín. */
+  }
+  
+  .bh-content h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: 10px;
+    margin: 0;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px rgba(0,0,0,1); /* Silný černý stín pro čitelnost přes záři */
+    opacity: 0.9;
+  }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const canvas = document.getElementById('bh-canvas-{{ section.id }}');
+    const ctx = canvas.getContext('2d');
+    
+    let width, height, centerX, centerY;
+    
+    // Nastavení z Shopify
+    const particleColorHex = "{{ section.settings.particle_color }}";
+    const glowColorHex = "{{ section.settings.glow_color }}";
+    const particleCount = {{ section.settings.particle_count }};
+    const holeRadius = {{ section.settings.hole_size }};
+    const gravityStrength = {{ section.settings.suck_speed }} * 0.1;
+    
+    function hexToRgb(hex) {
+        hex = hex.replace(/^#/, '');
+        let bigint = parseInt(hex, 16);
+        let r = (bigint >> 16) & 255;
+        let g = (bigint >> 8) & 255;
+        let b = bigint & 255;
+        return `${r},${g},${b}`;
+    }
+    const particleRGB = hexToRgb(particleColorHex);
+    // Pro záři potřebujeme HEX string přímo
+    const glowColor = glowColorHex; 
+
+    let particlesArray = [];
+
+    function resize() {
+        width = canvas.parentElement.clientWidth;
+        height = canvas.parentElement.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+        centerX = width / 2;
+        centerY = height / 2;
+    }
+    resize();
+
+    class Star {
+        constructor(startAtEdge = false) {
+            // Pokud startAtEdge = true, hvězda se narodí daleko (použito při respawnu)
+            // Jinak se narodí náhodně kdekoliv (při startu)
+            
+            const maxDist = Math.sqrt(width*width + height*height) / 2;
+            
+            if (startAtEdge) {
+                this.radius = maxDist;
+            } else {
+                this.radius = Math.random() * (maxDist - holeRadius) + holeRadius;
+            }
+
+            this.angle = Math.random() * Math.PI * 2;
+            this.size = Math.random() * 2 + 0.5;
+            this.opacity = Math.random() * 0.8 + 0.1;
+            
+            // Každá hvězda má trochu jinou rychlost pádu
+            this.driftSpeed = (Math.random() * 0.5 + 0.5) * gravityStrength;
+        }
+
+        draw(x, y) {
+            // Čím blíže ke středu, tím je hvězda méně průhledná (jasnější)
+            // Efekt zahřívání hmoty u černé díry
+            let distRatio = (this.radius - holeRadius) / 300; // 300px zóna jasu
+            if (distRatio < 0) distRatio = 0;
+            if (distRatio > 1) distRatio = 1;
+            
+            // Blízko díry jsou hvězdy jasnější, daleko jsou tlumené
+            let alpha = this.opacity + (1 - distRatio) * 0.5;
+            
+            ctx.fillStyle = `rgba(${particleRGB}, ${alpha})`;
+            ctx.beginPath();
+            ctx.arc(x, y, this.size, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        update() {
+            // 1. Pohyb po kružnici (Orbit)
+            // Fyzika: Čím blíže ke středu, tím rychlejší rotace
+            // Rychlost = konstanta / poloměr
+            // Přidáme násobič 500, aby to mělo rozumnou rychlost
+            let angularVelocity = 500 / (this.radius * this.radius); 
+            // Omezíme max rychlost, aby to u středu neblikalo
+            if (angularVelocity > 0.1) angularVelocity = 0.1;
+            
+            this.angle += angularVelocity;
+
+            // 2. Padání do středu (Gravity)
+            this.radius -= this.driftSpeed;
+
+            // Výpočet souřadnic
+            let x = centerX + Math.cos(this.angle) * this.radius;
+            let y = centerY + Math.sin(this.angle) * this.radius;
+
+            // 3. Kontrola pohlcení (Event Horizon)
+            if (this.radius <= holeRadius) {
+                // Hvězda byla pohlcena, vytvoříme novou na okraji
+                // Trik: Místo vytváření nového objektu jen resetujeme tento
+                const maxDist = Math.sqrt(width*width + height*height) / 2;
+                this.radius = maxDist;
+                this.angle = Math.random() * Math.PI * 2;
+                // Lehká změna rychlosti pro variabilitu
+                this.driftSpeed = (Math.random() * 0.5 + 0.5) * gravityStrength;
+            } else {
+                this.draw(x, y);
+            }
+        }
+    }
+
+    function drawBlackHole() {
+        // Vykreslení samotné černé díry
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, holeRadius, 0, Math.PI * 2);
+        ctx.fillStyle = "#000000";
+        
+        // Záře kolem díry (Accretion disk glow)
+        // ShadowBlur je náročný na výkon, ale vypadá nejlépe
+        ctx.shadowColor = glowColor;
+        ctx.shadowBlur = 30; // Velikost záře
+        ctx.fill();
+        
+        // Reset stínu pro ostatní vykreslování
+        ctx.shadowBlur = 0;
+        
+        // Volitelně: Bílý tenký okraj pro zvýraznění horizontu událostí
+        ctx.strokeStyle = "rgba(255,255,255,0.3)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+    }
+
+    function init() {
+        particlesArray = [];
+        for (let i = 0; i < particleCount; i++) {
+            particlesArray.push(new Star(false));
+        }
+    }
+
+    function animate() {
+        // Efekt motion blur (stopy po hvězdách)
+        // Změň 0.2 na nižší číslo pro delší čáry (větší rychlost)
+        ctx.fillStyle = `rgba(${hexToRgb("{{ section.settings.bg_color }}")}, 0.25)`;
+        ctx.fillRect(0, 0, width, height);
+        
+        // 1. Aktualizujeme a vykreslíme hvězdy
+        for (let i = 0; i < particlesArray.length; i++) {
+            particlesArray[i].update();
+        }
+        
+        // 2. Nakonec přes vše vykreslíme černou díru, 
+        // aby hvězdy mizely "pod ní" (resp. za ní)
+        drawBlackHole();
+
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+
+    window.addEventListener('resize', () => {
+        resize();
+        init();
+    });
+});
+</script>

@@ -1,0 +1,403 @@
+
+<!-- 1. EXTERNÍ ZDROJE -->
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet"/>
+
+{%- style -%}
+  /* --- ZÁKLADNÍ KONTEJNER --- */
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    padding: 6rem 0;
+    overflow: hidden;
+  }
+
+  /* POZADÍ - Fix pro prázdné divy */
+  #stars-pricing-{{ section.id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    display: block !important;
+  }
+
+  .star-static {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+
+  /* LAYOUT */
+  .pricing-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* NADPISY */
+  .pricing-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  #shopify-section-{{ section.id }} h2 {
+    font-family: 'Orbitron', sans-serif !important;
+    font-size: 2.5rem !important;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 1rem;
+  }
+  @media(min-width: 768px) {
+    #shopify-section-{{ section.id }} h2 { font-size: 3.5rem !important; }
+  }
+
+  .pricing-subtitle {
+    color: #9ca3af;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* GRID */
+  .pricing-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+    align-items: center; /* Důležité pro zarovnání karet */
+  }
+  @media(min-width: 1024px) {
+    .pricing-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* KARTY */
+  .pricing-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 1rem;
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .pricing-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* MODIFIKÁTOR PRO POPULÁRNÍ KARTU */
+  .pricing-card.popular {
+    border: 2px solid {{ section.settings.accent_color }};
+    box-shadow: 0 0 30px {{ section.settings.accent_color }}33; /* 33 = 20% opacity hex */
+    transform: scale(1.0);
+    position: relative;
+    background: rgba(20, 20, 35, 0.6);
+  }
+
+  @media(min-width: 1024px) {
+    .pricing-card.popular { transform: scale(1.08); z-index: 10; }
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: {{ section.settings.accent_color }};
+    color: white;
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  /* OBSAH KARTY */
+  .plan-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #d1d5db;
+    margin-bottom: 0.5rem;
+  }
+  .pricing-card.popular .plan-name { color: white; }
+
+  .plan-price {
+    font-size: 2.25rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: white;
+  }
+  .pricing-card.popular .plan-price {
+    background: linear-gradient(to right, {{ section.settings.accent_color }}, #06b6d4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+    flex-grow: 1; /* Aby tlačítka byla dole zarovnaná */
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    color: #9ca3af;
+    font-size: 0.9rem;
+  }
+  .pricing-card.popular .feature-item { color: #d1d5db; }
+
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    font-size: 20px !important;
+    margin-right: 0.5rem;
+    display: inline-block;
+  }
+  
+  .icon-check { color: #6b7280; } /* Gray */
+  .pricing-card.popular .icon-check { color: #22d3ee; } /* Cyan */
+
+  /* TLAČÍTKA */
+  .btn-plan {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: block;
+  }
+
+  .btn-standard {
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    background: transparent;
+  }
+  .btn-standard:hover { background: rgba(255,255,255,0.1); }
+
+  .btn-popular {
+    background: linear-gradient(to right, {{ section.settings.accent_color }}, #06b6d4);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+  .btn-popular:hover { transform: translateY(-2px); opacity: 0.9; }
+
+{%- endstyle -%}
+
+<div id="wrapper-{{ section.id }}" style="position: relative;">
+  
+  <!-- Pozadí (Generováno JS) -->
+  <div id="stars-pricing-{{ section.id }}"></div>
+
+  <div class="pricing-container">
+    <div class="pricing-header">
+      <h2>{{ section.settings.title }}</h2>
+      <p class="pricing-subtitle">{{ section.settings.subtitle }}</p>
+    </div>
+
+    <div class="pricing-grid">
+      {%- for block in section.blocks -%}
+        <div class="pricing-card {% if block.settings.is_popular %}popular{% endif %}">
+          
+          {%- if block.settings.is_popular -%}
+            <div class="popular-badge">Nejoblíbenější</div>
+          {%- endif -%}
+
+          <h3 class="plan-name">{{ block.settings.title }}</h3>
+          <div class="plan-price">{{ block.settings.price }}</div>
+          
+          <ul class="plan-features">
+            {%- assign features_list = block.settings.features | newline_to_br | split: '<br />' -%}
+            {%- for feature in features_list -%}
+              <li class="feature-item">
+                <span class="material-symbols-outlined icon-check">
+                  {% if block.settings.is_popular %}done_all{% else %}done{% endif %}
+                </span>
+                {{ feature | strip }}
+              </li>
+            {%- endfor -%}
+          </ul>
+
+          <a href="{{ section.settings.contact_url }}" class="btn-plan {% if block.settings.is_popular %}btn-popular{% else %}btn-standard{% endif %}">
+            {{ block.settings.btn_text }}
+          </a>
+
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Moje-AI-4",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Barva pozadí",
+      "default": "#050505"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Akcentní barva (Fialová)",
+      "default": "#7c3aed"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Nadpis",
+      "default": "Vyberte si letový plán"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Podnadpis",
+      "default": "Transparentní ceny. Žádné skryté poplatky."
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Odkaz tlačítka (Kontakt)",
+      "info": "Obvykle odkaz na kotvu #contact nebo stránku kontaktu"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "plan",
+      "name": "Cenový balíček",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Název balíčku",
+          "default": "Start"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Cena",
+          "default": "15 000 Kč"
+        },
+        {
+          "type": "textarea",
+          "id": "features",
+          "label": "Seznam funkcí (na nový řádek)",
+          "default": "Základní nastavení\nŠablona zdarma\n5 Produktů"
+        },
+        {
+          "type": "text",
+          "id": "btn_text",
+          "label": "Text tlačítka",
+          "default": "Zvolit"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_popular",
+          "label": "Označit jako Populární (Zvýraznit)",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-AI-4",
+      "blocks": [
+        {
+          "type": "plan",
+          "settings": {
+            "title": "Start",
+            "price": "15 000 Kč",
+            "is_popular": false
+          }
+        },
+        {
+          "type": "plan",
+          "settings": {
+            "title": "Orbit",
+            "price": "30 000 Kč",
+            "is_popular": true
+          }
+        },
+        {
+          "type": "plan",
+          "settings": {
+            "title": "Interstellar",
+            "price": "60 000+ Kč",
+            "is_popular": false,
+            "btn_text": "Kontaktovat"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<!-- JAVASCRIPT: IIFE, žádný liquid tag -->
+<script>
+  (function() {
+    // Funkce pro generování jednoduchých hvězd v pozadí
+    function initPricingStars(sectionId) {
+      const containerId = 'stars-pricing-' + sectionId;
+      const container = document.getElementById(containerId);
+
+      if (!container) return;
+      container.innerHTML = '';
+
+      // Méně hvězd než v hero sekci, aby to nebylo rušivé
+      for (let i = 0; i < 30; i++) {
+        const star = document.createElement('div');
+        star.className = 'star-static';
+        
+        const size = Math.random() * 2 + 1; // 1-3px
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.opacity = Math.random() * 0.5 + 0.1; // Jemnější
+        
+        container.appendChild(star);
+      }
+    }
+
+    // Inicializace
+    document.addEventListener('DOMContentLoaded', function() {
+      const containers = document.querySelectorAll('[id^="stars-pricing-"]');
+      containers.forEach(function(container) {
+        const id = container.id.replace('stars-pricing-', '');
+        initPricingStars(id);
+      });
+    });
+
+    // Editor re-load support
+    document.addEventListener('shopify:section:load', function(event) {
+      const container = event.target.querySelector('[id^="stars-pricing-"]');
+      if (container) {
+        initPricingStars(event.detail.sectionId);
+      }
+    });
+
+  })();
+</script>
+        

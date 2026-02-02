@@ -1,0 +1,390 @@
+<!-- 
+  NÁZEV SOUBORU: sections/cosmic-portfolio.liquid
+  POKYNY: Vložte tento celý kód do nového souboru v sekcích.
+-->
+
+<!-- 1. EXTERNÍ ZDROJE (Načtení fontů mimo style tag pro kompatibilitu) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0">
+
+{%- style -%}
+  /* KONTEJNER SEKCE */
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    padding: 6rem 0;
+    overflow: hidden;
+  }
+
+  /* ČÁSTICOVÉ POZADÍ - Fix pro prázdné divy */
+  #particles-{{ section.id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    display: block !important; /* Důležité: Přepíše pravidlo div:empty v šabloně */
+  }
+
+  .particle-dot {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: floatParticle 15s infinite linear;
+    display: block !important;
+  }
+
+  @keyframes floatParticle {
+    0% { transform: translateY(0); opacity: 0; }
+    50% { opacity: 0.5; }
+    100% { transform: translateY(-150px); opacity: 0; }
+  }
+
+  /* NADPISY */
+  #shopify-section-{{ section.id }} h2 {
+    font-family: 'Orbitron', sans-serif !important;
+    font-size: 2.5rem !important;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 4rem;
+    color: white;
+    position: relative;
+    z-index: 2;
+  }
+
+  @media(min-width: 768px) {
+    #shopify-section-{{ section.id }} h2 { font-size: 3.5rem !important; }
+  }
+
+  .text-gradient {
+    background: linear-gradient(to right, {{ section.settings.accent_color }}, #06b6d4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* LAYOUT KONTEJNER */
+  .portfolio-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* GRID PROJEKTŮ */
+  .project-row {
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: 1fr;
+    align-items: center;
+    margin-bottom: 6rem;
+  }
+  
+  /* Střídavý layout na desktopu */
+  @media(min-width: 768px) {
+    .project-row { grid-template-columns: 1fr 1fr; }
+    .project-row.reverse { direction: rtl; } 
+    .project-row.reverse > * { direction: ltr; }
+  }
+
+  /* VIZUÁL PROJEKTU */
+  .project-visual {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 10px 10px 10px rgba(75, 144, 165, 0.4);
+    transition: transform 0.5s ease, border-color 0.3s;
+
+  }
+  
+  .project-visual:hover {
+    transform: scale(1.02);
+    border-color: {{ section.settings.accent_color }};
+  }
+  
+  .project-visual img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.7s ease;
+  }
+  
+  .project-visual:hover img { transform: scale(1.05); }
+
+  /* TEXTOVÝ OBSAH */
+  .project-content { text-align: left; }
+  
+  @media(min-width: 768px) {
+    .project-row.reverse .project-content { text-align: right; }
+    /* Zarovnání listu napravo pro reverzní řádky */
+    .project-row.reverse .stats-item { justify-content: flex-end; }
+    .project-row.reverse .material-symbols-outlined { margin-right: 0; margin-left: 0.5rem; order: 2; }
+  }
+
+  .project-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: white;
+  }
+
+  .project-desc {
+    color: #9ca3af;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    display: block !important;
+  }
+
+  /* STATISTIKY */
+  .stats-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+    color: #d1d5db;
+    font-size: 0.9rem;
+    display: block !important;
+  }
+  
+  .stats-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  /* TLAČÍTKO */
+  .btn-outline {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid {{ section.settings.accent_color }};
+    color: {{ section.settings.accent_color }};
+    border-radius: 0.25rem;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s;
+    background: transparent;
+  }
+  
+  .btn-outline:hover {
+    background: {{ section.settings.accent_color }};
+    color: white;
+    box-shadow: 0 0 15px {{ section.settings.accent_color }}66;
+  }
+
+  /* IKONY */
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    font-weight: normal; 
+    font-style: normal; 
+    font-size: 20px; 
+    line-height: 1; 
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 0.5rem;
+  }
+{%- endstyle -%}
+
+<!-- HTML STRUKTURA -->
+<div id="wrapper-{{ section.id }}">
+  
+  <!-- Částicové pozadí (generované JS) -->
+  <div id="particles-{{ section.id }}"></div>
+
+  <div class="portfolio-container">
+    <h2><span class="text-gradient">{{ section.settings.title }}</span></h2>
+
+    {%- for block in section.blocks -%}
+      {%- comment -%} Detekce sudé/liché pro zig-zag layout {%- endcomment -%}
+      {%- assign is_even = forloop.index | modulo: 2 -%}
+      
+      <div class="project-row {% if is_even == 0 %}reverse{% endif %}">
+        
+        <!-- Sloupec Obrázek -->
+        <div class="project-visual">
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy' }}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag }}
+          {%- endif -%}
+        </div>
+
+        <!-- Sloupec Text -->
+        <div class="project-content">
+          <h3 class="project-title">{{ block.settings.title }}</h3>
+          <p class="project-desc">{{ block.settings.description }}</p>
+          
+          <ul class="stats-list">
+            {%- assign stats = block.settings.stats | newline_to_br | split: '<br />' -%}
+            {%- for stat in stats -%}
+              <li class="stats-item">
+                <span class="material-symbols-outlined" style="color: #4ade80;">check_circle</span>
+                {{ stat | strip }}
+              </li>
+            {%- endfor -%}
+          </ul>
+
+          {%- if block.settings.link_url != blank -%}
+            <a href="{{ block.settings.link_url }}" class="btn-outline">{{ block.settings.link_text }}</a>
+          {%- endif -%}
+        </div>
+
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+<!-- SCHEMA NASTAVENÍ -->
+{% schema %}
+{
+  "name": "Moje-AI-3",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Barva pozadí",
+      "default": "#050505"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Akcentní barva",
+      "default": "#7c3aed"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Nadpis sekce",
+      "default": "Poslední Mise"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "project",
+      "name": "Projekt",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Obrázek projektu"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Název projektu",
+          "default": "Název Projektu"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Popis",
+          "default": "Krátký popis projektu..."
+        },
+        {
+          "type": "textarea",
+          "id": "stats",
+          "label": "Statistiky (jeden na řádek)",
+          "default": "Konverze +45%\nRychlost 0.8s"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Text tlačítka",
+          "default": "Detail Mise"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Odkaz na projekt"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-AI-3",
+      "blocks": [
+        {
+          "type": "project",
+          "settings": {
+            "title": "Chronos Watch Store",
+            "description": "Luxusní e-shop s hodinkami.",
+            "stats": "Návratnost +20%\nDesign na míru"
+          }
+        },
+        {
+          "type": "project",
+          "settings": {
+            "title": "Neon Streetwear",
+            "description": "Urban móda pro mladou generaci.",
+            "stats": "Organický dosah +300%\nAutomatizace"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<!-- JAVASCRIPT LOGIKA -->
+<script>
+  (function() {
+    // 1. Funkce pro částicový efekt
+    function initPortfolioParticles(sectionId) {
+      const containerId = 'particles-' + sectionId;
+      const container = document.getElementById(containerId);
+
+      // Ochrana proti chybám pokud element neexistuje
+      if (!container) return;
+
+      // Vyčistit předchozí (pro případ re-loadu v editoru)
+      container.innerHTML = '';
+
+      // Generování částic (jednoduché divy)
+      for (let i = 0; i < 20; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'particle-dot';
+        
+        // Náhodná velikost a pozice
+        const size = Math.random() * 3 + 1; // 1-4px
+        dot.style.width = size + 'px';
+        dot.style.height = size + 'px';
+        dot.style.left = Math.random() * 100 + '%';
+        dot.style.top = Math.random() * 100 + '%';
+        
+        // Náhodná animace
+        dot.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        dot.style.animationDelay = (Math.random() * 5) + 's';
+        
+        container.appendChild(dot);
+      }
+    }
+
+    // 2. Inicializace při načtení stránky
+    document.addEventListener('DOMContentLoaded', function() {
+      // Najdeme všechny kontejnery patřící k tomuto typu sekce
+      const containers = document.querySelectorAll('[id^="particles-"]');
+      containers.forEach(function(container) {
+        const id = container.id.replace('particles-', '');
+        initPortfolioParticles(id);
+      });
+    });
+
+    // 3. Posluchač pro Shopify Editor (Re-init po uložení změny)
+    document.addEventListener('shopify:section:load', function(event) {
+      // Zkontrolujeme, zda načtená sekce obsahuje náš particles kontejner
+      const container = event.target.querySelector('[id^="particles-"]');
+      if (container) {
+        initPortfolioParticles(event.detail.sectionId);
+      }
+    });
+
+  })();
+</script>
+        

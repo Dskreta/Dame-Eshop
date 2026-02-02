@@ -1,0 +1,610 @@
+<!-- 
+  NÁZEV SOUBORU: sections/cosmic-hero.liquid
+-->
+
+<!-- 1. EXTERNÍ ZDROJE -->
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet"/>
+
+{%- style -%}
+  /* --- KONTEJNER SEKCE --- */
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    color: #e2e8f0;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    overflow: hidden;
+    /* Sekce je vyšší, aby uživatel musel scrollovat podél černé díry */
+    min-height: 140vh; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* --- FONTY A BARVY --- */
+  #shopify-section-{{ section.id }} h1,
+  #shopify-section-{{ section.id }} .font-fantasy {
+    font-family: 'Cinzel', serif;
+  }
+
+  .text-magic-gradient {
+    background: linear-gradient(135deg, {{ section.settings.accent_color_1 }} 0%, {{ section.settings.accent_color_2 }} 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* --- ČERNÁ DÍRA (CANVAS) --- */
+  #singularity-canvas-{{ section.id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    display: block !important; /* Fix pro Shopify empty div bug */
+  }
+
+  /* --- SLUNEČNÍ SOUSTAVA (ORBITY) --- */
+  .solar-system {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 20;
+    display: block;
+  }
+
+  /* Společné styly pro orbity */
+  .orbit-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+  }
+
+  .orbit-line {
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(176, 38, 255, 0.02);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+  }
+
+  /* Rotátor, který točí planetou */
+  .planet-rotator {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    animation: spinOrbit linear infinite;
+    display: block;
+  }
+
+  /* Samotná planeta */
+  .planet {
+    position: absolute;
+    left: 50%; 
+    top: 0; /* Umístění na horní hranu kruhu */
+    transform: translate(-50%, -50%); /* Vycentrování na lince */
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset -5px -5px 15px rgba(0,0,0,0.9), 0 0 15px rgba(255,255,255,0.1);
+    display: block;
+  }
+
+  /* --- NASTAVENÍ JEDNOTLIVÝCH ORBITŮ --- */
+  
+  /* 1. IGNIS (Nejmenší - Nejrychlejší) */
+  .orbit-1 { width: 450px; height: 450px; }
+  .rotator-1 { animation-duration: 20s; } 
+  .planet-1 { width: 50px; height: 50px; box-shadow: 0 0 20px rgba(255, 77, 0, 0.6); }
+
+  /* 2. EDEN (Střední - Střední rychlost) */
+  .orbit-2 { width: 750px; height: 750px; }
+  .rotator-2 { animation-duration: 45s; }
+  .planet-2 { width: 70px; height: 70px; box-shadow: 0 0 25px rgba(0, 255, 157, 0.5); }
+
+  /* 3. NEXUS (Největší - Nejpomalejší) */
+  .orbit-3 { width: 1150px; height: 1150px; }
+  .rotator-3 { animation-duration: 80s; }
+  .planet-3 { width: 90px; height: 90px; box-shadow: 0 0 35px rgba(176, 38, 255, 0.5); }
+
+  @keyframes spinOrbit {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Mobilní úpravy velikostí orbitů */
+  @media (max-width: 768px) {
+    .orbit-1 { width: 300px; height: 300px; }
+    .orbit-2 { width: 500px; height: 500px; }
+    .orbit-3 { width: 700px; height: 700px; }
+    
+    .planet-1 { width: 30px; height: 30px; }
+    .planet-2 { width: 45px; height: 45px; }
+    .planet-3 { width: 60px; height: 60px; }
+  }
+
+  /* --- OBSAH (Zarovnání vlevo) --- */
+  .hero-content {
+    position: relative;
+    z-index: 20;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 100%;
+    margin-top: -10vh; /* Lehké posunutí nahoru pro vizuální balanc */
+  }
+
+  .text-wrapper {
+    max-width: 42rem; /* Omezení šířky textu */
+    text-align: left;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1.5rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(176, 38, 255, 0.3);
+    background-color: rgba(2, 0, 16, 0.6);
+    backdrop-filter: blur(12px);
+    color: {{ section.settings.accent_color_1 }};
+    font-size: 0.875rem;
+    font-weight: bold;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 30px rgba(176, 38, 255, 0.2);
+  }
+
+  .hero-title {
+    font-size: 3.75rem;
+    line-height: 1;
+    font-weight: 900;
+    margin-bottom: 2rem;
+    color: white;
+    text-shadow: 0 0 50px rgba(0,0,0,1);
+  }
+  
+  @media(min-width: 768px) {
+    .hero-title { font-size: 6rem; }
+  }
+
+  .hero-desc {
+    color: #d1d5db;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    font-weight: 300;
+    margin-bottom: 3rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    background: rgba(2, 0, 16, 0.3);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255,255,255,0.05);
+    backdrop-filter: blur(4px);
+  }
+
+  /* Tlačítka */
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  @media(min-width: 640px) {
+    .btn-group { flex-direction: row; align-items: center; }
+  }
+
+  .btn-main {
+    position: relative;
+    padding: 1.25rem 2.5rem;
+    background-color: {{ section.settings.accent_color_1 }};
+    color: white;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    font-size: 1.125rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    overflow: hidden;
+    transition: all 0.3s;
+    box-shadow: 0 0 40px rgba(176, 38, 255, 0.6);
+  }
+  
+  .btn-main:hover {
+    transform: scale(1.05);
+    background-color: #9333ea;
+  }
+
+  .btn-secondary {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    color: #d1d5db;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    transition: all 0.3s;
+  }
+  
+  .btn-secondary:hover {
+    color: white;
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  /* Scroll Indicator */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    opacity: 0.6;
+    z-index: 20;
+  }
+  
+  .scroll-line {
+    width: 1px;
+    height: 4rem;
+    background: linear-gradient(to bottom, {{ section.settings.accent_color_1 }}, transparent);
+    margin: 0 auto;
+  }
+
+{%- endstyle -%}
+
+<div id="wrapper-{{ section.id }}" style="position: relative; height: 100%;">
+  
+  <!-- A) CANVAS: Černá díra a spirálovité hvězdy -->
+  <canvas id="singularity-canvas-{{ section.id }}"></canvas>
+
+  <!-- B) SLUNEČNÍ SOUSTAVA: Orbity a planety -->
+  <div class="solar-system">
+    
+    <!-- Orbit 1: IGNIS (Malá, rychlá) -->
+    <div class="orbit-wrapper orbit-1">
+      <div class="orbit-line"></div>
+      <div class="planet-rotator rotator-1">
+        <div class="planet planet-1" style="background-image: url('{{ section.settings.planet_1_img | image_url: width: 100 }}'); {% if section.settings.planet_1_img == blank %}background-image: url('https://cdn.shopify.com/s/files/1/0000/0001/files/planet_magma_placeholder.png?v=1');{% endif %}"></div>
+      </div>
+    </div>
+
+    <!-- Orbit 2: EDEN (Střední) -->
+    <div class="orbit-wrapper orbit-2">
+      <div class="orbit-line"></div>
+      <div class="planet-rotator rotator-2">
+        <div class="planet planet-2" style="background-image: url('{{ section.settings.planet_2_img | image_url: width: 140 }}'); {% if section.settings.planet_2_img == blank %}background-image: url('https://cdn.shopify.com/s/files/1/0000/0001/files/planet_earth_placeholder.png?v=1');{% endif %}"></div>
+      </div>
+    </div>
+
+    <!-- Orbit 3: NEXUS (Velká, pomalá) -->
+    <div class="orbit-wrapper orbit-3">
+      <div class="orbit-line"></div>
+      <div class="planet-rotator rotator-3">
+        <div class="planet planet-3" style="background-image: url('{{ section.settings.planet_3_img | image_url: width: 180 }}'); {% if section.settings.planet_3_img == blank %}background-image: url('https://cdn.shopify.com/s/files/1/0000/0001/files/planet_tech_placeholder.png?v=1');{% endif %}"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- C) OBSAH (Zarovnaný vlevo) -->
+  <div class="hero-content">
+    <div class="text-wrapper">
+      
+      <div class="badge">
+        <span style="display:inline-block; width: 8px; height: 8px; background-color: {{ section.settings.accent_color_1 }}; border-radius: 50%; margin-right: 0.75rem; animation: pulse 2s infinite;"></span>
+        {{ section.settings.badge_text }}
+      </div>
+
+      <h1 class="hero-title">
+        {{ section.settings.heading_line_1 }} <br>
+        <span class="text-magic-gradient">{{ section.settings.heading_line_2 }}</span>
+      </h1>
+
+      <p class="hero-desc">
+        {{ section.settings.description }}
+      </p>
+
+      <div class="btn-group">
+        <a href="{{ section.settings.btn_primary_link }}" class="btn-main">
+          <span style="position: relative; z-index: 10;">{{ section.settings.btn_primary_text }}</span>
+        </a>
+        <a href="{{ section.settings.btn_secondary_link }}" class="btn-secondary">
+          <span>{{ section.settings.btn_secondary_text }}</span>
+          <span class="material-symbols-outlined">south</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scroll Indikátor -->
+  <div class="scroll-indicator">
+    <p style="font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.4em; margin-bottom: 0.5rem; font-family: 'Cinzel', serif; color: {{ section.settings.accent_color_1 }};">Scrollovat do hlubin</p>
+    <div class="scroll-line"></div>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Moje-AI-6",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Barva pozadí",
+      "default": "#020010"
+    },
+    {
+      "type": "color",
+      "id": "accent_color_1",
+      "label": "Primární akcent (Magická)",
+      "default": "#b026ff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color_2",
+      "label": "Sekundární akcent (Ice)",
+      "default": "#00f7ff"
+    },
+    {
+      "type": "header",
+      "content": "Texty"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Horizont Událostí"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_1",
+      "label": "Nadpis Řádek 1",
+      "default": "NEODOLATELNÁ"
+    },
+    {
+      "type": "text",
+      "id": "heading_line_2",
+      "label": "Nadpis Řádek 2 (Gradient)",
+      "default": "GRAVITACE WEBU"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Popis",
+      "default": "Tvoříme Shopify e-shopy s tak silným designem a funkčností, že vtáhnou zákazníka dovnitř jako černá díra. Jediná cesta ven vede přes pokladnu."
+    },
+    {
+      "type": "header",
+      "content": "Tlačítka"
+    },
+    {
+      "type": "text",
+      "id": "btn_primary_text",
+      "label": "Tlačítko 1 Text",
+      "default": "VSTOUPIT DO DIMENZE"
+    },
+    {
+      "type": "url",
+      "id": "btn_primary_link",
+      "label": "Tlačítko 1 Odkaz"
+    },
+    {
+      "type": "text",
+      "id": "btn_secondary_text",
+      "label": "Tlačítko 2 Text",
+      "default": "Zobrazit Artefakty"
+    },
+    {
+      "type": "url",
+      "id": "btn_secondary_link",
+      "label": "Tlačítko 2 Odkaz"
+    },
+    {
+      "type": "header",
+      "content": "Planety (Obrázky)"
+    },
+    {
+      "type": "image_picker",
+      "id": "planet_1_img",
+      "label": "Planeta 1 (Ignis - Malá)",
+      "info": "Nechte prázdné pro výchozí lávovou planetu."
+    },
+    {
+      "type": "image_picker",
+      "id": "planet_2_img",
+      "label": "Planeta 2 (Eden - Střední)",
+      "info": "Nechte prázdné pro výchozí zelenou planetu."
+    },
+    {
+      "type": "image_picker",
+      "id": "planet_3_img",
+      "label": "Planeta 3 (Nexus - Velká)",
+      "info": "Nechte prázdné pro výchozí techno planetu."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-AI-6"
+    }
+  ]
+}
+{% endschema %}
+
+<!-- JAVASCRIPT: Logic for Canvas -->
+<script>
+  (function() {
+    function initBlackHole(sectionId) {
+      const canvas = document.getElementById('singularity-canvas-' + sectionId);
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      let width, height, centerX, centerY;
+      let stars = [];
+      const starCount = 800; 
+
+      // Třída Hvězdy pro spirálovitý pohyb
+      class Star {
+        constructor() {
+          this.reset();
+          // Náhodný startovní progress, aby nezačaly všechny na kraji
+          this.progress = Math.random(); 
+        }
+
+        reset() {
+          this.angle = Math.random() * Math.PI * 2; 
+          this.distance = Math.random() * 800 + 100; // Vzdálenost od středu
+          this.speed = Math.random() * 0.002 + 0.0005; // Rychlost rotace
+          this.infallSpeed = Math.random() * 0.2 + 0.05; // Rychlost pádu do středu
+          this.size = Math.random() * 1.5 + 0.5;
+        }
+
+        update() {
+          // Fyzika: Spirála dovnitř
+          // Čím blíže, tím rychlejší pád (infall)
+          this.distance -= this.infallSpeed * (800 / (this.distance + 10)); 
+          
+          // Čím blíže, tím rychlejší rotace (zachování hybnosti)
+          this.angle += this.speed * (400 / (this.distance + 1)); 
+
+          // Reset, pokud spadne do horizontu událostí (radius < 40)
+          if (this.distance < 40) {
+            this.reset();
+            this.distance = Math.max(width, height) / 1.2; // Respawn na okraji
+          }
+        }
+
+        draw() {
+          const x = centerX + Math.cos(this.angle) * this.distance;
+          const y = centerY + Math.sin(this.angle) * this.distance;
+          
+          // Průhlednost (Alpha): Mizí u středu a objevuje se na okraji
+          let alpha = 1;
+          if (this.distance < 100) alpha = this.distance / 100;
+          if (this.distance > 600) alpha = 1 - ((this.distance - 600) / 400);
+
+          // Barva podle vzdálenosti
+          let color = 'rgba(255, 255, 255, ' + alpha + ')';
+          if (this.distance < 150) color = 'rgba(176, 38, 255, ' + alpha + ')'; // Fialová u středu
+          else if (this.distance < 300) color = 'rgba(0, 247, 255, ' + alpha + ')'; // Azurová uprostřed
+
+          ctx.fillStyle = color;
+          ctx.beginPath();
+          ctx.arc(x, y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function resize() {
+        // Nastavíme canvas na velikost rodiče (sekce)
+        const wrapper = canvas.parentElement;
+        width = canvas.width = wrapper.offsetWidth;
+        height = canvas.height = wrapper.offsetHeight;
+        centerX = width / 2;
+        centerY = height / 2;
+      }
+
+      function initStars() {
+        stars = [];
+        for (let i = 0; i < starCount; i++) {
+          stars.push(new Star());
+        }
+      }
+
+      function animate() {
+        // Trail efekt (poloprůhledné smazání pro stopu)
+        ctx.fillStyle = 'rgba(2, 0, 16, 0.2)'; 
+        ctx.fillRect(0, 0, width, height);
+
+        // Vykreslení černé díry (Horizont událostí)
+        ctx.shadowBlur = 50;
+        ctx.shadowColor = '#b026ff';
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 40, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Vnitřní bílá záře
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#fff';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        
+        ctx.shadowBlur = 0; // Reset stínu pro hvězdy
+
+        // Update a kreslení hvězd
+        stars.forEach(star => {
+          star.update();
+          star.draw();
+        });
+
+        requestAnimationFrame(animate);
+      }
+
+      // Spuštění
+      resize();
+      initStars();
+      animate();
+      
+      // Listener pro změnu velikosti okna
+      window.addEventListener('resize', resize);
+    }
+
+    // Inicializace při načtení
+    document.addEventListener('DOMContentLoaded', function() {
+      const containers = document.querySelectorAll('[id^="singularity-canvas-"]');
+      containers.forEach(function(canvas) {
+        const id = canvas.id.replace('singularity-canvas-', '');
+        initBlackHole(id);
+      });
+    });
+
+    // Podpora pro Shopify Editor (Re-load)
+    document.addEventListener('shopify:section:load', function(event) {
+      const canvas = event.target.querySelector('[id^="singularity-canvas-"]');
+      if (canvas) {
+        const id = canvas.id.replace('singularity-canvas-', '');
+        initBlackHole(id);
+      }
+    });
+
+  })();
+</script>
+<!--
+"/gen?prompt=seamless+texture+of+magma+planet+orange+black+cracked+surface&aspect=1:1"
+"/gen?prompt=seamless+texture+of+green+earth+like+planet+clouds+forests&aspect=1:1"
+"/gen?prompt=seamless+texture+of+futuristic+purple+metal+planet+glowing+cities&aspect=1:1"
+-->

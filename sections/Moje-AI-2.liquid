@@ -1,0 +1,494 @@
+{%- style -%}
+
+  #shopify-section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    overflow: hidden; 
+    padding: 6rem 0;
+  }
+
+  /* UTILITY & LAYOUT */
+  .features-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .features-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+  }
+  @media(min-width: 768px) {
+    .features-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* TYPOGRAPHY */
+  #shopify-section-{{ section.id }} h2 {
+    font-family: 'Orbitron', sans-serif !important;
+    font-size: 2.5rem !important;
+    font-weight: bold;
+    letter-spacing: -0.05em !important; 
+    text-align: center;
+    margin-bottom: 1rem;
+    color: white;
+  }
+  @media(min-width: 768px) {
+    #shopify-section-{{ section.id }} h2 { font-size: 3.5rem !important; }
+  }
+
+  .section-subtitle {
+    text-align: center;
+    color: #9ca3af;
+    font-size: 1.125rem;
+    max-width: 42rem;
+    margin: 0 auto 4rem auto;
+  }
+
+  /* GLASS CARD STYLES */
+  .feature-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 2rem;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    border-top: 2px solid transparent;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .icon-wrapper {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  .feature-card:hover .icon-wrapper {
+    transform: scale(1.1);
+  }
+
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined' !important; 
+    font-weight: normal; 
+    font-style: normal; 
+    font-size: 24px; 
+    line-height: 1; 
+    display: inline-block; 
+    white-space: nowrap;
+  }
+  
+  .icon-main { font-size: 2rem !important; }
+  
+  .icon-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1rem;
+    opacity: 0.05;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  .icon-bg span { font-size: 5rem !important; }
+  
+  .feature-card:hover .icon-bg { opacity: 0.15; }
+
+  .card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+    color: white;
+  }
+
+  .card-desc {
+    color: #9ca3af;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .orbit-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.3), transparent);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* --- TLAČÍTKO --- */
+  .cta-wrapper {
+    margin-top: 16rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    perspective: 1000px;
+    padding-bottom: 8rem;
+    position: relative;
+    z-index: 10;
+  }
+
+  @keyframes float-animation {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+  }
+
+  .cyber-pill-button {
+    position: relative;
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 50px;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 13px; /* Sladěno s první sekcí */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    text-decoration: none;
+    
+    /* Crystal Style barvy z Moje-laser-video */
+    background: linear-gradient(90deg, rgb(235, 37, 192), rgba(68, 6, 212, 0.93)) !important;
+    box-shadow: 0 0 25px rgba(114, 43, 238, 0.9), inset 0 0 10px rgba(208, 183, 255, 0.7) !important;
+    
+    border-radius: 8px;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    animation: float-animation 3s ease-in-out infinite;
+    overflow: hidden; 
+  }
+
+  /* Hover efekt - Shine (Lesk) */
+  .cyber-pill-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
+    z-index: 1;
+  }
+
+  .cyber-pill-button:hover::after {
+    left: 100%;
+  }
+
+  .cyber-pill-button .material-symbols-outlined.arrow-icon {
+      transition: transform 0.3s ease;
+      position: relative;
+      z-index: 2;
+      font-size: 24px !important; /* Standartní velikost pro ikonu */
+  }
+
+  /* HOVER STAVY */
+  .cyber-pill-button:hover {
+    box-shadow: 0 0 30px rgba(205, 6, 212, 0.4) !important;
+    transform: translateY(-2px); /* Jemný hover posun z Moje-laser-video */
+    animation-play-state: paused; /* Zůstane stát v levitaci */
+  }
+
+  .cyber-pill-button:hover .arrow-icon {
+    transform: translateX(5px); /* Posun šipky doprava */
+  }
+
+  /* Disabled stav */
+  .cyber-pill-button.btn-disabled {
+      pointer-events: none !important; 
+      animation: none !important;
+      background: #222 !important;
+      box-shadow: none !important;
+      color: #555 !important;
+  }
+
+  /* Ostatní styly (Mist, Shadows) */
+  .purple-mist {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(to top, rgba(217, 70, 239, 0.6), rgba(217, 70, 239, 0.1), transparent);
+      filter: blur(40px);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.6;
+      animation: mist-flicker 4s infinite alternate ease-in-out;
+      transition: background 1.5s ease;
+      display: block !important;
+  }
+
+  @keyframes mist-flicker {
+      0% { opacity: 0.4; transform: scaleY(0.9); filter: blur(30px); }
+      50% { opacity: 0.7; filter: blur(45px); }
+      100% { opacity: 0.5; transform: scaleY(1.1); filter: blur(35px); }
+  }
+
+  .desktop-top-shadow {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 150px;
+      background: linear-gradient(to bottom, #000101, transparent);
+      pointer-events: none;
+      z-index: 1;
+      display: block !important;
+  }
+
+  @media (min-width: 768px) {
+      .desktop-top-shadow { display: block; }
+  }
+
+{%- endstyle -%}
+
+<div style="position: absolute; inset: 0; z-index: 0; pointer-events: none;">
+    {% if section.settings.bg_image != blank %}
+        {%- assign bg_style = 'width: 100%; height: 100%; object-fit: cover; opacity: 0.4; object-position: ' | append: section.settings.bg_position -%}
+        {{ section.settings.bg_image | image_url: width: 2000 | image_tag: class: 'object-cover', style: bg_style, loading: 'lazy' }}
+        <div style="position: absolute; inset: 0; background: rgba(5, 5, 5, 0.7);"></div>
+    {% endif %}
+</div>
+
+<div class="orbit-line"></div>
+<div id="neon-mist-layer" class="purple-mist"></div>
+<div class="desktop-top-shadow"></div>
+
+<div class="features-container">
+  <div style="position: relative; z-index: 2;">
+    <h2>{{ section.settings.title }}</h2>
+    <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+  </div>
+
+  <div class="features-grid">
+    {%- for block in section.blocks -%}
+      <div class="feature-card" style="border-top-color: {{ block.settings.color }};">
+        <div class="icon-bg">
+          <span class="material-symbols-outlined" style="color: {{ block.settings.color }};">{{ block.settings.icon }}</span>
+        </div>
+        <div class="icon-wrapper" style="background-color: {{ block.settings.color }}1A; border-color: {{ block.settings.color }}4D;">
+          <span class="material-symbols-outlined icon-main" style="color: {{ block.settings.color }};">{{ block.settings.icon }}</span>
+        </div>
+        <h3 class="card-title">{{ block.settings.title }}</h3>
+        <p class="card-desc">{{ block.settings.text }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="cta-wrapper">
+    <button type="button" id="trigger-cosmic-intro" class="cyber-pill-button">
+      {{ section.settings.btn_text }}
+      <span class="material-symbols-outlined arrow-icon">keyboard_double_arrow_down</span>
+    </button>
+  </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const triggerBtn = document.getElementById('trigger-cosmic-intro');
+        const currentSectionDiv = document.getElementById('shopify-section-{{ section.id }}');
+        const mistLayer = document.getElementById('neon-mist-layer');
+        
+        const allSections = Array.from(document.querySelectorAll('.shopify-section'));
+        const footer = document.querySelector('footer') || document.getElementById('shopify-section-footer') || document.querySelector('.site-footer');
+
+        let elementsToHide = [];
+        let isAfterCurrent = false;
+
+        document.addEventListener('changeMistColor', function(e) {
+            if (!mistLayer) return;
+            const newColor = e.detail.color; 
+            let newGradient = '';
+            if (newColor === 'orange') {
+                newGradient = 'linear-gradient(to top, rgba(249, 115, 22, 0.6), rgba(249, 115, 22, 0.1), transparent)';
+            } else if (newColor === 'purple') {
+                newGradient = 'linear-gradient(to top, rgba(217, 70, 239, 0.6), rgba(217, 70, 239, 0.1), transparent)';
+            } else {
+                newGradient = 'linear-gradient(to top, rgba(88, 230, 255, 0.6), rgba(92, 230, 255, 0.1), transparent)';
+            }
+            mistLayer.style.background = newGradient;
+        });
+
+        allSections.forEach(sec => {
+            if (sec === currentSectionDiv) {
+                isAfterCurrent = true;
+            } else if (isAfterCurrent) {
+                sec.style.display = 'none';
+                elementsToHide.push(sec);
+            }
+        });
+
+        if (footer && footer.style.display !== 'none' && !elementsToHide.includes(footer)) {
+            footer.style.display = 'none';
+            elementsToHide.push(footer);
+        }
+
+        if(triggerBtn){
+            triggerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (this.classList.contains('btn-disabled')) return;
+                this.classList.add('btn-disabled');
+                this.blur();
+                elementsToHide.forEach(el => { el.style.display = ''; });
+                const event = new CustomEvent('triggerCosmicIntro');
+                document.dispatchEvent(event);
+                const videoTarget = document.querySelector('.cosmic-wrapper');
+                if(videoTarget) {
+                    setTimeout(() => {
+                        videoTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }
+            });
+        }
+    });
+</script>
+
+{% schema %}
+{
+  "name": "Moje-AI-2",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#050505"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Obrázek na pozadí"
+    },
+    {
+      "type": "select",
+      "id": "bg_position",
+      "label": "Zarovnání pozadí",
+      "options": [
+        { "value": "center center", "label": "Střed (Center)" },
+        { "value": "left center", "label": "Vlevo (Left)" },
+        { "value": "right center", "label": "Vpravo (Right)" },
+        { "value": "center top", "label": "Nahoru (Top)" },
+        { "value": "center bottom", "label": "Dolů (Bottom)" }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Proč Shopify mise?"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Váš úspěch není ve hvězdách, ale v technologii, kterou používáte."
+    },
+    {
+      "type": "header",
+      "content": "Nastavení tlačítka"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Text",
+      "default": "Prozkoumat nabídku"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Button Link",
+      "info": "Odkaz se nepoužije, tlačítko spustí video v jiné sekci."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Vlastnost"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Popis této skvělé vlastnosti..."
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon Name (Material Symbols)",
+          "default": "bolt",
+          "info": "Use names like: bolt, palette, rocket_launch, speed, security"
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Accent Color",
+          "default": "#7c3aed"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-AI-2",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Rychlost světla",
+            "text": "Optimalizované šablony Dawn 2.0 zajišťují bleskové načítání. Zákazníci nečekají, zákazníci nakupují.",
+            "icon": "bolt",
+            "color": "#7c3aed"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Nebulární Design",
+            "text": "Unikátní vizuální styl, který odliší vaši značku od konkurence. Žádné nudné šablony, ale zážitek.",
+            "icon": "palette",
+            "color": "#06b6d4"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Škálovatelný Vesmír",
+            "text": "Systém, který roste s vámi. Od prvního prodeje až po mezigalaktické impérium bez nutnosti měnit platformu.",
+            "icon": "rocket_launch",
+            "color": "#db2777"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

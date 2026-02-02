@@ -1,0 +1,139 @@
+{% comment %}
+  Sekce: Intro Video to Image (Fixnutý poměr stran podle videa)
+{% endcomment %}
+
+<style>
+  .intro-section-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: transparent; /* Zamezí bílému/černému pozadí */
+  }
+
+  .intro-media-container {
+    position: relative;
+    width: 100%;
+    max-width: {{ section.settings.max_width }}px;
+    /* Zde se dynamicky nastaví poměr stran podle videa přes Liquid */
+    height: 0; 
+    overflow: hidden;
+  }
+
+  /* Video i obrázek mají absolutní pozici a roztáhnou se na 100% kontejneru */
+  .intro-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Cover zajistí, že vyplní celý prostor bez mezer */
+    object-fit: cover; 
+  }
+
+  .intro-image {
+    z-index: 1;
+    display: block;
+  }
+
+  .intro-video {
+    z-index: 2;
+    transition: opacity 0.4s ease;
+  }
+
+  .video-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+
+<div class="intro-section-wrapper">
+  {%- if section.settings.intro_video != blank -%}
+    {%- assign video_ratio = section.settings.intro_video.aspect_ratio -%}
+    {%- assign padding_bottom = 100 | divided_by: video_ratio -%}
+  {%- else -%}
+    {%- assign padding_bottom = 56.25 -%} {% comment %} Fallback 16:9 {% endcomment %}
+  {%- endif -%}
+
+  <!-- Container má padding-bottom nastavený přesně podle poměru stran videa -->
+  <div class="intro-media-container" style="padding-bottom: {{ padding_bottom }}%;">
+    
+    {%- if section.settings.final_image != blank -%}
+      {{ section.settings.final_image | image_url: width: 2000 | image_tag: 
+        class: 'intro-content intro-image', 
+        loading: 'eager', 
+        alt: section.settings.final_image.alt | default: 'Intro Image' 
+      }}
+    {%- endif -%}
+
+    {%- if section.settings.intro_video != blank -%}
+      {{ section.settings.intro_video | video_tag: 
+        autoplay: true, 
+        loop: false, 
+        muted: true, 
+        playsinline: true, 
+        controls: false, 
+        class: 'intro-content intro-video',
+        id: 'IntroVideo-' | append: section.id
+      }}
+    {%- endif -%}
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var video = document.getElementById('IntroVideo-{{ section.id }}');
+    
+    if (video) {
+      // Jakmile video skončí, skryje se
+      video.onended = function() {
+        video.classList.add('video-hidden');
+        setTimeout(() => {
+           video.style.display = 'none'; 
+        }, 400);
+      };
+
+      // Spuštění videa
+      video.play().catch(function(error) {
+        console.log("Autoplay failed:", error);
+        // Pokud se nespustí, skryjeme ho rovnou
+        video.classList.add('video-hidden');
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Moje-video-intro",
+  "settings": [
+    {
+      "type": "video",
+      "id": "intro_video",
+      "label": "Video",
+      "info": "Rozměr sekce se přizpůsobí tomuto videu."
+    },
+    {
+      "type": "image_picker",
+      "id": "final_image",
+      "label": "Finální obrázek",
+      "info": "Tento obrázek se roztáhne přesně na velikost videa."
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 400,
+      "max": 2000,
+      "step": 20,
+      "unit": "px",
+      "label": "Maximální šířka",
+      "default": 1200
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-video-intro"
+    }
+  ]
+}
+{% endschema %}

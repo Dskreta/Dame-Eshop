@@ -1,0 +1,1033 @@
+{% schema %}
+{
+  "name": "Moje-laser-video",
+  "settings": [
+    {
+      "type": "header",
+      "content": "0. ÚVODNÍ INTRO VIDEO (Preloader)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_intro",
+      "label": "Zapnout úvodní intro video",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "intro_video_desktop",
+      "label": "URL Intro videa (Desktop)",
+      "info": "Odkaz na MP4 video, které se přehraje jako první."
+    },
+    {
+      "type": "text",
+      "id": "intro_video_mobile",
+      "label": "URL Intro videa (Mobil)",
+      "info": "Odkaz na MP4 video pro mobily."
+    },
+    {
+      "type": "header",
+      "content": "------- STYL A BARVY NADPISU -------"
+    },
+    {
+      "type": "select",
+      "id": "heading_style",
+      "label": "Vyber styl nadpisu",
+      "options": [
+        {
+          "value": "original",
+          "label": "2D Plochý (Klasika)"
+        },
+        {
+          "value": "modern_3d",
+          "label": "Moderní 3D (Čistá Hloubka)"
+        },
+        {
+          "value": "3d_texture",
+          "label": "3D Textura (Kámen/Mech)"
+        }
+      ],
+      "default": "modern_3d"
+    },
+    {
+      "type": "range",
+      "id": "text_depth",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Hloubka 3D efektu (Tloušťka)",
+      "default": 6,
+      "info": "Určuje, jak moc písmo 'vystupuje' do prostoru."
+    },
+    {
+      "type": "header",
+      "content": "Nastavení barev",
+      "info": "Tyto barvy platí pro všechny styly."
+    },
+    {
+      "type": "color",
+      "id": "color_part1",
+      "label": "Barva 1. části textu",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "gradient_start",
+      "label": "2. Část: Začátek gradientu",
+      "default": "#22d3ee"
+    },
+    {
+      "type": "color",
+      "id": "gradient_end",
+      "label": "2. Část: Konec gradientu",
+      "default": "#d946ef"
+    },
+    {
+      "type": "color",
+      "id": "depth_color",
+      "label": "Barva 3D hloubky (Boky písma)",
+      "default": "#0f0f0f",
+      "info": "Doporučeno: Téměř černá nebo tmavá verze hlavní barvy."
+    },
+    {
+      "type": "header",
+      "content": "Textura (Pouze pro styl '3D Textura')"
+    },
+    {
+      "type": "image_picker",
+      "id": "text_texture_image",
+      "label": "Obrázek textury"
+    },
+    {
+      "type": "header",
+      "content": "1. VIDEA POZADÍ (Responzivní)"
+    },
+    {
+      "type": "text",
+      "id": "video_mobile",
+      "label": "Mobil (do 768px)",
+      "info": "URL videa pro mobily (na výšku)."
+    },
+    {
+      "type": "text",
+      "id": "video_tablet",
+      "label": "Tablet (769px - 1024px)",
+      "info": "URL videa pro tablety."
+    },
+    {
+      "type": "text",
+      "id": "video_desktop",
+      "label": "Desktop (PC - 1025px - 1400px)",
+      "info": "URL videa pro standardní PC."
+    },
+    {
+      "type": "text",
+      "id": "video_widescreen",
+      "label": "Widescreen (nad 1401px)",
+      "info": "URL videa pro širokoúhlé monitory (volitelné)."
+    },
+    {
+      "type": "header",
+      "content": "POSUN VIDEA (Doleva/Doprava)"
+    },
+    {
+      "type": "range",
+      "id": "video_x_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Posun Desktop (50 = Střed)",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "video_x_tablet",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Posun Tablet (50 = Střed)",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "video_x_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "Posun Mobil (50 = Střed)",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "2. POMĚRY STRAN (Výška sekce)"
+    },
+    {
+      "type": "range",
+      "id": "ratio_mobile",
+      "min": 0.5,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Poměr pro MOBIL",
+      "default": 0.6
+    },
+    {
+      "type": "range",
+      "id": "ratio_tablet",
+      "min": 0.5,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Poměr pro TABLET",
+      "default": 1.0
+    },
+    {
+      "type": "range",
+      "id": "ratio_desktop",
+      "min": 1.0,
+      "max": 2.5,
+      "step": 0.1,
+      "label": "Poměr pro DESKTOP",
+      "default": 1.3
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Barva pozadí",
+      "default": "#000000"
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Zástupný obrázek videa"
+    },
+    {
+      "type": "header",
+      "content": "3. OBRÁZEK V BOXU"
+    },
+    {
+      "type": "image_picker",
+      "id": "box_image",
+      "label": "Obrázek (Jeden pro všechna zařízení)",
+      "info": "Tento obrázek se bude automaticky přizpůsobovat."
+    },
+    {
+      "type": "header",
+      "content": "4. POZICE OBRÁZKU (DESKTOP)"
+    },
+    {
+      "type": "range",
+      "id": "box_width_desktop",
+      "min": 50,
+      "max": 60,
+      "step": 0.1,
+      "unit": "%",
+      "label": "Šířka",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "box_top_desktop",
+      "min": 45,
+      "max": 55,
+      "step": 0.1,
+      "unit": "%",
+      "label": "Pozice odshora",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "box_left_desktop",
+      "min": 40,
+      "max": 50,
+      "step": 0.1,
+      "unit": "%",
+      "label": "Pozice zleva",
+      "default": 45
+    },
+    {
+      "type": "header",
+      "content": "5. POZICE OBRÁZKU (TABLET)"
+    },
+    {
+      "type": "range",
+      "id": "box_width_tablet",
+      "min": 65,
+      "max": 75,
+      "step": 0.1,
+      "unit": "%",
+      "label": "Šířka (Tablet)",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "box_top_tablet",
+      "min": 45,
+      "max": 55,
+      "step": 0.1,
+      "unit": "%",
+      "label": "Pozice odshora (Tablet)",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "box_left_tablet",
+      "min": 45,
+      "max": 55,
+      "step": 0.1,
+      "unit": "%",
+      "label": "Pozice zleva (Tablet)",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "6. POZICE OBRÁZKU (MOBIL)"
+    },
+    {
+      "type": "range",
+      "id": "box_width_mobile",
+      "min": 90,
+      "max": 100,
+      "step": 0.1,
+      "unit": "%",
+      "label": "Šířka (Mobil)",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "box_top_mobile",
+      "min": 60,
+      "max": 70,
+      "step": 0.1,
+      "unit": "%",
+      "label": "Pozice odshora (Mobil)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "box_left_mobile",
+      "min": 50,
+      "max": 60,
+      "step": 0.1,
+      "unit": "%",
+      "label": "Pozice zleva (Mobil)",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Textový obsah (Pozice a Velikost)"
+    },
+    {
+      "type": "range",
+      "id": "text_max_top",
+      "min": 0,
+      "max": 50,
+      "step": 0.5,
+      "unit": "%",
+      "label": "Top (Max)",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "text_max_left",
+      "min": 0,
+      "max": 50,
+      "step": 0.5,
+      "unit": "%",
+      "label": "Left (Max)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "text_widescreen_top",
+      "min": 0,
+      "max": 50,
+      "step": 0.5,
+      "unit": "%",
+      "label": "Top (Widescreen)",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "text_widescreen_left",
+      "min": 0,
+      "max": 50,
+      "step": 0.5,
+      "unit": "%",
+      "label": "Left (Widescreen)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "text_desktop_top",
+      "min": 0,
+      "max": 50,
+      "step": 0.5,
+      "unit": "%",
+      "label": "Top (Desktop)",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "text_desktop_left",
+      "min": 0,
+      "max": 50,
+      "step": 0.5,
+      "unit": "%",
+      "label": "Left (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "text_tablet_top",
+      "min": 0,
+      "max": 50,
+      "step": 0.5,
+      "unit": "%",
+      "label": "Top (Tablet)",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "text_tablet_left",
+      "min": 0,
+      "max": 50,
+      "step": 0.5,
+      "unit": "%",
+      "label": "Left (Tablet)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "text_mobile_top",
+      "min": 0,
+      "max": 50,
+      "step": 0.5,
+      "unit": "%",
+      "label": "Top (Mobil)",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "text_mobile_left",
+      "min": 0,
+      "max": 50,
+      "step": 0.5,
+      "unit": "%",
+      "label": "Left (Mobil)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "text_max_size",
+      "min": 1.0,
+      "max": 10.0,
+      "step": 0.1,
+      "label": "Velikost textu (Max)",
+      "default": 4.0
+    },
+    {
+      "type": "range",
+      "id": "text_widescreen_size",
+      "min": 1.0,
+      "max": 6.0,
+      "step": 0.1,
+      "label": "Velikost textu (Widescreen)",
+      "default": 4.0
+    },
+    {
+      "type": "range",
+      "id": "text_desktop_size",
+      "min": 1.0,
+      "max": 5.0,
+      "step": 0.1,
+      "label": "Velikost textu (Desktop)",
+      "default": 3.5
+    },
+    {
+      "type": "range",
+      "id": "text_tablet_size",
+      "min": 1.0,
+      "max": 3.0,
+      "step": 0.1,
+      "label": "Velikost textu (Tablet)",
+      "default": 2.2
+    },
+    {
+      "type": "range",
+      "id": "text_mobile_size",
+      "min": 0.8,
+      "max": 2.5,
+      "step": 0.1,
+      "label": "Velikost textu (Mobil)",
+      "default": 1.6
+    },
+    {
+      "type": "header",
+      "content": "Obsah Nadpisu"
+    },
+    {
+      "type": "text",
+      "id": "headline_part1",
+      "label": "Nadpis - První část",
+      "default": "Everything App"
+    },
+    {
+      "type": "text",
+      "id": "headline_part2",
+      "label": "Nadpis - Druhá část",
+      "default": " for your teams"
+    },
+    {
+      "type": "textarea",
+      "id": "subheadline",
+      "label": "Podnadpis",
+      "default": "Huly, an open-source platform..."
+    },
+    {
+      "type": "header",
+      "content": "Tlačítko"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Text tlačítka",
+      "default": "SEE IN ACTION"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Odkaz tlačítka"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Barva podnadpisu",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-laser-video"
+    }
+  ]
+}
+{% endschema %}
+
+<div id="laser-wrapper-{{ section.id }}" class="laser-section-wrapper">
+
+  {% comment %} --- NOVÁ FUNKCIONALITA: INTRO OVERLAY --- {% endcomment %}
+  {% if section.settings.enable_intro %}
+    <div id="intro-overlay-{{ section.id }}" class="intro-sequence-overlay">
+      <video id="intro-video-element-{{ section.id }}" class="intro-video-fullscreen" muted playsinline autoplay>
+        {% comment %} JavaScript vybere správný zdroj {% endcomment %}
+      </video>
+    </div>
+  {% endif %}
+
+  <div class="main-section" style="background-color: {{ section.settings.bg_color }};">
+
+    <div class="section-height-spacer"></div>
+
+    <div class="laser-video-layer">
+      <video
+        class="synced-video"
+        autoplay muted loop playsinline
+        poster="{{ section.settings.fallback_image | image_url: width: 2000 }}"
+      >
+        {% if section.settings.video_mobile != blank %}
+          <source src="{{ section.settings.video_mobile }}" type="video/mp4" media="(max-width: 768px)">
+        {% endif %}
+        
+        {% if section.settings.video_tablet != blank %}
+          <source src="{{ section.settings.video_tablet }}" type="video/mp4" media="(max-width: 1024px)">
+        {% endif %}
+        
+        {% if section.settings.video_widescreen != blank %}
+          <source src="{{ section.settings.video_widescreen }}" type="video/mp4" media="(min-width: 1401px)">
+        {% endif %}
+        
+        {% if section.settings.video_desktop != blank %}
+          <source src="{{ section.settings.video_desktop }}" type="video/mp4">
+        {% endif %}
+      </video>
+
+      {% if section.settings.video_desktop == blank and section.settings.video_mobile == blank and section.settings.video_tablet == blank and section.settings.video_widescreen == blank %}
+         {% if section.settings.fallback_image != blank %}
+           <img
+             src="{{ section.settings.fallback_image | image_url: width: 2000 }}"
+             class="synced-video"
+             width="{{ section.settings.fallback_image.width }}"
+             height="{{ section.settings.fallback_image.height }}"
+             loading="lazy"
+             alt="Background fallback"
+           >
+         {% else %}
+           <div class="placeholder-video">Video nenačteno</div>
+         {% endif %}
+      {% endif %}
+    </div> <div class="mobile-top-shadow"></div>
+
+    <div class="content-overlay-layer">
+      {% if section.settings.box_image != blank %}
+        <div class="synced-box">
+          <img
+            src="{{ section.settings.box_image | image_url: width: 1600 }}"
+            width="{{ section.settings.box_image.width }}"
+            height="{{ section.settings.box_image.height }}"
+            loading="lazy"
+            alt="Box Content"
+          >
+        </div>
+      {% endif %}
+
+      {% comment %} Přidána třída 'fade-content-wrapper' pro animaci {% endcomment %}
+      <div class="huly-text-content fade-content-wrapper" style="color: {{ section.settings.text_color }};">
+        
+        {% if section.settings.heading_style == 'modern_3d' %}
+              <div class="headline-stack-container font-display">
+                
+                <h2 class="headline-layer layer-modern-back">
+                   <span style="color: {{ section.settings.depth_color }} !important;">{{ section.settings.headline_part1 }}</span>
+                   <span style="color: {{ section.settings.depth_color }} !important;">{{ section.settings.headline_part2 }}</span>
+                </h2>
+
+                <h2 class="headline-layer layer-modern-front">
+                   <span class="headline-base">{{ section.settings.headline_part1 }}</span>
+                   <span class="headline-gradient">{{ section.settings.headline_part2 }}</span>
+                </h2>
+              </div>
+
+        {% elsif section.settings.heading_style == '3d_texture' %}
+            
+            <div class="headline-stack-container font-display">
+                <h2 class="headline-layer layer-texture-back">
+                   <span style="color: {{ section.settings.color_part1 }};">{{ section.settings.headline_part1 }}</span>
+                   <span class="gradient-text-fill">{{ section.settings.headline_part2 }}</span>
+                </h2>
+                <h2 class="headline-layer layer-texture-front" aria-hidden="true">
+                   <span>{{ section.settings.headline_part1 }}</span>
+                   <span>{{ section.settings.headline_part2 }}</span>
+                </h2>
+            </div>
+
+        {% else %}
+            
+            <h2 class="huly-headline font-display style-original">
+                {% if section.settings.headline_part1 != blank %}
+                    <span class="headline-base">{{ section.settings.headline_part1 }}</span>
+                {% endif %}
+                {% if section.settings.headline_part2 != blank %}
+                    <span class="headline-gradient">{{ section.settings.headline_part2 }}</span>
+                {% endif %}
+            </h2>
+
+        {% endif %}
+
+
+        {% if section.settings.subheadline != blank %}
+          <p class="huly-subheadline font-tech">{{ section.settings.subheadline }}</p>
+        {% endif %}
+        
+        {% if section.settings.button_label != blank %}
+          <a href="{{ section.settings.button_link }}" id="hero-cta-btn" class="cosmic-form-btn font-display">
+            {{ section.settings.button_label }}
+            <span class="material-symbols-outlined arrow-icon">send</span>
+          </a>
+        {% endif %}
+
+      </div> </div> </div> <div class="force-shadow"></div>
+
+</div> <style>
+  /* Všechny styly jsou uzamčeny pod ID sekce */
+/* Přidáváme vaši sekci k pravidlům pro skrytí */
+  .header__menu-wrapper,
+  .header__icons,
+  #Moje-laser-video { /* Pokud je to ID, použijte #, pokud třída, tak . */
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 3s ease-in-out; /* ZDE nastavujete RYCHLOST (např. 5 sekund) */
+  }
+
+  /* Stav po načtení videa */
+  header.content-loaded .header__menu-wrapper,
+  header.content-loaded .header__icons,
+  header.content-loaded + #Moje-laser-video, /* Pokud sekce následuje hned po headeru */
+  body.content-ready #Moje-laser-video {      /* Pojistka přes body */
+      opacity: 1;
+      visibility: visible;
+  }
+  /* --- DEFINICE FONTŮ --- */
+  #laser-wrapper-{{ section.id }} .font-display { font-family: 'Orbitron', sans-serif; }
+  #laser-wrapper-{{ section.id }} .font-tech { font-family: 'Rajdhani', sans-serif; }
+
+  /* --- OBECNÉ --- */
+  #laser-wrapper-{{ section.id }} .main-section { 
+    position: relative;
+    width: 100%; 
+    padding: 0; 
+    margin: 0; 
+    background-color: {{ section.settings.bg_color }};
+    box-sizing: border-box !important;
+  }
+
+  #laser-wrapper-{{ section.id }} h2, 
+  #laser-wrapper-{{ section.id }} p {
+      margin: 0; padding: 0; font-weight: normal;
+  }
+
+  #laser-wrapper-{{ section.id }} .section-height-spacer {
+    width: 100%;
+    aspect-ratio: {{ section.settings.ratio_desktop }}; 
+    font-size: 0; line-height: 0; display: block !important; 
+    box-sizing: border-box !important;
+  }
+  @media (max-width: 1024px) { #laser-wrapper-{{ section.id }} .section-height-spacer { aspect-ratio: {{ section.settings.ratio_tablet }}; } }
+  @media (max-width: 768px) { #laser-wrapper-{{ section.id }} .section-height-spacer { aspect-ratio: {{ section.settings.ratio_mobile }}; } }
+
+  /* Vrstvy */
+  #laser-wrapper-{{ section.id }} .laser-video-layer, 
+  #laser-wrapper-{{ section.id }} .content-overlay-layer {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  }
+  #laser-wrapper-{{ section.id }} .laser-video-layer { z-index: 1; }
+  #laser-wrapper-{{ section.id }} .content-overlay-layer { z-index: 3; }
+
+  /* Video */
+  #laser-wrapper-{{ section.id }} .synced-video, 
+  #laser-wrapper-{{ section.id }} .placeholder-video { 
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+    object-fit: cover; object-position: {{ section.settings.video_x_desktop }}% center; z-index: auto; 
+  }
+  @media (max-width: 1024px) { #laser-wrapper-{{ section.id }} .synced-video { object-position: {{ section.settings.video_x_tablet }}% center; } }
+  @media (max-width: 768px) { #laser-wrapper-{{ section.id }} .synced-video { object-position: {{ section.settings.video_x_mobile }}% center; } }
+
+  /* Stíny */
+  #laser-wrapper-{{ section.id }} .mobile-top-shadow { display: none; pointer-events: none; }
+  @media (max-width: 768px) {
+    #laser-wrapper-{{ section.id }} .mobile-top-shadow {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100px; 
+      background: linear-gradient(to bottom, #000101 0%, rgba(0,0,0,0) 100%);
+      z-index: 3; display: block !important;
+    }
+  }
+
+  #laser-wrapper-{{ section.id }} .force-shadow {
+    display: block !important; width: 100% !important; position: relative !important;
+    z-index: 1 !important; pointer-events: none !important;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgb(0, 1, 1) 100%) !important;
+    height: 900px !important; margin-top: -900px !important; box-sizing: content-box !important;
+  }
+  @media (max-width: 1528px) { #laser-wrapper-{{ section.id }} .force-shadow { height: 344px !important; margin-top: -344px !important; } }
+  @media (max-width: 1228px) { #laser-wrapper-{{ section.id }} .force-shadow { height: 250px !important; margin-top: -250px !important; } }
+  @media (max-width: 1024px) { #laser-wrapper-{{ section.id }} .force-shadow { height: 200px !important; margin-top: -200px !important; } }
+  @media (max-width: 768px) { #laser-wrapper-{{ section.id }} .force-shadow { height: 150px !important; margin-top: -40px !important; } }
+  @media (max-width: 500px) { #laser-wrapper-{{ section.id }} .force-shadow { height: 100px !important; margin-top: -34px !important; } }
+
+  /* Box s obrázkem */
+  #laser-wrapper-{{ section.id }} .synced-box {
+    position: absolute; z-index: auto; transform: translateX(-50%);
+    width: {{ section.settings.box_width_desktop }}%;
+    top: {{ section.settings.box_top_desktop }}%;
+    left: {{ section.settings.box_left_desktop }}%;
+    box-sizing: border-box !important;
+  }
+  #laser-wrapper-{{ section.id }} .synced-box img { width: 100%; height: auto; display: block; border-radius: 10px 10px 0 0; }
+  
+  @media (max-width: 1024px) { #laser-wrapper-{{ section.id }} .synced-box { width: {{ section.settings.box_width_tablet }}%; top: {{ section.settings.box_top_tablet }}%; left: {{ section.settings.box_left_tablet }}%; } }
+  @media (max-width: 768px) { #laser-wrapper-{{ section.id }} .synced-box { width: {{ section.settings.box_width_mobile }}% !important; top: {{ section.settings.box_top_mobile }}% !important; left: {{ section.settings.box_left_mobile }}% !important; } }
+
+
+  /* --- TEXTOVÝ OBSAH --- */
+  #laser-wrapper-{{ section.id }} .huly-text-content {
+    position: absolute; z-index: auto; 
+    max-width: 580px; text-align: left; padding: 0 20px;
+    box-sizing: border-box !important;
+  }
+
+  /* Grid Stack System (Společné) */
+  #laser-wrapper-{{ section.id }} .headline-stack-container {
+    display: grid; grid-template-columns: 1fr; margin-bottom: 20px;
+  }
+  #laser-wrapper-{{ section.id }} .headline-layer {
+    grid-row: 1; grid-column: 1; margin: 0; padding: 0;
+    font-size: 3.5em; font-weight: 900; line-height: 1.1 !important;
+    display: block; width: 100%;
+    /* PŘIDÁNO: Tracking tighter pro všechny vrstvy */
+    letter-spacing: -0.05em; 
+  }
+
+  /* =========================================
+      STYL: MODERNÍ 3D (Čistá hloubka)
+      ========================================= */
+  
+  /* Vrstva 1: Zadní (Tmavé boky) */
+  #laser-wrapper-{{ section.id }} .layer-modern-back {
+      z-index: 3;
+      /* Generujeme postupné stíny pro "vytlačení" dozadu a dolů */
+      text-shadow: 
+          1px 1px 0px {{ section.settings.depth_color }},
+          2px 2px 0px {{ section.settings.depth_color }},
+          3px 3px 0px {{ section.settings.depth_color }},
+          4px 4px 0px {{ section.settings.depth_color }},
+          {{ section.settings.text_depth }}px {{ section.settings.text_depth }}px 15px rgba(0,0,0,0.8);
+      
+      transform: translate(0, 0); /* Zadní vrstva stojí */
+  }
+
+  /* Vrstva 2: Přední (Barva + Gradient) - Posunutá, aby vytvořila iluzi */
+  #laser-wrapper-{{ section.id }} .layer-modern-front {
+      z-index: 4;
+      /* Posuneme přední vrstvu PROTI směru stínu (nahoru a doleva) */
+      transform: translate(calc(-1 * {{ section.settings.text_depth }}px / 2), calc(-1 * {{ section.settings.text_depth }}px / 2));
+      /* PŘIDÁNO: Bílý GLOW */
+      filter: drop-shadow(0 0 15px rgba(255,255,255,0.3));
+  }
+
+  /* =========================================
+      STYL: 3D TEXTURA (Původní textura)
+      ========================================= */
+  #laser-wrapper-{{ section.id }} .layer-texture-back {
+      z-index: 5;
+      text-shadow: 
+          1px 1px 0px #000, 2px 2px 0px #000, 3px 3px 0px #000,
+          {{ section.settings.text_depth }}px {{ section.settings.text_depth }}px 15px rgba(0,0,0,0.8);
+  }
+  #laser-wrapper-{{ section.id }} .layer-texture-back .gradient-text-fill {
+           background: none !important; color: {{ section.settings.gradient_start }} !important; 
+  }
+  #laser-wrapper-{{ section.id }} .layer-texture-front {
+      z-index: 4; color: transparent; background: none; pointer-events: none;
+      /* PŘIDÁNO: Bílý GLOW */
+      filter: drop-shadow(0 0 15px rgba(255,255,255,0.3));
+  }
+  #laser-wrapper-{{ section.id }} .layer-texture-front span {
+        color: transparent !important; background: none !important; -webkit-text-fill-color: transparent;
+        {% if section.settings.text_texture_image != blank %}
+          background-image: url('{{ section.settings.text_texture_image | image_url: width: 1000 }}') !important;
+        {% else %}
+          background-image: url('https://cdn.shopify.com/s/files/1/0000/0001/files/noise.png') !important; 
+        {% endif %}
+        background-size: cover !important; background-position: center !important;
+        -webkit-background-clip: text !important; background-clip: text !important;
+        text-shadow: none !important; font-weight: 900;
+  }
+  
+  /* =========================================
+      SPOLEČNÉ BAREVNÉ TŘÍDY (Gradienty)
+      ========================================= */
+  #laser-wrapper-{{ section.id }} .style-original {
+    font-size: 3.5em; font-weight: 900; line-height: 1.1 !important; margin-bottom: 20px;
+    display: block; 
+    /* PŘIDÁNO: Styl plochého nadpisu */
+    letter-spacing: -0.05em; 
+    filter: drop-shadow(0 0 15px rgba(255,255,255,0.3));
+  }
+  #laser-wrapper-{{ section.id }} .headline-base {
+      color: {{ section.settings.color_part1 }};
+      margin-right: 0.2em; 
+  }
+  #laser-wrapper-{{ section.id }} .headline-gradient {
+      background: linear-gradient(90deg, {{ section.settings.gradient_start }}, {{ section.settings.gradient_end }});
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block; 
+  }
+
+  /* Podnadpis */
+  #laser-wrapper-{{ section.id }} .huly-subheadline {
+    font-size: 0.92em; line-height: 1.5 !important; margin-bottom: 40px; opacity: 0.9;
+    color: {{ section.settings.text_color }};
+    display: block; 
+  }
+
+  /* --- TLAČÍTKO S PROMĚNNÝMI --- */
+  #laser-wrapper-{{ section.id }} .cosmic-form-btn {
+    /* Výchozí fialové hodnoty (Crystal) */
+    --btn-bg: linear-gradient(90deg, rgb(235, 37, 192), rgba(68, 6, 212, 0.93));
+    --btn-shadow: 0 0 25px rgba(114, 43, 238, 0.9), inset 0 0 10px rgba(208, 183, 255, 0.7);
+    
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 13px 50px; border-radius: 8px; text-decoration: none;
+    
+    /* Použití proměnných */
+    background: var(--btn-bg) !important;
+    box-shadow: var(--btn-shadow) !important;
+    
+    color: #FFFFFF; font-weight: 700; font-size: 13px; letter-spacing: 1px; text-transform: uppercase;
+    position: relative; overflow: hidden; transition: all 0.5s ease; cursor: pointer;
+  }
+  #laser-wrapper-{{ section.id }} .cosmic-form-btn:hover {
+      box-shadow: 0 0 30px rgba(205, 6, 212, 0.4); transform: translateY(-2px);
+  }
+  #laser-wrapper-{{ section.id }} .cosmic-form-btn::after {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s; z-index: 1;
+  }
+  #laser-wrapper-{{ section.id }} .cosmic-form-btn:hover::after { left: 100%; }
+  #laser-wrapper-{{ section.id }} .arrow-icon {
+      transition: transform 0.3s ease; position: relative; z-index: 2;
+  }
+  #laser-wrapper-{{ section.id }} .cosmic-form-btn:hover .arrow-icon { transform: translateX(5px); }
+
+
+  /* --- RESPONZIVNÍ VELIKOSTI --- */
+  @media (min-width: 2001px) {
+    #laser-wrapper-{{ section.id }} .huly-text-content { max-width: 1000px; top: {{ section.settings.text_max_top }}%; left: {{ section.settings.text_max_left }}%; }
+    #laser-wrapper-{{ section.id }} .headline-layer, #laser-wrapper-{{ section.id }} .style-original { font-size: {{ section.settings.text_max_size }}em; }
+    #laser-wrapper-{{ section.id }} .huly-subheadline { font-size: 2.5em; margin-bottom: 60px; }
+    #laser-wrapper-{{ section.id }} .cosmic-form-btn { padding: 24px 60px; font-size: 24px; }
+  }
+  @media (max-width: 2000px) {
+    #laser-wrapper-{{ section.id }} .huly-text-content { max-width: 650px; top: {{ section.settings.text_widescreen_top }}%; left: {{ section.settings.text_widescreen_left }}%; }
+    #laser-wrapper-{{ section.id }} .headline-layer, #laser-wrapper-{{ section.id }} .style-original { font-size: {{ section.settings.text_widescreen_size }}em; }
+    #laser-wrapper-{{ section.id }} .huly-subheadline { font-size: 1.0em; }
+  }
+  @media (max-width: 1400px) {
+    #laser-wrapper-{{ section.id }} .huly-text-content { top: {{ section.settings.text_desktop_top }}%; left: {{ section.settings.text_desktop_left }}%; max-width: 500px; }
+    #laser-wrapper-{{ section.id }} .headline-layer, #laser-wrapper-{{ section.id }} .style-original { font-size: {{ section.settings.text_desktop_size }}em; }
+    #laser-wrapper-{{ section.id }} .huly-subheadline { font-size: 0.9em; }
+  }
+  @media (max-width: 1024px) and (min-width: 769px) {
+    #laser-wrapper-{{ section.id }} .huly-text-content { top: {{ section.settings.text_tablet_top }}%; left: {{ section.settings.text_tablet_left }}%; max-width: 400px; padding: 0 15px; }
+    #laser-wrapper-{{ section.id }} .headline-layer, #laser-wrapper-{{ section.id }} .style-original { font-size: {{ section.settings.text_tablet_size }}em; }
+    #laser-wrapper-{{ section.id }} .huly-subheadline { font-size: 0.8em; margin-bottom: 30px;}
+    #laser-wrapper-{{ section.id }} .cosmic-form-btn { padding: 14px 35px; font-size: 15px; }
+  }
+  @media (max-width: 768px) {
+    #laser-wrapper-{{ section.id }} .huly-text-content { top: {{ section.settings.text_mobile_top }}% !important; left: {{ section.settings.text_mobile_left }}% !important; max-width: 280px; padding: 0 10px; text-align: left; }
+    #laser-wrapper-{{ section.id }} .headline-layer, #laser-wrapper-{{ section.id }} .style-original { font-size: {{ section.settings.text_mobile_size }}em; }
+    #laser-wrapper-{{ section.id }} .huly-subheadline { font-size: 0.76em; margin-bottom: 25px; }
+    #laser-wrapper-{{ section.id }} .cosmic-form-btn { padding: 12px 30px; font-size: 14px; }
+  }
+
+  /* =========================================
+     NOVÉ STYLY PRO INTRO SEKVENCI
+     ========================================= */
+  
+  /* 1. Intro Overlay přes celou obrazovku */
+  .intro-sequence-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: #000;
+    z-index: 10000; /* Nejvyšší index, aby překryl i menu */
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.5s ease-out; /* Plynulé zmizení overlaye */
+  }
+
+  .intro-video-fullscreen {
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+
+  /* 2. Zámek scrollování */
+  body.intro-locked {
+    overflow: hidden !important;
+    height: 100vh !important;
+  }
+
+  /* 3. Třídy pro postupné odhalování obsahu */
+  
+  /* Text uvnitř sekce */
+  .fade-content-wrapper {
+    opacity: 0;
+    transition: opacity 3.0s ease-in-out; /* Velmi pomalý náběh */
+  }
+  
+  /* Globální hlavička (Header) */
+  /* Toto cílí na většinu Shopify témat, JS to přidá */
+  .header-fade-wrapper {
+    opacity: 0;
+    transition: opacity 3.0s ease-in-out;
+  }
+
+  /* Třída, která spustí zobrazení */
+  .content-revealed {
+    opacity: 1 !important;
+  }
+
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  
+    // === PŮVODNÍ JS (Změna barev tlačítka) ===
+    const heroBtn = document.getElementById('hero-cta-btn');
+    document.addEventListener('changeMistColor', function(e) {
+        if (!heroBtn) return;
+        const newColor = e.detail.color;
+        if (newColor === 'orange') {
+            heroBtn.style.setProperty('--btn-bg', 'linear-gradient(90deg, #ff4d00, #9a3412)');
+            heroBtn.style.setProperty('--btn-shadow', '0 0 25px rgba(255, 77, 0, 0.6), inset 0 0 10px rgba(255, 160, 122, 0.5)');
+        } else if (newColor === 'purple') {
+            heroBtn.style.setProperty('--btn-bg', 'linear-gradient(90deg, rgb(235, 37, 192), rgba(68, 6, 212, 0.93))');
+            heroBtn.style.setProperty('--btn-shadow', '0 0 25px rgba(114, 43, 238, 0.9), inset 0 0 10px rgba(208, 183, 255, 0.7)');
+        } else {
+            heroBtn.style.setProperty('--btn-bg', 'linear-gradient(90deg, #06b6d4, #2563eb)');
+            heroBtn.style.setProperty('--btn-shadow', '0 0 30px rgba(6, 182, 212, 0.6), inset 0 0 10px rgba(186, 230, 253, 0.5)');
+        }
+    });
+
+    // === NOVÉ JS: INTRO SEKVENCE ===
+    {% if section.settings.enable_intro %}
+    
+    (function runIntroSequence() {
+      const introOverlay = document.getElementById('intro-overlay-{{ section.id }}');
+      const introVideo = document.getElementById('intro-video-element-{{ section.id }}');
+      const textWrapper = document.querySelector('#laser-wrapper-{{ section.id }} .fade-content-wrapper');
+      
+      // Pokusíme se najít hlavní hlavičku (Header). 
+      // V Shopify to bývá často id="shopify-section-header" nebo tag <header>
+      const siteHeader = document.querySelector('#shopify-section-header') || document.querySelector('header');
+
+      // 1. Nastavíme zdroje videa podle zařízení
+      const isMobile = window.innerWidth <= 768;
+      const videoSrc = isMobile ? "{{ section.settings.intro_video_mobile }}" : "{{ section.settings.intro_video_desktop }}";
+
+      if (!videoSrc) {
+        // Pokud není video nahráno, intro přeskočíme
+        if(introOverlay) introOverlay.style.display = 'none';
+        return;
+      }
+
+      introVideo.src = videoSrc;
+      
+      // 2. Zamkneme scroll a skryjeme prvky
+      document.body.classList.add('intro-locked');
+      if (siteHeader) siteHeader.classList.add('header-fade-wrapper'); // Přidáme třídu pro opacity:0
+
+      // 3. Spustíme Intro
+      introVideo.play().catch(e => {
+        console.log("Autoplay blocked or failed", e);
+        // Pokud autoplay selže (prohlížeč ho blokne), raději intro hned zrušíme, aby web nezůstal černý
+        finishIntro();
+      });
+
+      // 4. Co se stane, až video skončí
+      introVideo.addEventListener('ended', finishIntro);
+
+      function finishIntro() {
+        // a) Zmizení overlaye
+        introOverlay.style.opacity = '0';
+        
+        // b) Počkáme chvilku na transition overlaye a pak ho odstraníme z DOMu
+        setTimeout(() => {
+          introOverlay.style.display = 'none';
+          
+          // c) Odblokujeme scroll
+          document.body.classList.remove('intro-locked');
+
+          // d) Spustíme pomalé odhalení textu a hlavičky
+          if (textWrapper) textWrapper.classList.add('content-revealed');
+          if (siteHeader) siteHeader.classList.add('content-revealed');
+
+        }, 500); // 500ms odpovídá transition: opacity v CSS overlaye
+      }
+
+    })();
+    {% endif %}
+
+});
+</script>

@@ -1,0 +1,377 @@
+<style>
+/* VYPNUTÝ !!! <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" /> */
+
+  /* SCOPED CSS: Izolujeme styly pomocí ID sekce */
+  #flight-plan-section-{{ section.id }}, 
+  #flight-plan-section-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+  
+  /* Výchozí stav animace - skryté a posunuté dolů */
+  .mission-step-{{ section.id }} { 
+    opacity: 0; 
+    transform: translateY(50px); 
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  }
+  
+  /* Aktivní stav */
+  .mission-step-{{ section.id }}.active { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+  
+  /* Progress bar */
+  .orbit-progress-bar-{{ section.id }} {
+    transition: height 0.1s linear; 
+    background: linear-gradient(to bottom, #f97316, #d946ef, #06b6d4);
+    width: 2px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0;
+    height: 0;
+    display: block !important; 
+  }
+
+  /* --- KREATIVNÍ EFEKTY: REALISTICKÝ ORBITÁLNÍ SYSTÉM (PROHOZENÉ POŘADÍ) --- */
+  .code-nebula-layer {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      overflow: hidden; pointer-events: none; z-index: 0;
+      /* Maska pro plynulé zmizení nahoře a dole */
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%);
+      
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  /* Společný styl pro prstenec - BÍLÉ */
+  .orbit-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.12); 
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  /* Společný základ pro planetu */
+  .planet-dot {
+      position: absolute;
+      border-radius: 50%;
+      top: 50%; left: 50%;
+      display: block !important; 
+  }
+
+  /* --- KRUH 1 (Vnitřní) - NYNÍ ORANŽOVÁ (Skalnatá) --- */
+  .ring-1 {
+      width: 400px; height: 400px;
+      animation: spin-right 35s linear infinite;
+  }
+  .planet-1 {
+      width: 12px; height: 12px; /* Menší, protože je skalnatá */
+      /* Oranžový gradient */
+      background: radial-gradient(circle at 30% 30%, #fed7aa, #f97316 60%, #7c2d12 100%);
+      box-shadow: 
+          inset -2px -2px 3px rgba(0,0,0,0.7),
+          0 0 12px rgba(249, 115, 22, 0.6);
+      /* Posun na poloměr kruhu (200px) */
+      transform: translate(-50%, -50%) translateX(200px); 
+  }
+
+  /* --- KRUH 2 (Střední) - FIALOVÁ (S prstencem) --- */
+  .ring-2 {
+      width: 700px; height: 700px;
+      animation: spin-left 70s linear infinite;
+  }
+  .planet-2 {
+      width: 22px; height: 22px;
+      /* Fialový gradient */
+      background: radial-gradient(circle at 40% 40%, #f5d0fe, #d946ef 60%, #581c87 100%);
+      box-shadow: 
+          inset -3px -3px 6px rgba(0,0,0,0.6),
+          0 0 25px rgba(217, 70, 239, 0.4);
+      transform: translate(-50%, -50%) translateX(350px);
+  }
+  /* Saturnův prstenec pro fialovou planetu */
+  .planet-2::after {
+       content: ''; position: absolute; top: 50%; left: 50%;
+       width: 160%; height: 40%;
+       border-radius: 50%;
+       background: linear-gradient(90deg, transparent, rgba(217, 70, 239, 0.8), transparent);
+       border: 1px solid rgba(255,255,255,0.1);
+       transform: translate(-50%, -50%) rotate(-20deg);
+       pointer-events: none;
+  }
+
+  /* --- KRUH 3 (Vnější) - NYNÍ MODRÁ (Ledový obr) --- */
+  .ring-3 {
+      width: 1100px; height: 1100px;
+      animation: spin-right 120s linear infinite;
+  }
+  .planet-3 {
+      width: 16px; height: 16px; /* Větší ledový obr */
+      /* Azurový/Modrý gradient */
+      background: radial-gradient(circle at 30% 30%, #cffafe, #06b6d4 50%, #164e63 100%);
+      box-shadow: 
+          inset -2px -2px 4px rgba(0,0,0,0.5), /* Vnitřní stín */
+          0 0 15px rgba(6, 182, 212, 0.5); /* Vnější záře */
+      /* Posun na poloměr kruhu (550px) */
+      transform: translate(-50%, -50%) translateX(550px);
+  }
+
+  /* --- ANIMACE ROTACE --- */
+  @keyframes spin-right {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+  }
+
+  @keyframes spin-left {
+      0% { transform: rotate(360deg); }
+      100% { transform: rotate(0deg); }
+  }
+
+  /* Responsivita */
+  @media (max-width: 768px) {
+      .ring-1 { width: 280px; height: 280px; }
+      .planet-1 { transform: translate(-50%, -50%) translateX(140px); width: 10px; height: 10px; }
+      
+      .ring-2 { width: 450px; height: 450px; }
+      .planet-2 { transform: translate(-50%, -50%) translateX(225px); width: 18px; height: 18px; }
+
+      .ring-3 { width: 650px; height: 650px; }
+      .planet-3 { transform: translate(-50%, -50%) translateX(325px); width: 14px; height: 14px; }
+  }
+</style>
+
+<section id="flight-plan-section-{{ section.id }}" style="position: relative; width: 100%; background-color: rgba(5, 5, 8, 0.7); padding: 6rem 0; overflow: hidden;">
+
+    <div style="position: absolute; inset: 0; pointer-events: none; z-index: 0;">
+        
+        {% if section.settings.bg_image != blank %}
+            {%- assign bg_pos = section.settings.bg_position -%}
+            {%- assign bg_style = 'width: 100%; height: 100%; object-fit: cover; opacity: 0.3; mix-blend-mode: screen; object-position: ' | append: bg_pos -%}
+            
+            {{ section.settings.bg_image | image_url: width: 2000 | image_tag: class: 'object-cover', style: bg_style, loading: 'lazy' }}
+        
+       {% else %}
+            <div class="code-nebula-layer">
+                
+                <div class="orbit-ring ring-1">
+                    <div class="planet-dot planet-1"></div>
+                </div>
+
+                <div class="orbit-ring ring-2">
+                    <div class="planet-dot planet-2"></div>
+                </div>
+
+                <div class="orbit-ring ring-3">
+                    <div class="planet-dot planet-3"></div>
+                </div>
+
+            </div>
+        {% endif %}
+
+        <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 0%, rgba(5,5,8,0.5) 80%, #050508 100%);"></div>
+    </div>
+
+    <div style="position: relative; z-index: 10; max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
+        
+        <div style="text-align: center; margin-bottom: 6rem;">
+            <h2 style="font-family: 'Orbitron', sans-serif; font-size: 3rem; font-weight: 900; color: white; text-transform: uppercase; letter-spacing: -0.05em; margin-bottom: 1rem; text-shadow: 0 0 25px rgba(255,255,255,0.3);">
+                {{ section.settings.title }}
+            </h2>
+            <div style="color: #6b7280; font-family: monospace; font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase;">
+                {{ section.settings.subtitle_left }} <span style="margin: 0 10px;">—</span> {{ section.settings.subtitle_center }} <span style="margin: 0 10px;">—</span> {{ section.settings.subtitle_right }}
+            </div>
+        </div>
+
+        <div id="steps-container-{{ section.id }}" style="position: relative;">
+            
+            <div style="position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: rgba(55, 65, 81, 0.5); transform: translateX(-50%); z-index: 0;"></div>
+            
+            <div class="orbit-progress-bar-{{ section.id }}" id="orbit-progress-bar-{{ section.id }}"></div>
+
+            <div style="padding-bottom: 4rem;">
+                {% for block in section.blocks %}
+                    {% assign remainder = forloop.index | modulo: 2 %}
+                    
+                    {% case block.settings.color_theme %}
+                        {% when 'orange' %}
+                            {% assign theme_color = "#f97316" %}
+                            {% assign glow = "0 0 30px rgba(249,115,22,0.15)" %}
+                        {% when 'purple' %}
+                            {% assign theme_color = "#d946ef" %}
+                            {% assign glow = "0 0 30px rgba(217,70,239,0.15)" %}
+                        {% when 'cyan' %}
+                            {% assign theme_color = "#06b6d4" %}
+                            {% assign glow = "0 0 30px rgba(6,182,212,0.15)" %}
+                    {% endcase %}
+
+                    <div class="mission-step-{{ section.id }}" style="display: grid; grid-template-columns: 1fr 1fr; width: 100%; margin-bottom: 6rem; position: relative;" {{ block.shopify_attributes }}>
+                        
+                        <div style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 16px; height: 16px; background: #050508; border: 2px solid #4b5563; border-radius: 50%; z-index: 20;">
+                            <div style="width: 100%; height: 100%; background: {{ theme_color }}; border-radius: 50%; opacity: 0; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0'"></div>
+                        </div>
+
+                        {% if remainder == 1 %}
+                            <div style="grid-column: 1 / 2;"></div>
+
+                            <div style="grid-column: 2 / 3; padding-left: 2rem; display: flex; align-items: center; justify-content: flex-start;">
+                                <div style="width: 3rem; height: 1px; background: #374151; margin-right: 1rem; flex-shrink: 0;"></div>
+
+                                <div style="width: 3.5rem; height: 3.5rem; border-radius: 50%; border: 1px solid #374151; background: #0a0a0f; display: flex; align-items: center; justify-content: center; color: {{ theme_color }}; flex-shrink: 0; box-shadow: 0 0 20px rgba(255,255,255,0.05); transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                    <span class="material-symbols-outlined" style="font-size: 1.8rem;">{{ block.settings.icon }}</span>
+                                </div>
+
+                                <div style="margin-left: 1.5rem; width: 100%; max-width: 370px;">
+                                    <div style="background: rgba(17, 24, 39, 0.6); border: 1px solid #1f2937; padding: 2.5rem 2rem; border-radius: 4px; backdrop-filter: blur(5px); box-shadow: {{ glow }}; transition: border-color 0.3s, background-color 0.3s;" onmouseover="this.style.borderColor='#4b5563'; this.style.backgroundColor='rgba(17, 24, 39, 0.8)';" onmouseout="this.style.borderColor='#1f2937'; this.style.backgroundColor='rgba(17, 24, 39, 0.6)';">
+                                        <h3 style="color: {{ theme_color }}; font-weight: bold; font-size: 1.2rem; margin: 0 0 0.5rem 0;">{{ block.settings.title }}</h3>
+                                        <p style="color: #9ca3af; font-size: 0.9rem; margin: 0; line-height: 1.5;">{{ block.settings.text }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div style="grid-column: 1 / 2; padding-right: 2rem; display: flex; align-items: center; justify-content: flex-end;">
+                                <div style="margin-right: 1.5rem; text-align: right; width: 100%; max-width: 370px;">
+                                    <div style="background: rgba(17, 24, 39, 0.6); border: 1px solid #1f2937; padding: 2.5rem 2rem; border-radius: 4px; backdrop-filter: blur(5px); box-shadow: {{ glow }}; transition: border-color 0.3s, background-color 0.3s;" onmouseover="this.style.borderColor='#4b5563'; this.style.backgroundColor='rgba(17, 24, 39, 0.8)';" onmouseout="this.style.borderColor='#1f2937'; this.style.backgroundColor='rgba(17, 24, 39, 0.6)';">
+                                        <h3 style="color: {{ theme_color }}; font-weight: bold; font-size: 1.2rem; margin: 0 0 0.5rem 0;">{{ block.settings.title }}</h3>
+                                        <p style="color: #9ca3af; font-size: 0.9rem; margin: 0; line-height: 1.5;">{{ block.settings.text }}</p>
+                                    </div>
+                                </div>
+
+                                <div style="width: 3.5rem; height: 3.5rem; border-radius: 50%; border: 1px solid #374151; background: #0a0a0f; display: flex; align-items: center; justify-content: center; color: {{ theme_color }}; flex-shrink: 0; box-shadow: 0 0 20px rgba(255,255,255,0.05); transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                                    <span class="material-symbols-outlined" style="font-size: 1.8rem;">{{ block.settings.icon }}</span>
+                                </div>
+
+                                <div style="width: 3rem; height: 1px; background: #374151; margin-left: 1rem; flex-shrink: 0;"></div>
+                            </div>
+                            <div style="grid-column: 2 / 3;"></div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        {% if section.settings.show_button %}
+            <div style="text-align: center; margin-top: 4rem;">
+                <a href="{{ section.settings.button_link }}" style="display: inline-block; padding: 1rem 3rem; background: linear-gradient(90deg, #ea580c, #c026d3, #0891b2); color: white; text-decoration: none; font-weight: bold; border-radius: 4px; letter-spacing: 2px; box-shadow: 0 0 30px rgba(217,70,239,0.3); transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                    {{ section.settings.button_text }}
+                </a>
+            </div>
+        {% endif %}
+
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    initFlightPlan();
+});
+
+// Podpora pro Shopify Editor (aby se to opravilo při změně nastavení bez refresh)
+document.addEventListener("shopify:section:load", function() {
+    initFlightPlan();
+});
+
+function initFlightPlan() {
+    const sectionId = "{{ section.id }}";
+    const container = document.getElementById(`steps-container-${sectionId}`);
+    const bar = document.getElementById(`orbit-progress-bar-${sectionId}`);
+    const steps = container ? container.querySelectorAll(`.mission-step-${sectionId}`) : [];
+
+    if (!container || !bar) return;
+
+    function updateTimeline() {
+        if (container.offsetParent === null) return;
+
+        steps.forEach(step => {
+            const rect = step.getBoundingClientRect();
+            if(rect.top < window.innerHeight * 0.8) {
+                step.classList.add("active");
+            }
+        });
+        
+        const actives = container.querySelectorAll(`.mission-step-${sectionId}.active`);
+        if(actives.length > 0) {
+            const last = actives[actives.length - 1];
+            const cRect = container.getBoundingClientRect();
+            const lRect = last.getBoundingClientRect();
+            
+            let dist = (lRect.top + lRect.height/2) - cRect.top;
+            if (dist < 0) dist = 0;
+            
+            bar.style.height = dist + "px";
+        } else {
+            bar.style.height = "0px";
+        }
+    }
+
+    window.addEventListener("scroll", updateTimeline);
+    window.addEventListener("resize", updateTimeline);
+    updateTimeline();
+
+    // Spuštění při signálu z jiné sekce
+    document.addEventListener('triggerCosmicIntro', function() {
+        setTimeout(function() {
+            updateTimeline();
+            setTimeout(updateTimeline, 1000);
+        }, 300);
+    });
+}
+</script>
+
+{% schema %}
+{
+  "name": "Moje-plan",
+  "settings": [
+    { "type": "image_picker", "id": "bg_image", "label": "Pozadí" },
+    {
+      "type": "select",
+      "id": "bg_position",
+      "label": "Zarovnání pozadí (Focus)",
+      "options": [
+        { "value": "center center", "label": "Střed (Center)" },
+        { "value": "left center", "label": "Vlevo (Left)" },
+        { "value": "right center", "label": "Vpravo (Right)" },
+        { "value": "center top", "label": "Nahoru (Top)" },
+        { "value": "center bottom", "label": "Dolů (Bottom)" }
+      ],
+      "default": "center center"
+    },
+    { "type": "text", "id": "title", "label": "Nadpis", "default": "LETOVÝ PLÁN" },
+    { "type": "text", "id": "subtitle_left", "label": "Podnadpis L", "default": "INIT.SEQ" },
+    { "type": "text", "id": "subtitle_center", "label": "Podnadpis C", "default": "PHASE: 1-9" },
+    { "type": "text", "id": "subtitle_right", "label": "Podnadpis R", "default": "ONLINE" },
+    { "type": "checkbox", "id": "show_button", "label": "Zobrazit tlačítko", "default": true },
+    { "type": "text", "id": "button_text", "label": "Text tlačítka", "default": "ZAHÁJIT ODPOČET" },
+    { "type": "url", "id": "button_link", "label": "Odkaz tlačítka" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Fáze",
+      "settings": [
+        {
+          "type": "select",
+          "id": "color_theme",
+          "label": "Barva",
+          "options": [
+            { "value": "orange", "label": "Oranžová" },
+            { "value": "purple", "label": "Fialová" },
+            { "value": "cyan", "label": "Tyrkysová" }
+          ],
+          "default": "orange"
+        },
+        { "type": "text", "id": "icon", "label": "Ikona", "default": "satellite_alt" },
+        { "type": "text", "id": "title", "label": "Nadpis", "default": "Nadpis fáze" },
+        { "type": "textarea", "id": "text", "label": "Popis", "default": "Popis kroku..." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Moje-plan" }]
+}
+{% endschema %}

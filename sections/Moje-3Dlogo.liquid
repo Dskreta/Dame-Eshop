@@ -1,0 +1,234 @@
+{% schema %}
+{
+  "name": "Moje-3Dlogo",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Vzhled Planety"
+    },
+    {
+      "type": "image_picker",
+      "id": "planet_texture",
+      "label": "Textura planety (Mapa)",
+      "info": "Nahrajte obdélníkový obrázek (poměr 2:1). Pokud necháte prázdné, zobrazí se 'Wireframe' (Drátěný model)."
+    },
+    {
+      "type": "color",
+      "id": "planet_color",
+      "label": "Základní barva planety",
+      "default": "#ffffff",
+      "info": "Použije se pro odlesky nebo barvu drátěného modelu."
+    },
+    {
+      "type": "range",
+      "id": "planet_size",
+      "min": 1,
+      "max": 5,
+      "step": 0.1,
+      "label": "Velikost planety",
+      "default": 2.5
+    },
+    {
+      "type": "header",
+      "content": "Vesmírné pozadí"
+    },
+    {
+      "type": "range",
+      "id": "star_count",
+      "min": 0,
+      "max": 2000,
+      "step": 100,
+      "label": "Počet hvězd v pozadí",
+      "default": 1000
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Barva vesmíru (Pozadí)",
+      "default": "#050505"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Star Epoch 3D Planet"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  #canvas-container {
+    width: 100%;
+    height: 500px; /* Výška sekce */
+    background-color: {{ section.settings.bg_color }};
+    overflow: hidden;
+    position: relative;
+    cursor: grab;
+  }
+  #canvas-container:active {
+    cursor: grabbing;
+  }
+  /* Loading text, než se načte 3D */
+  .loading-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-family: monospace;
+    pointer-events: none;
+    z-index: 1;
+  }
+</style>
+
+<div id="canvas-container">
+    <div class="loading-overlay" id="loading-text">Initialising System...</div>
+</div>
+
+<script type="module">
+  import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+
+  // --- Konfigurace ze Shopify ---
+  const config = {
+    textureUrl: "{% if section.settings.planet_texture != blank %}{{ section.settings.planet_texture | image_url: width: 1024 }}{% endif %}",
+    color: "{{ section.settings.planet_color }}",
+    bgColor: "{{ section.settings.bg_color }}",
+    size: {{ section.settings.planet_size }},
+    starCount: {{ section.settings.star_count }}
+  };
+
+  // --- Proměnné scény ---
+  let scene, camera, renderer, planet, stars, mouseX = 0, mouseY = 0;
+  let targetRotationX = 0;
+  let targetRotationY = 0;
+  let windowHalfX = window.innerWidth / 2;
+  let windowHalfY = window.innerHeight / 2;
+
+  init();
+  animate();
+
+  function init() {
+    const container = document.getElementById('canvas-container');
+
+    // 1. SCÉNA
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(config.bgColor);
+    // Přidání jemné mlhy pro hloubku
+    scene.fog = new THREE.FogExp2(config.bgColor, 0.03);
+
+    // 2. KAMERA
+    camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.z = 5;
+
+    // 3. RENDERER
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
+
+    // 4. PLANETA
+    const geometry = new THREE.SphereGeometry(config.size, 64, 64);
+    let material;
+
+    if (config.textureUrl) {
+        // Pokud je nahrán obrázek -> Načíst texturu
+        const textureLoader = new THREE.TextureLoader();
+        const texture = textureLoader.load(config.textureUrl, function() {
+             document.getElementById('loading-text').style.display = 'none';
+        });
+        
+        material = new THREE.MeshStandardMaterial({
+            map: texture,
+            color: 0xffffff,
+            roughness: 0.7, // Matnější povrch
+            metalness: 0.1
+        });
+    } else {
+        // Pokud NENÍ obrázek -> Wireframe Sci-Fi mód
+        document.getElementById('loading-text').style.display = 'none';
+        material = new THREE.MeshBasicMaterial({
+            color: config.color,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.8
+        });
+    }
+
+    planet = new THREE.Mesh(geometry, material);
+    scene.add(planet);
+
+    // 5. OSVĚTLENÍ (Aby byla textura vidět)
+    if (config.textureUrl) {
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.2); // Slabé okolní světlo
+        scene.add(ambientLight);
+
+        const pointLight = new THREE.PointLight(0xffffff, 2); // "Slunce"
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+    }
+
+    // 6. HVĚZDY (Pozadí)
+    if (config.starCount > 0) {
+        const starGeometry = new THREE.BufferGeometry();
+        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.05 });
+        const starVertices = [];
+
+        for (let i = 0; i < config.starCount; i++) {
+            const x = (Math.random() - 0.5) * 20;
+            const y = (Math.random() - 0.5) * 20;
+            const z = (Math.random() - 0.5) * 20 - 5; // Hvězdy spíše v pozadí
+            starVertices.push(x, y, z);
+        }
+
+        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+        stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+    }
+
+    // 7. INTERAKCE MYŠI
+    document.addEventListener('mousemove', onDocumentMouseMove);
+    window.addEventListener('resize', onWindowResize);
+  }
+
+  function onWindowResize() {
+    const container = document.getElementById('canvas-container');
+    windowHalfX = container.clientWidth / 2;
+    windowHalfY = container.clientHeight / 2;
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+  }
+
+  function onDocumentMouseMove(event) {
+    const container = document.getElementById('canvas-container');
+    const rect = container.getBoundingClientRect();
+    
+    // Výpočet pozice myši relativně ke středu kontejneru
+    if (event.clientY >= rect.top && event.clientY <= rect.bottom) {
+        mouseX = (event.clientX - rect.left) - windowHalfX;
+        mouseY = (event.clientY - rect.top) - windowHalfY;
+    }
+  }
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    // Rotace planety
+    // Základní pomalá rotace
+    planet.rotation.y += 0.002; 
+
+    // Interaktivní rotace podle myši (Smooth easing)
+    targetRotationX = mouseY * 0.001;
+    targetRotationY = mouseX * 0.001;
+
+    planet.rotation.x += 0.05 * (targetRotationX - planet.rotation.x);
+    planet.rotation.y += 0.05 * (targetRotationY - (planet.rotation.y - 0.002)); // Kompenzace auto-rotace
+
+    // Jemný pohyb hvězd
+    if (stars) {
+        stars.rotation.y -= 0.0005;
+    }
+
+    renderer.render(scene, camera);
+  }
+</script>

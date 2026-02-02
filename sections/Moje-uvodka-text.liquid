@@ -1,0 +1,432 @@
+{% schema %}
+{
+  "name": "Moje-uvodka-text",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Video (Pozadí)"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "URL Videa (MP4)",
+      "info": "Nahrajte do Content -> Files a vložte odkaz.",
+      "default": "https://cdn.shopify.com/..."
+    },
+    {
+      "type": "range",
+      "id": "video_ratio",
+      "min": 1.0,
+      "max": 2.5,
+      "step": 0.1,
+      "label": "Poměr stran videa",
+      "info": "1.77 je standard 16:9. Měňte, dokud video nebude mít černé pruhy.",
+      "default": 1.3
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Barva pozadí (pod videem)",
+      "default": "#000000"
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Zástupný obrázek (když se video nenačte)"
+    },
+    {
+      "type": "header",
+      "content": "Tvůj Obrázek (Overlay)"
+    },
+    {
+      "type": "image_picker",
+      "id": "box_image",
+      "label": "Obrázek do boxu"
+    },
+    {
+      "type": "header",
+      "content": "Pozice Obrázku (Vůči videu)"
+    },
+    {
+      "type": "paragraph",
+      "content": "Pozice se počítá v % z videa, takže se nikdy nerozjede."
+    },
+    {
+      "type": "range",
+      "id": "box_width_percent",
+      "min": 54,
+      "max": 58,
+      "step": 0.2,
+      "unit": "%",
+      "label": "Šířka obrázku",
+      "default": 55.4
+    },
+    {
+      "type": "range",
+      "id": "box_top_percent",
+      "min": 48,
+      "max": 52,
+      "step": 0.2,
+      "unit": "%",
+      "label": "Pozice odshora (Top)",
+      "default": 50.6
+    },
+    {
+      "type": "range",
+      "id": "box_left_percent",
+      "min": 42,
+      "max": 46,
+      "step": 0.2,
+      "unit": "%",
+      "label": "Horizontální pozice (Left)",
+      "info": "50% je přesně střed.",
+      "default": 44.6
+    },
+    {
+      "type": "header",
+      "content": "Reveal Efekt"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Barva zakrytí",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Síla zakrytí",
+      "default": 90
+    },
+    {
+      "type": "header",
+      "content": "Textový obsah"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Nadpis",
+      "default": "Everything App for your teams"
+    },
+    {
+      "type": "textarea",
+      "id": "subheadline",
+      "label": "Podnadpis",
+      "default": "Huly, an open-source platform, serves as an all-in-one replacement of Linear, Jira, Slack, and Notion."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Text tlačítka",
+      "default": "SEE IN ACTION →"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Odkaz tlačítka"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Barva textu",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Barva pozadí tlačítka",
+      "default": "#FF6B00"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Barva textu tlačítka",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Moje-uvodka-text"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="main-section" style="background-color: {{ section.settings.bg_color }};">
+
+  <!-- Kombinovaný kontejner (Drží poměr stran) - TEĎ PŘÍMO V MAIN-SECTION -->
+  <div class="ratio-wrapper" style="--ratio: {{ section.settings.video_ratio }};">
+
+    <!-- 1. VIDEO -->
+    {% if section.settings.video_url != blank %}
+      <video
+        class="synced-video"
+        autoplay muted loop playsinline
+        src="{{ section.settings.video_url }}">
+      </video>
+    {% else %}
+      {% if section.settings.fallback_image != blank %}
+         <img
+            src="{{ section.settings.fallback_image | image_url: width: 2000 }}"
+            class="synced-video"
+            width="{{ section.settings.fallback_image.width }}"
+            height="{{ section.settings.fallback_image.height }}"
+            loading="lazy"
+            alt="Background fallback"
+         >
+      {% else %}
+         <div class="placeholder-video">Zde se načte video</div>
+      {% endif %}
+    {% endif %}
+
+    <!-- 2. REVEAL OVERLAY (Tma s dírou) -->
+    <div class="reveal-layer" id="reveal-layer-{{ section.id }}"></div>
+
+    <!-- 3. TVŮJ OBRÁZEK (Přilepený k videu) -->
+    {% if section.settings.box_image != blank %}
+      <div class="synced-box">
+        <img
+          src="{{ section.settings.box_image | image_url: width: 1600 }}"
+          width="{{ section.settings.box_image.width }}"
+          height="{{ section.settings.box_image.height }}"
+          loading="lazy"
+          alt="Box Content"
+        >
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Textový obsah a tlačítko (Překrývají pozadí) - TAKÉ PŘÍMO V MAIN-SECTION -->
+  <div class="huly-text-content" style="color: {{ section.settings.text_color }};">
+    {% if section.settings.headline != blank %}
+      <h2 class="huly-headline">{{ section.settings.headline }}</h2>
+    {% endif %}
+    {% if section.settings.subheadline != blank %}
+      <p class="huly-subheadline">{{ section.settings.subheadline }}</p>
+    {% endif %}
+    {% if section.settings.button_label != blank %}
+      <a href="{{ section.settings.button_link }}" class="huly-button" style="background-color: {{ section.settings.button_bg_color }}; color: {{ section.settings.button_text_color }};">
+        {{ section.settings.button_label }}
+      </a>
+    {% endif %}
+  </div>
+
+</div>
+
+<!-- RESPONZIVNÍ STÍN (Přizpůsobí se velikosti) -->
+<div class="force-shadow"></div>
+
+<style>
+  /* --- STÍN POD SEKCÍ (Zůstává nezměněn) --- */
+  .force-shadow {
+    display: block !important;
+    width: 100% !important;
+    position: relative !important;
+    z-index: 99999 !important;
+    pointer-events: none !important;
+    background: linear-gradient(to bottom, rgba(231, 13, 13, 0) 0%, rgba(0, 0, 0, 0.93) 100%) !important;
+    height: 350px !important;
+    margin-top: -350px !important;
+  }
+  @media (max-width: 1024px) {
+    .force-shadow {
+      height: 200px !important;
+      margin-top: -200px !important;
+    }
+  }
+  @media (max-width: 768px) {
+    .force-shadow {
+      height: 100px !important;
+      margin-top: -100px !important;
+    }
+  }
+
+  /* --- HLAVNÍ SEKCE A JEJÍ DĚTI --- */
+  .main-section {
+    position: relative; /* Klíčové pro absolutní pozicování dětí */
+    width: 100%;
+    /* Výšku určuje ratio-wrapper */
+    padding: 0;
+    margin: 0;
+    z-index: 2; /* Musí být nad .force-shadow */
+  }
+
+  /* Video vyplní kontejner přesně na 100% */
+  .synced-video, .placeholder-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Změna na cover, aby nevznikaly mezery, pokud ratio nesedí na pixel */
+    z-index: 1;
+  }
+  
+  .placeholder-video {
+      background: #333; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px;
+  }
+
+  /* Toto je ten kouzelný kontejner (ratio-wrapper) */
+  .ratio-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100%; /* Roztažení na full width */
+    aspect-ratio: var(--ratio); 
+  }
+
+  /* Reveal Overlay (Nyní s proměnnými přímo na elementu) */
+  .reveal-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    background-color: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    pointer-events: none; /* Nedovolí, aby překrývala myš */
+    /* Maska baterky */
+    -webkit-mask-image: radial-gradient(circle 200px at var(--mx, -9999px) var(--my, -9999px), transparent 0%, black 100%);
+    mask-image: radial-gradient(circle 200px at var(--mx, -9999px) var(--my, -9999px), transparent 0%, black 100%);
+  }
+
+  /* Tvůj Box */
+  .synced-box {
+    position: absolute;
+    z-index: 10;
+    
+    /* Pozice definovaná v % vůči videu = NIKDY SE NEHNE */
+    top: {{ section.settings.box_top_percent }}%;
+    
+    /* Horizontální pozice s možností nastavení */
+    left: {{ section.settings.box_left_percent }}%;
+    transform: translateX(-50%); /* Centrujeme bod kotvy na střed obrázku */
+    
+    width: {{ section.settings.box_width_percent }}%;
+    
+    /* Výška se dopočítá podle obrázku */
+    display: block;
+  }
+
+  .synced-box img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px 10px 0 0;
+  }
+
+  /* --- NOVÉ STYLY PRO TEXTOVÝ OBSAH A TLAČÍTKO --- */
+  .huly-text-content {
+    position: absolute; /* Absolutní pozice vůči main-section */
+    top: 25%; /* TVÉ PREFEROVANÉ NASTAVENÍ */
+    left: 16%; /* TVÉ PREFEROVANÉ NASTAVENÍ */
+    transform: translateY(-50%); /* Pro vertikální vycentrování kolem top */
+    z-index: 15; /* NAD VŠEMI ostatními vizuálními prvky */
+    max-width: 580px; /* TVÉ PREFEROVANÉ NASTAVENÍ */
+    text-align: left;
+    padding: 0 20px; /* Vnitřní odsazení */
+  }
+
+  .huly-headline {
+    font-size: 3.5em; /* TVÉ PREFEROVANÉ NASTAVENÍ */
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .huly-subheadline {
+    font-size: 0.92em; /* TVÉ PREFEROVANÉ NASTAVENÍ */
+    line-height: 1.5;
+    margin-bottom: 30px;
+    opacity: 0.9;
+  }
+
+  .huly-button {
+    display: inline-block;
+    padding: 7px 30px;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    cursor: pointer;
+  }
+
+  .huly-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+  }
+
+  /* --- RESPONZIVNÍ ÚPRAVY --- */
+
+  /* Pro tablety (šířka 769px až 1024px) */
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .huly-text-content {
+      top: 30%; /* Mírné posunutí nahoru */
+      left: 3%; /* Posunutí více doleva */
+      max-width: 400px; /* Omezení šířky textu */
+      padding: 0 15px; /* Mírné zmenšení paddingu */
+    }
+    .huly-headline {
+      font-size: 2.2em; /* Zmenšení nadpisu */
+    }
+    .huly-subheadline {
+      font-size: 0.65em; /* Zmenšení podnadpisu */
+    }
+  }
+
+  /* Pro mobily (šířka do 768px) */
+  @media (max-width: 768px) {
+    .huly-text-content {
+      top: 30%; /* Text výše, aby byl nad obrázkem */
+      left: 3%; /* Blíže k levému okraji */
+      max-width: 260px; /* Zvětšit šířku textového bloku na mobilu */
+      padding: 0 10px; /* Menší padding */
+      text-align: left; /* Zachovat zarovnání vlevo */
+    }
+    .huly-headline {
+      font-size: 1.6em; /* Další zmenšení nadpisu */
+    }
+    .huly-subheadline {
+      font-size: 0.76em; /* Další zmenšení podnadpisu */
+    }
+   
+    /* Vypnutí reveal efektu na mobilu */
+    .reveal-layer {
+        -webkit-mask-image: none !important;
+        mask-image: none !important;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  const layer = document.querySelector('#reveal-layer-{{ section.id }}');
+  if (!layer) return;
+
+  // VisualContainer je rodič reveal-layer, což je ratio-wrapper
+  const visualContainer = layer.parentElement;
+
+  if (visualContainer) {
+    visualContainer.addEventListener('mousemove', (e) => {
+      const rect = visualContainer.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      // Nastavíme CSS proměnné přímo na reveal-layer
+      layer.style.setProperty('--mx', x + 'px');
+      layer.style.setProperty('--my', y + 'px');
+    });
+
+    visualContainer.addEventListener('mouseleave', () => {
+       // Resetujeme pozici myši, když kurzor opustí sekci
+       layer.style.setProperty('--mx', '-9999px');
+       layer.style.setProperty('--my', '-9999px');
+    });
+  }
+})();
+</script>
