@@ -1,6 +1,11 @@
 <script src="https://cdn.tailwindcss.com" defer></script>
 
 {%- style -%}
+  /* Barvy podle vybrané cenové nabídky (Moje-cenovka-2) – výchozí fialová */
+  #shopify-section-{{ section.id }} {
+      --footer-accent: #d946ef;
+      --footer-accent-rgb: 217, 70, 239;
+  }
   /* --- 1. ZÁKLADNÍ NASTAVENÍ SEKCE --- */
   #shopify-section-{{ section.id }} {
       background-color: {{ section.settings.bg_color }};
@@ -62,14 +67,14 @@
       display: block !important;
   }
 
-  /* --- 3. ZADNÍ ZÁŘE (GLOW BEHIND) --- */
+  /* --- 3. ZADNÍ ZÁŘE (GLOW BEHIND) – barva podle cenovky --- */
   .card-back-glow-{{ section.id }} {
       position: absolute;
       top: -40px; left: -40px; right: -40px; bottom: -40px; /* Větší než karta */
       border-radius: 50%;
       background: radial-gradient(
           circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
-          rgba(34, 211, 238, 0.6), 
+          rgba(var(--footer-accent-rgb, 217, 70, 239), 0.6), 
           transparent 50%
       );
       opacity: 0;
@@ -81,8 +86,16 @@
       display: block !important;
   }
 
-  .card-root-{{ section.id }}:hover .card-back-glow-{{ section.id }} {
-      opacity: 1;
+  @media (min-width: 750px) {
+    .card-root-{{ section.id }}:hover .card-back-glow-{{ section.id }} {
+        opacity: 1;
+    }
+  }
+  /* Na mobilu: stín za kartou viditelný, když je karta ve viewportu (třídu přidá JS) */
+  @media (max-width: 749px) {
+    .card-root-{{ section.id }}.card-glow-visible .card-back-glow-{{ section.id }} {
+        opacity: 1;
+    }
   }
 
   /* --- 4. HLAVNÍ PLOCHA KARTY (OBRÁZEK) --- */
@@ -127,8 +140,10 @@
       mix-blend-mode: overlay;
       display: block !important;
   }
-  .card-root-{{ section.id }}:hover .card-surface-shine-{{ section.id }} {
-      opacity: 1;
+  @media (min-width: 750px) {
+    .card-root-{{ section.id }}:hover .card-surface-shine-{{ section.id }} {
+        opacity: 1;
+    }
   }
 
   /* --- 5. OBSAH KARTY (TEXT) --- */
@@ -150,9 +165,32 @@
   .font-tech { font-family: 'Rajdhani', sans-serif; }
   
   .hover-glow-text { transition: all 0.3s ease; }
-  .hover-glow-text:hover {
-      text-shadow: 0 0 25px rgba(34,211,238, 0.8), 0 0 40px rgba(217, 70, 239, 0.6);
-      transform: scale(1.02);
+  /* Barvy vázané na cenovou nabídku (Moje-cenovka-2) */
+  .footer-subtitle-color { color: var(--footer-accent) !important; }
+  /* Nadpis: výchozí bílý, bez zabarvení; zabarvení jen při hoveru na desktopu */
+  .footer-main-title-gradient {
+      color: #fff !important;
+      background: none !important;
+      -webkit-background-clip: unset !important;
+      background-clip: unset !important;
+      filter: none;
+  }
+  .footer-card-subtitle-color { color: var(--footer-accent) !important; }
+  .footer-card-line { background-color: var(--footer-accent) !important; }
+
+  /* Všechny hover efekty pouze pro desktop (min-width: 750px), na mobilu nic */
+  @media (min-width: 750px) {
+    .hover-glow-text:hover {
+        background: linear-gradient(to right, white, var(--footer-accent), white) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        color: transparent !important;
+        text-shadow: 0 0 18px rgba(var(--footer-accent-rgb, 217, 70, 239), 0.22), 0 0 28px rgba(var(--footer-accent-rgb, 217, 70, 239), 0.12);
+        transform: scale(1.02);
+    }
+    .footer-link-hover:hover { color: var(--footer-accent) !important; }
+    .footer-icon-link:hover { opacity: 0.8; }
+    .footer-icon-link:hover img { filter: none; }
   }
 {%- endstyle -%}
 
@@ -184,10 +222,10 @@
 
                     <div class="card-content-{{ section.id }}">
                         <h3 class="text-3xl font-display font-bold text-white mb-1 drop-shadow-lg tracking-wide">{{ section.settings.card_title }}</h3>
-                        <p class="text-cyan-400 font-mono text-xs tracking-[0.2em] uppercase font-bold mb-3">{{ section.settings.card_subtitle }}</p>
+                        <p class="font-mono text-xs tracking-[0.2em] uppercase font-bold mb-3 footer-card-subtitle-color">{{ section.settings.card_subtitle }}</p>
                         
                         {% if section.settings.card_desc != blank %}
-                        <div class="w-12 h-[2px] bg-cyan-500 mx-auto mb-3"></div>
+                        <div class="w-12 h-[2px] mx-auto mb-3 footer-card-line"></div>
                         <p class="text-gray-300 text-sm font-tech leading-tight opacity-90">
                             {{ section.settings.card_desc }}
                         </p>
@@ -200,10 +238,10 @@
 
         <div class="footer-right-{{ section.id }}">
             <div class="text-content-{{ section.id }} relative z-20">
-                <h2 class="text-5xl md:text-7xl font-display font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-white tracking-wider drop-shadow-[0_0_15px_rgba(34,211,238,0.5)] mb-2 hover-glow-text cursor-default">
+                <h2 class="text-5xl md:text-7xl font-display font-black text-transparent bg-clip-text tracking-wider mb-2 hover-glow-text cursor-default footer-main-title-gradient">
                     {{ section.settings.main_title }}
                 </h2>
-                <p class="text-cyan-400 font-mono text-sm uppercase tracking-[0.3em] mb-8">
+                <p class="font-mono text-sm uppercase tracking-[0.3em] mb-8 footer-subtitle-color">
                     {{ section.settings.subtitle }}
                 </p>
                 <div class="text-gray-400 text-lg leading-relaxed max-w-lg font-tech">
@@ -220,26 +258,26 @@
             </div>
             <div class="flex items-center flex-wrap justify-center gap-6 md:gap-8 font-bold">
                 {% if section.settings.text_1_content != blank %}
-                    <a class="hover:text-cyan-400 transition-colors" href="{{ section.settings.text_1_url }}">{{ section.settings.text_1_content }}</a>
+                    <a class="footer-link-hover transition-colors" href="{{ section.settings.text_1_url }}">{{ section.settings.text_1_content }}</a>
                 {% endif %}
                 {% if section.settings.text_2_content != blank %}
-                    <a class="hover:text-cyan-400 transition-colors" href="{{ section.settings.text_2_url }}">{{ section.settings.text_2_content }}</a>
+                    <a class="footer-link-hover transition-colors" href="{{ section.settings.text_2_url }}">{{ section.settings.text_2_content }}</a>
                 {% endif %}
                 {% if section.settings.terms_url != blank %}
-                    <a class="hover:text-cyan-400 transition-colors" href="{{ section.settings.terms_url }}">{{ section.settings.terms_text }}</a>
+                    <a class="footer-link-hover transition-colors" href="{{ section.settings.terms_url }}">{{ section.settings.terms_text }}</a>
                 {% endif %}
                 {% if section.settings.privacy_url != blank %}
-                    <a class="hover:text-cyan-400 transition-colors" href="{{ section.settings.privacy_url }}">{{ section.settings.privacy_text }}</a>
+                    <a class="footer-link-hover transition-colors" href="{{ section.settings.privacy_url }}">{{ section.settings.privacy_text }}</a>
                 {% endif %}
                 <div class="flex items-center gap-4 ml-2 border-l border-white/20 pl-6">
                     {% if section.settings.instagram_url != blank %}
-                    <a href="{{ section.settings.instagram_url }}" target="_blank" class="hover:text-cyan-400 transition-colors flex items-center" title="Instagram">
+                    <a href="{{ section.settings.instagram_url }}" target="_blank" class="footer-link-hover transition-colors flex items-center" title="Instagram">
                         <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.069-4.85.069-3.204 0-3.584-.012-4.849-.069-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
                     </a>
                     {% endif %}
                     {% if section.settings.custom_icon_image != blank %}
-                    <a href="{{ section.settings.custom_icon_url }}" class="hover:opacity-80 transition-opacity flex items-center">
-                        {{ section.settings.custom_icon_image | image_url: width: 60 | image_tag: class: 'w-7 h-7 object-contain filter grayscale hover:grayscale-0 transition-all' }}
+                    <a href="{{ section.settings.custom_icon_url }}" class="footer-icon-link transition-opacity flex items-center">
+                        {{ section.settings.custom_icon_image | image_url: width: 60 | image_tag: class: 'w-7 h-7 object-contain filter grayscale transition-all' }}
                     </a>
                     {% endif %}
                 </div>
@@ -253,39 +291,125 @@
 </footer>
 
 <script>
+(function() {
+  var footerColors = {
+    orange: { hex: '#ff4d00', rgb: '255, 77, 0' },
+    purple: { hex: '#d946ef', rgb: '217, 70, 239' },
+    cyan:   { hex: '#06b6d4', rgb: '6, 182, 212' }
+  };
+  function applyFooterAccent(colorKey) {
+    var c = footerColors[colorKey] || footerColors.purple;
+    var section = document.getElementById('shopify-section-{{ section.id }}');
+    if (section) {
+      section.style.setProperty('--footer-accent', c.hex);
+      section.style.setProperty('--footer-accent-rgb', c.rgb);
+    }
+  }
+  applyFooterAccent('purple');
+  document.addEventListener('changeMistColor', function(e) {
+    var color = (e.detail && e.detail.color) ? e.detail.color : 'purple';
+    applyFooterAccent(color);
+  });
+})();
+</script>
+<script>
 document.addEventListener("DOMContentLoaded", function() {
-    const card = document.getElementById("card-{{ section.id }}");
-    const container = document.getElementById("scene-{{ section.id }}");
-
+    var card = document.getElementById("card-{{ section.id }}");
+    var container = document.getElementById("scene-{{ section.id }}");
     if (!card || !container) return;
 
-    container.addEventListener("mousemove", (e) => {
-        const rect = card.getBoundingClientRect();
-        // Získání pozice myši relativně k samotné kartě
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+    var isDesktop = function() { return window.innerWidth >= 750; };
+    var MOBILE_TILT_SCALE = 0.4;
+    var MOBILE_TILT_MAX = 12;
 
-        // Vypocet procent pro pozici svetla
-        // Pokud je myš "mimo" kartu (ale stále v kontejneru), světlo se posune k okraji
-        card.style.setProperty("--mouse-x", `${x}px`);
-        card.style.setProperty("--mouse-y", `${y}px`);
-
-        // Výpočet rotace (tilt)
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        // Zvýšíme dělitele (např. 15), aby byl náklon jemnější
-        const rotateX = ((y - centerY) / 15) * -1; 
-        const rotateY = (x - centerX) / 15;
-
-        card.classList.remove("is-resetting");
-        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-    });
-
-    container.addEventListener("mouseleave", () => {
+    function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
+    function resetCard() {
         card.classList.add("is-resetting");
         card.style.transform = "rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
-    });
+    }
+
+    // --- Desktop: tilt podle myši ---
+    function setupDesktopTilt() {
+        container.addEventListener("mousemove", onMouseMove);
+        container.addEventListener("mouseleave", onMouseLeave);
+    }
+    function onMouseMove(e) {
+        var rect = card.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        card.style.setProperty("--mouse-x", x + "px");
+        card.style.setProperty("--mouse-y", y + "px");
+        var centerX = rect.width / 2, centerY = rect.height / 2;
+        var rotateX = ((y - centerY) / 15) * -1;
+        var rotateY = (x - centerX) / 15;
+        card.classList.remove("is-resetting");
+        card.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg) scale3d(1.02, 1.02, 1.02)";
+    }
+    function onMouseLeave() { resetCard(); }
+
+    // --- Mobil: tilt podle orientace zařízení, jen když je karta ve viewportu ---
+    var orientationListener = null;
+    var cardInView = false;
+
+    var CARD_W = 320, CARD_H = 450;
+    var GLOW_POS_FACTOR = 2;
+
+    function onOrientation(e) {
+        if (!cardInView || !card) return;
+        var beta = e.beta != null ? e.beta : 0;
+        var gamma = e.gamma != null ? e.gamma : 0;
+        var rotateX = clamp((beta - 45) * MOBILE_TILT_SCALE, -MOBILE_TILT_MAX, MOBILE_TILT_MAX);
+        var rotateY = clamp(gamma * MOBILE_TILT_SCALE, -MOBILE_TILT_MAX, MOBILE_TILT_MAX);
+        card.classList.remove("is-resetting");
+        card.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg) scale3d(1, 1, 1)";
+        var glowX = clamp(CARD_W / 2 + gamma * GLOW_POS_FACTOR, 0, CARD_W);
+        var glowY = clamp(CARD_H / 2 + (beta - 45) * GLOW_POS_FACTOR, 0, CARD_H);
+        card.style.setProperty("--mouse-x", glowX + "px");
+        card.style.setProperty("--mouse-y", glowY + "px");
+    }
+
+    function startOrientation() {
+        if (orientationListener) return;
+        orientationListener = onOrientation;
+        card.style.setProperty("--mouse-x", CARD_W / 2 + "px");
+        card.style.setProperty("--mouse-y", CARD_H / 2 + "px");
+        if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+            DeviceOrientationEvent.requestPermission().then(function(ok) {
+                if (ok === "granted") window.addEventListener("deviceorientation", orientationListener);
+            }).catch(function() {});
+        } else {
+            window.addEventListener("deviceorientation", orientationListener);
+        }
+    }
+
+    function stopOrientation() {
+        if (!orientationListener) return;
+        window.removeEventListener("deviceorientation", orientationListener);
+        orientationListener = null;
+        if (!isDesktop()) card.classList.remove("card-glow-visible");
+        resetCard();
+    }
+
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            cardInView = entry.isIntersecting;
+            if (!isDesktop()) {
+                if (cardInView) {
+                    card.classList.add("card-glow-visible");
+                    startOrientation();
+                } else {
+                    card.classList.remove("card-glow-visible");
+                    stopOrientation();
+                }
+            }
+        });
+    }, { root: null, rootMargin: "0px", threshold: 0.2 });
+
+    observer.observe(card);
+
+    if (isDesktop()) {
+        setupDesktopTilt();
+    }
 });
 </script>
 

@@ -126,29 +126,23 @@
       box-shadow: none !important;
   }
 
-  /* 2. Nastavení plynulého přechodu (Transition) */
+  /* 2. Plynulý přechod barvy (bez zvětšování) */
   .header__menu-item, 
   .list-menu__item--link {
-      transition: transform 0.6s ease, color 0.3s ease; /* přidán přechod pro barvu */
-      display: inline-block; /* Nutné pro správné fungování transformace */
+      transition: color 0.3s ease;
+      display: inline-block;
   }
 
-  /* 3. Efekt po najetí myší (Hover) */
-  /* UPRAVENO: Odstraněn stín, přidána modrá barva */
-  .header__menu-item:hover, 
-  .list-menu__item--link:hover {
-      text-decoration: none !important;
-      
-      /* Zvětšení o 10% */
-      transform: scale(1.20); 
-      
-      /* Barva textu - Světle modrá (Light Sky Blue) */
-      color:rgb(71, 232, 253) !important;
-
-      /* Původní stín odstraněn */
-      text-shadow: none !important;
+  /* 3. Hover pouze na desktopu (min-width: 750px) – barva podle vybrané cenové nabídky v Moje-cenovka-2 */
+  @media screen and (min-width: 750px) {
+    .header__menu-item:hover, 
+    .list-menu__item--link:hover {
+        text-decoration: none !important;
+        color: var(--header-menu-hover-color, #d946ef) !important;
+        text-shadow: none !important;
+    }
   }
-  
+
   /* Odstranění podtržení i při hoveru na vnitřní span */
   .header__menu-item:hover span,
   .list-menu__item--link:hover span {
@@ -633,6 +627,17 @@
         }
     }, 6000);
   });
+</script>
+
+<script>
+  (function() {
+    var hoverColors = { orange: '#ff4d00', purple: '#d946ef', cyan: '#06b6d4' };
+    document.documentElement.style.setProperty('--header-menu-hover-color', hoverColors.purple);
+    document.addEventListener('changeMistColor', function(e) {
+      var color = e.detail && e.detail.color ? e.detail.color : 'purple';
+      document.documentElement.style.setProperty('--header-menu-hover-color', hoverColors[color] || hoverColors.purple);
+    });
+  })();
 </script>
 
 {% schema %}
