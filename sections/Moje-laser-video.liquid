@@ -534,7 +534,7 @@
       <video
         class="synced-video"
         autoplay muted loop playsinline
-        poster="{{ section.settings.fallback_image | image_url: width: 2000 }}"
+        {% if section.settings.fallback_image != blank %}poster="{{ section.settings.fallback_image | image_url: width: 2000 }}"{% endif %}
       >
         {% if section.settings.video_mobile != blank %}
           <source src="{{ section.settings.video_mobile }}" type="video/mp4" media="(max-width: 768px)">
