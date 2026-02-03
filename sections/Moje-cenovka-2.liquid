@@ -428,6 +428,41 @@
 
             min-height: 85vh;
 
+            justify-content: flex-start;
+
+            padding-top: 5rem;
+
+            padding-bottom: 6rem;
+
+        }
+
+
+
+        /* ui-container jako flex sloupec – umožní odtlačit karty dolů */
+
+        #ui-container {
+
+            display: flex !important;
+
+            flex-direction: column !important;
+
+            flex: 1;
+
+            min-height: 0;
+
+        }
+
+
+
+        /* Nadpis o malý kousek níž */
+        #ui-container .text-center.mb-12 {
+
+            margin-bottom: 2rem !important;
+
+            margin-top: 3.25rem !important;
+
+            flex-shrink: 0;
+
         }
 
 
@@ -440,7 +475,7 @@
 
             flex-wrap: nowrap;
 
-            align-items: stretch;
+            align-items: flex-end;
 
             gap: 0 !important;
 
@@ -454,13 +489,37 @@
 
             -webkit-overflow-scrolling: touch;
 
-            padding: 0 0.5rem;
+            padding: 2.75rem 0.5rem 0 0.5rem;
 
-            min-height: 360px !important;
+            /* Vyšší blok – prostřední karta 420px + prostor pro translate/scale, aby nebyl ořízlý hořejšek */
+            min-height: 490px !important;
 
             max-width: 100%;
 
             scrollbar-width: none;
+
+            margin-top: auto;
+
+            flex-shrink: 0;
+
+            /* Karty o malý kousek výš – ne úplně u spodku */
+            margin-bottom: 1.5rem;
+
+        }
+
+        /* Spacery místo paddingu – umožní centrovat karty bez změny jejich šířky, konzistentní peek */
+
+        .cosmic-cards-grid::before,
+
+        .cosmic-cards-grid::after {
+
+            content: '';
+
+            flex: 0 0 16%;
+
+            min-width: 16%;
+
+            flex-shrink: 0;
 
         }
 
@@ -474,6 +533,8 @@
 
 
 
+        /* Šířka karet jako původně (68%), větší mezera mezi nimi */
+
         .cosmic-cards-grid .glass-panel {
 
             flex: 0 0 68%;
@@ -484,7 +545,7 @@
 
             scroll-snap-stop: always;
 
-            margin: 0 1%;
+            margin: 0 5%;
 
             transition: transform 0.4s ease, opacity 0.4s ease;
 
@@ -496,23 +557,27 @@
 
         .cosmic-cards-grid #card-1,
 
-        .cosmic-cards-grid #card-2,
-
         .cosmic-cards-grid #card-3 {
 
             height: 360px !important;
 
         }
 
+        /* Prostřední karta vyšší než postranní – více místa pro blok s body výhod, min. 2 body vždy vidět */
 
+        .cosmic-cards-grid #card-2 {
 
-        /* Větší mezera mezi nadpisem a kartami – horní strana karet není useknutá */
-
-        #ui-container .text-center.mb-12 {
-
-            margin-bottom: 4rem !important;
+            height: 395px !important;
 
         }
+
+        .cosmic-cards-grid #card-2 .feature-block {
+
+            min-height: 3.75rem;
+
+        }
+
+
 
 
 
