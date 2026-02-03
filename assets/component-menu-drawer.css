@@ -234,10 +234,162 @@ details[open].menu-opening > .menu-drawer__submenu {
   padding: 1.1rem 1.1rem;
 }
 
+/* Animace pulsující lišty kolem mobilního menu */
+@keyframes menu-drawer-bar-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes menu-drawer-gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 @media screen and (max-width: 749px) {
+  /* Původní chování: ikonka zůstane na místě (žádný position: fixed), jen z-index aby křížek byl nad blokem; zavření jen křížkem */
+  header-drawer details#Details-menu-drawer-container[open].menu-opening > summary {
+    position: relative;
+    z-index: 5;
+  }
+
+  /* Pozadí mimo blok – vypnuto, menu se zavírá jen křížkem */
+  .js header-drawer details[open] > summary::before {
+    display: none;
+  }
+
+  /* Hlavička nad blokem menu, aby ikonka/křížek zůstala na stejném místě a byla klikatelná */
+  .header.menu-open header-drawer {
+    position: relative;
+    z-index: 5;
+  }
+
   .menu-drawer.country-selector-open {
     transform: none !important;
     filter: none !important;
     transition: none !important;
+  }
+
+  /* Animace pouze z pravé strany, o něco pomalejší */
+  .js details[open] > .menu-drawer {
+    transition: transform 0.5s ease;
+  }
+
+  /* Blok: výš nahoru a víc doprava */
+  .js .menu-drawer,
+  .menu-drawer {
+    position: fixed;
+    top: var(--header-mobile-block-offset, 1.25rem);
+    left: auto;
+    right: var(--header-mobile-block-offset-right, -1rem);
+    width: max-content;
+    max-width: calc(100vw - var(--header-mobile-block-offset-right, -1rem));
+    height: auto;
+    max-height: calc(100vh - 2 * var(--header-mobile-block-offset, 1.25rem));
+    transform: translateX(calc(100% + var(--header-mobile-block-offset-right, -1rem)));
+    color: rgba(255, 255, 255, 0.95);
+    z-index: 3;
+    overflow: visible;
+    background: #0a0a0a;
+    border-radius: 10px;
+    box-shadow: none;
+  }
+
+  /* Pulsující barevná lišta kolem bloku (pseudo-element za blokem) */
+  .menu-drawer::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    z-index: -1;
+    border-radius: 14px;
+    background: linear-gradient(
+      135deg,
+      #f97316 0%,
+      #d946ef 33%,
+      #06b6d4 66%,
+      #f97316 100%
+    );
+    background-size: 300% 300%;
+    animation: menu-drawer-gradient-flow 3s ease infinite, menu-drawer-bar-pulse 2s ease-in-out infinite;
+  }
+
+  .js details[open].menu-opening > .menu-drawer {
+    transform: translateX(0);
+  }
+
+  .menu-drawer__inner-container {
+    padding-bottom: 1.25rem;
+    border-radius: 8px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: calc(100vh - 2 * var(--header-mobile-block-offset, 1.25rem) - 8px);
+    background: #0a0a0a;
+  }
+
+  .menu-drawer__navigation-container {
+    border-radius: 8px;
+  }
+
+  .menu-drawer__menu-item,
+  .menu-drawer__close-button,
+  .menu-drawer__account,
+  .menu-drawer .list-social__link {
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .menu-drawer__menu-item:hover,
+  .menu-drawer__close-button:hover,
+  .menu-drawer__menu-item--active,
+  .menu-drawer__menu-item:focus,
+  .menu-drawer__close-button:focus {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  /* Bez barevného proužku ve spodní části bloku */
+  .menu-drawer__utility-links {
+    background-color: transparent;
+  }
+
+  .menu-drawer__account:hover {
+    color: #fff;
+  }
+
+  .js .menu-drawer__submenu {
+    background-color: #0a0a0a;
+  }
+
+  /* Horní padding, aby první položka nebyla pod ikonou křížku v pravém horním rohu bloku */
+  .menu-drawer__navigation {
+    padding: 4rem 1.25rem 0.5rem;
+  }
+
+  .menu-drawer__menu-item {
+    padding: 0.9rem 1.25rem;
+  }
+
+  .menu-drawer summary.menu-drawer__menu-item {
+    padding-right: 2.5rem;
+  }
+
+  .menu-drawer__close-button {
+    padding: 0.9rem 1.25rem;
+  }
+
+  .header--has-social .menu-drawer__utility-links,
+  .menu-drawer__utility-links {
+    padding: 1rem 1.25rem;
   }
 }

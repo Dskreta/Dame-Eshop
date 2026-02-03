@@ -181,6 +181,20 @@
     margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
   }
 
+  @media screen and (max-width: 749px) {
+    /* Blok menu ještě o kousek doprava */
+    :root,
+    .section-header {
+      --header-mobile-block-offset: 1.25rem;
+      --header-mobile-block-offset-right: -1rem;
+    }
+    /* Ikonka menu o kousek dolů a ještě doprava */
+    .header__icons header-drawer {
+      margin-right: -2.6rem;
+      margin-top: 0.55rem;
+    }
+  }
+
   @media screen and (min-width: 750px) {
     .section-header {
       margin-bottom: {{ section.settings.margin_bottom }}px;

@@ -35,25 +35,35 @@
   body:hover #flashlight-global-overlay {
     opacity: 1;
   }
+
+  /* Na mobilu efekt nefunguje – skrytí overlay */
+  @media (max-width: 768px) {
+    #flashlight-global-overlay {
+      display: none !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+  }
 </style>
 
 <script>
 (function() {
   const overlay = document.getElementById('flashlight-global-overlay');
-  
+  if (!overlay) return;
+  if (window.innerWidth <= 768) return;
+
   const moveFlashlight = (e) => {
-    // Používáme clientX/Y, protože overlay je fixed
     overlay.style.setProperty('--cursor-x', e.clientX + 'px');
     overlay.style.setProperty('--cursor-y', e.clientY + 'px');
   };
 
   window.addEventListener('mousemove', moveFlashlight);
 
-  // Podpora pro Shopify editor
   if (window.Shopify && window.Shopify.designMode) {
     document.addEventListener('shopify:section:load', () => {
+      if (window.innerWidth <= 768) return;
       const newOverlay = document.getElementById('flashlight-global-overlay');
-      window.addEventListener('mousemove', moveFlashlight);
+      if (newOverlay) window.addEventListener('mousemove', moveFlashlight);
     });
   }
 })();
