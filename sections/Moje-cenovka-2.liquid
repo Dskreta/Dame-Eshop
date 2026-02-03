@@ -418,6 +418,107 @@
 
     }
 
+
+
+    /* --- MOBILNÍ LAYOUT: Karusel s peek --- */
+
+    @media (max-width: 768px) {
+
+        .cosmic-wrapper {
+
+            min-height: 85vh;
+
+        }
+
+
+
+        .cosmic-cards-grid {
+
+            display: flex !important;
+
+            flex-direction: row;
+
+            flex-wrap: nowrap;
+
+            align-items: stretch;
+
+            gap: 0 !important;
+
+            overflow-x: auto;
+
+            overflow-y: visible;
+
+            scroll-snap-type: x mandatory;
+
+            scroll-behavior: smooth;
+
+            -webkit-overflow-scrolling: touch;
+
+            padding: 0 0.5rem;
+
+            min-height: 360px !important;
+
+            max-width: 100%;
+
+            scrollbar-width: none;
+
+        }
+
+
+
+        .cosmic-cards-grid::-webkit-scrollbar {
+
+            display: none;
+
+        }
+
+
+
+        .cosmic-cards-grid .glass-panel {
+
+            flex: 0 0 68%;
+
+            min-width: 68%;
+
+            scroll-snap-align: center;
+
+            scroll-snap-stop: always;
+
+            margin: 0 1%;
+
+            transition: transform 0.4s ease, opacity 0.4s ease;
+
+        }
+
+
+
+        .cosmic-cards-grid .glass-panel,
+
+        .cosmic-cards-grid #card-1,
+
+        .cosmic-cards-grid #card-2,
+
+        .cosmic-cards-grid #card-3 {
+
+            height: 360px !important;
+
+        }
+
+
+
+        /* Větší mezera mezi nadpisem a kartami – horní strana karet není useknutá */
+
+        #ui-container .text-center.mb-12 {
+
+            margin-bottom: 4rem !important;
+
+        }
+
+
+
+
+    }
+
 </style>
 
 
@@ -578,9 +679,9 @@
 
 
 
-            <div class="grid lg:grid-cols-3 gap-10 items-end max-w-7xl mx-auto lg:min-h-[600px] pb-10 lg:pb-0 w-full">
+            <div id="cosmic-cards-carousel" class="cosmic-cards-grid grid lg:grid-cols-3 gap-10 items-end max-w-7xl mx-auto lg:min-h-[600px] pb-10 lg:pb-0 w-full">
 
-                <div id="card-1" onclick="requestTransition(1)" class="glass-panel theme-lava rounded-3xl p-2 group flex flex-col h-[500px]" style="opacity: 0.5;">
+                <div id="card-1" data-card-stage="1" class="glass-panel theme-lava rounded-3xl p-2 group flex flex-col h-[500px]" style="opacity: 0.5;">
 
                     <div class="hover-action-overlay rounded-[15px]">
 
@@ -616,7 +717,7 @@
 
                 </div>
 
-                <div id="card-2" onclick="requestTransition(2)" class="glass-panel theme-crystal rounded-3xl p-2 group flex flex-col h-[560px] z-10 border-fuchsia-500/30 card-active-2 w-full" style="opacity: 1;">
+                <div id="card-2" data-card-stage="2" class="glass-panel theme-crystal rounded-3xl p-2 group flex flex-col h-[560px] z-10 border-fuchsia-500/30 card-active-2 w-full" style="opacity: 1;">
 
                      <div class="hover-action-overlay rounded-[15px]">
 
@@ -654,7 +755,7 @@
 
                 </div>
 
-                <div id="card-3" onclick="requestTransition(3)" class="glass-panel theme-city rounded-3xl p-2 group flex flex-col h-[500px]" style="opacity: 0.5;">
+                <div id="card-3" data-card-stage="3" class="glass-panel theme-city rounded-3xl p-2 group flex flex-col h-[500px]" style="opacity: 0.5;">
 
                      <div class="hover-action-overlay rounded-[15px]">
 
@@ -782,6 +883,78 @@
 
 
 
+        // === KARUSEL (mobil): tap vs swipe, aktivace pouze na tap ===
+
+        let touchStartX = 0;
+
+        let touchSwipeDetected = false;
+
+        const carouselEl = document.getElementById('cosmic-cards-carousel');
+
+
+
+        cards.forEach((card, index) => {
+
+            if(!card) return;
+
+            const stageId = index;
+
+            card.addEventListener('touchstart', (e) => {
+
+                touchStartX = e.touches[0].clientX;
+
+                touchSwipeDetected = false;
+
+            }, { passive: true });
+
+            card.addEventListener('touchmove', (e) => {
+
+                if (Math.abs(e.touches[0].clientX - touchStartX) > 20) touchSwipeDetected = true;
+
+            }, { passive: true });
+
+            card.addEventListener('click', (e) => {
+
+                if (window.innerWidth <= 768 && touchSwipeDetected) {
+
+                    e.preventDefault();
+
+                    e.stopPropagation();
+
+                    return;
+
+                }
+
+                requestTransition(stageId);
+
+            });
+
+        });
+
+
+
+        // === KARUSEL: přejít na kartu (mobil) ===
+
+        function scrollCarouselToCard(cardIndex, behavior) {
+
+            if (window.innerWidth > 768 || !carouselEl) return;
+
+            const card = cards[cardIndex];
+
+            if (!card) return;
+
+            const cardLeft = card.offsetLeft;
+
+            const cardWidth = card.offsetWidth;
+
+            const containerWidth = carouselEl.offsetWidth;
+
+            carouselEl.scrollTo({ left: cardLeft - (containerWidth - cardWidth) / 2, behavior: behavior || 'smooth' });
+
+        }
+
+
+
         // === EVENT LISTENER PRO SPUŠTĚNÍ ===
 
         document.addEventListener('triggerCosmicIntro', function() {
@@ -848,6 +1021,12 @@
 
             isTransitioning = false;
 
+            if (window.innerWidth <= 768) {
+
+                requestAnimationFrame(() => scrollCarouselToCard(2, 'auto'));
+
+            }
+
         }
 
 
@@ -859,6 +1038,16 @@
     cards.forEach(c => { if(c) c.classList.remove('card-hover-highlight', 'card-dimmed'); });
 
     
+
+    // Na mobilu: posunout karusel tak, aby kliknutá karta byla ve středu
+
+    if (window.innerWidth <= 768) {
+
+        scrollCarouselToCard(targetStage);
+
+    }
+
+
 
     // 1. Změna linek v této sekci
 

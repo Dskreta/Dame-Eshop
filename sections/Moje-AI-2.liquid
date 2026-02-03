@@ -20,11 +20,13 @@
 
   .features-grid {
     display: grid;
-    gap: 2rem;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.85rem;
   }
-  @media(min-width: 768px) {
-    .features-grid { grid-template-columns: repeat(3, 1fr); }
+  @media (min-width: 768px) {
+    .features-grid {
+      gap: 2rem;
+    }
   }
 
   /* TYPOGRAPHY */
@@ -120,6 +122,36 @@
     color: #9ca3af;
     font-size: 0.95rem;
     line-height: 1.6;
+  }
+
+  /* Mobil: 3 karty vedle sebe, v kartě jen nadpis (popis skrytý), kompaktní vzhled */
+  @media (max-width: 767px) {
+    #shopify-section-{{ section.id }} .feature-card {
+      padding: 1rem 0.5rem 1.35rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    #shopify-section-{{ section.id }} .feature-card .card-desc {
+      display: none !important;
+    }
+    #shopify-section-{{ section.id }} .feature-card .icon-wrapper {
+      width: 2.5rem;
+      height: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    #shopify-section-{{ section.id }} .feature-card .icon-main {
+      font-size: 1.25rem !important;
+    }
+    #shopify-section-{{ section.id }} .feature-card .card-title {
+      font-size: 0.95rem;
+      margin-bottom: 0;
+      line-height: 1.25;
+    }
+    #shopify-section-{{ section.id }} .feature-card .icon-bg {
+      display: none;
+    }
   }
 
   .orbit-line {
