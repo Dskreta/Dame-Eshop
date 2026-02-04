@@ -124,34 +124,216 @@
     line-height: 1.6;
   }
 
-  /* Mobil: 3 karty vedle sebe, v kartě jen nadpis (popis skrytý), kompaktní vzhled */
-  @media (max-width: 767px) {
-    #shopify-section-{{ section.id }} .feature-card {
-      padding: 1rem 0.5rem 1.35rem 0.5rem;
+  /* Desktop: klasický grid – na mobilu skrytý */
+  @media (max-width: 769px) {
+    .features-grid { display: none !important; }
+  }
+
+  /* ========== MOBIL (< 770px): jedna karta v rozměru jako na PC, přepínání + progress ========== */
+  .features-mobile-scroll-wrap {
+    display: none;
+    position: relative;
+    margin: 0 -1.5rem;
+  }
+  @media (max-width: 769px) {
+    .features-mobile-scroll-wrap {
       display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: stretch;
+      gap: 0.75rem;
+      min-height: 240px;
+      overflow: visible;
+      padding: 0 1.5rem 0 1.5rem;
+      box-sizing: border-box;
+    }
+  }
+
+  /* Stage = šířka jedné PC karty (stejný výpočet jako grid: (1200 - 3rem - 2*2rem) / 3) */
+  .features-mobile-scroll {
+    overflow: hidden;
+    border-radius: 1rem;
+    flex: 0 1 auto;
+    max-width: calc((1200px - 3rem - 4rem) / 3);
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    min-height: 240px;
+    position: relative;
+    touch-action: pan-y;
+  }
+  @media (max-width: 769px) and (max-height: 500px) {
+    .features-mobile-scroll { min-height: 200px; }
+  }
+
+  /* Karty – rozměrově i designem identické s .feature-card */
+  .feature-card-mobile {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    box-sizing: border-box;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    opacity: 0;
+    transform: translateY(24px);
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .feature-card-mobile.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    z-index: 2;
+  }
+  .feature-card-mobile.is-exit {
+    transform: translateY(-28px);
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .feature-card-mobile.is-enter-from {
+    transform: translateY(28px);
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .feature-card-mobile.is-enter-from.is-enter {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .feature-card-mobile .icon-bg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1rem;
+    opacity: 0.05;
+  }
+  .feature-card-mobile .icon-bg span { font-size: 5rem !important; }
+  .feature-card-mobile .icon-wrapper {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .feature-card-mobile .card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+    color: white;
+  }
+  .feature-card-mobile .card-desc {
+    display: block !important;
+    color: #9ca3af;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  /* Pravá lišta = tenký progress (oranž → fialová → světle modrá), pulsující záře, hvězda na konci */
+  #shopify-section-{{ section.id }} .features-progress-wrap {
+    display: none;
+    flex: 0 0 auto;
+    width: 14px;
+    position: relative;
+    z-index: 20;
+    pointer-events: none;
+    align-self: stretch;
+  }
+  @media (max-width: 769px) {
+    #shopify-section-{{ section.id }} .features-progress-wrap {
+      display: flex !important;
       flex-direction: column;
       align-items: center;
-      text-align: center;
+      visibility: visible !important;
+      opacity: 1 !important;
     }
-    #shopify-section-{{ section.id }} .feature-card .card-desc {
-      display: none !important;
-    }
-    #shopify-section-{{ section.id }} .feature-card .icon-wrapper {
-      width: 2.5rem;
-      height: 2.5rem;
-      margin-bottom: 0.5rem;
-    }
-    #shopify-section-{{ section.id }} .feature-card .icon-main {
-      font-size: 1.25rem !important;
-    }
-    #shopify-section-{{ section.id }} .feature-card .card-title {
-      font-size: 0.95rem;
-      margin-bottom: 0;
-      line-height: 1.25;
-    }
-    #shopify-section-{{ section.id }} .feature-card .icon-bg {
-      display: none;
-    }
+  }
+  #shopify-section-{{ section.id }} .features-progress-track {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 2px;
+  }
+  #shopify-section-{{ section.id }} .features-progress-fill {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 33.33%;
+    border-radius: 2px;
+    transition: height 0.4s ease;
+    /* barva se nastavuje z JS podle barev karet */
+    background: var(--progress-fill-gradient, linear-gradient(to top, #06b6d4, #d946ef, #f97316));
+    box-shadow: 0 0 10px var(--progress-glow, rgba(249, 115, 22, 0.4));
+    animation: progress-glow-pulse 1.8s ease-in-out infinite;
+  }
+  #shopify-section-{{ section.id }} .features-progress-fill::before {
+    content: '';
+    position: absolute;
+    inset: -8px -6px;
+    border-radius: 8px;
+    background: inherit;
+    filter: blur(10px);
+    opacity: 0.5;
+    z-index: -1;
+    pointer-events: none;
+  }
+  @keyframes progress-glow-pulse {
+    0%, 100% { opacity: 0.92; filter: brightness(1); box-shadow: 0 0 8px var(--progress-glow, rgba(249, 115, 22, 0.35)); }
+    50% { opacity: 1; filter: brightness(1.12); box-shadow: 0 0 18px var(--progress-glow, rgba(249, 115, 22, 0.55)); }
+  }
+  #shopify-section-{{ section.id }} .features-progress-cap {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+    z-index: 2;
+    pointer-events: none;
+  }
+  #shopify-section-{{ section.id }} .features-progress-cap .progress-cap-icon {
+    font-size: 14px !important;
+    color: rgba(255, 255, 255, 0.95);
+    filter: drop-shadow(0 0 4px currentColor);
+  }
+  #shopify-section-{{ section.id }} .features-progress-cap {
+    animation: progress-cap-pulse 1.8s ease-in-out infinite;
+  }
+  #shopify-section-{{ section.id }} .features-progress-cap.cap-custom {
+    /* barva z JS podle aktuální karty */
+  }
+  @keyframes progress-cap-pulse {
+    0%, 100% { opacity: 1; filter: brightness(1); }
+    50% { opacity: 0.9; filter: brightness(1.2); }
   }
 
   .orbit-line {
@@ -330,6 +512,31 @@
     {%- endfor -%}
   </div>
 
+  <!-- Mobil (< 770px): jedna karta na výšku, scroll mezi kartami, progress lišta vpravo -->
+  <div class="features-mobile-scroll-wrap" id="features-mobile-wrap-{{ section.id }}">
+    <div class="features-mobile-scroll" id="features-mobile-scroll-{{ section.id }}" role="region" aria-label="Karty s informacemi">
+      {%- for block in section.blocks -%}
+        <div class="feature-card-mobile{% if forloop.first %} is-active{% endif %}" style="border-top: 2px solid {{ block.settings.color }};" data-card-index="{{ forloop.index0 }}" data-color="{{ block.settings.color }}">
+          <div class="icon-bg">
+            <span class="material-symbols-outlined" style="color: {{ block.settings.color }};">{{ block.settings.icon }}</span>
+          </div>
+          <div class="icon-wrapper" style="background-color: {{ block.settings.color }}1A; border-color: {{ block.settings.color }}4D;">
+            <span class="material-symbols-outlined icon-main" style="color: {{ block.settings.color }};">{{ block.settings.icon }}</span>
+          </div>
+          <h3 class="card-title">{{ block.settings.title }}</h3>
+          <p class="card-desc">{{ block.settings.text }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="features-progress-wrap" id="features-progress-wrap-{{ section.id }}" aria-hidden="true">
+      <div class="features-progress-track"></div>
+      <div class="features-progress-fill" id="features-progress-fill-{{ section.id }}"></div>
+      <div class="features-progress-cap cap-custom" id="features-progress-cap-{{ section.id }}" style="top: 33.33%;">
+        <span class="material-symbols-outlined progress-cap-icon">star</span>
+      </div>
+    </div>
+  </div>
+
   <div class="cta-wrapper">
     <button type="button" id="trigger-cosmic-intro" class="cyber-pill-button">
       {{ section.settings.btn_text }}
@@ -343,6 +550,128 @@
         const triggerBtn = document.getElementById('trigger-cosmic-intro');
         const currentSectionDiv = document.getElementById('shopify-section-{{ section.id }}');
         const mistLayer = document.getElementById('neon-mist-layer');
+
+        /* Mobil: 1 karta, scroll KDEKOLIV přepíná karty (dokud sekce v viewportu); progress bar z barev karet */
+        (function() {
+            var sectionEl = document.getElementById('shopify-section-{{ section.id }}');
+            var wrap = document.getElementById('features-mobile-wrap-{{ section.id }}');
+            var stage = document.getElementById('features-mobile-scroll-{{ section.id }}');
+            var progressFill = document.getElementById('features-progress-fill-{{ section.id }}');
+            var progressCap = document.getElementById('features-progress-cap-{{ section.id }}');
+            if (!wrap || !stage || !sectionEl) return;
+            var cards = stage.querySelectorAll('.feature-card-mobile');
+            var total = cards.length;
+            if (total === 0) return;
+            var currentIndex = 0;
+            var animating = false;
+            var duration = 400;
+            var cardColors = [];
+            for (var i = 0; i < cards.length; i++) {
+                var c = cards[i].getAttribute('data-color');
+                if (c) cardColors.push(c);
+            }
+            if (cardColors.length === 0) cardColors = ['#f97316', '#d946ef', '#06b6d4'];
+
+            var STEPS_PER_CARD = 5;
+            var totalSteps = total * STEPS_PER_CARD;
+            var currentStep = 0;
+
+            var PROGRESS_PURPLE = { r: 217, g: 70, b: 239 };
+            var PROGRESS_BLUE = { r: 6, g: 182, b: 212 };
+            var PROGRESS_GRADIENT = 'linear-gradient(to bottom, #d946ef 0%, #a78bfa 35%, #38bdf8 65%, #06b6d4 100%)';
+
+            function hexToRgba(hex, a) {
+                hex = String(hex).replace('#', '');
+                var r = parseInt(hex.substr(0, 2), 16), g = parseInt(hex.substr(2, 2), 16), b = parseInt(hex.substr(4, 2), 16);
+                return 'rgba(' + r + ',' + g + ',' + b + ',' + (a !== undefined ? a : 1) + ')';
+            }
+            function setProgressFromStep(step) {
+                var pct = totalSteps > 0 ? ((step + 1) / totalSteps) * 100 : 0;
+                var cardIndex = Math.floor(step / STEPS_PER_CARD);
+                var capColor = cardColors[cardIndex] || '#d946ef';
+                if (progressFill) {
+                    progressFill.style.height = pct + '%';
+                    progressFill.style.setProperty('--progress-fill-gradient', PROGRESS_GRADIENT);
+                    progressFill.style.setProperty('--progress-glow', hexToRgba(capColor, 0.5));
+                }
+                if (progressCap) {
+                    progressCap.style.top = pct + '%';
+                    progressCap.style.background = capColor;
+                    progressCap.style.boxShadow = '0 0 14px ' + hexToRgba(capColor, 0.75) + ', 0 0 8px ' + hexToRgba(capColor, 0.5);
+                }
+            }
+            function goToSlide(nextIndex, skipProgress) {
+                if (animating || nextIndex < 0 || nextIndex >= total) return;
+                if (nextIndex === currentIndex) return;
+                animating = true;
+                var currentCard = cards[currentIndex];
+                var nextCard = cards[nextIndex];
+                currentCard.classList.remove('is-active');
+                currentCard.classList.add('is-exit');
+                nextCard.classList.add('is-enter-from');
+                nextCard.offsetHeight;
+                nextCard.classList.add('is-enter');
+                if (!skipProgress) setProgressFromStep((nextIndex + 1) * STEPS_PER_CARD - 1);
+                setTimeout(function() {
+                    currentCard.classList.remove('is-exit');
+                    nextCard.classList.remove('is-enter-from', 'is-enter');
+                    nextCard.classList.add('is-active');
+                    currentIndex = nextIndex;
+                    animating = false;
+                }, duration);
+            }
+            function stepForward() {
+                if (currentStep >= totalSteps - 1) return false;
+                currentStep++;
+                setProgressFromStep(currentStep);
+                var newCardIndex = Math.floor(currentStep / STEPS_PER_CARD);
+                if (newCardIndex !== currentIndex) goToSlide(newCardIndex, true);
+                return true;
+            }
+            function stepBack() {
+                if (currentStep <= 0) return false;
+                currentStep--;
+                setProgressFromStep(currentStep);
+                var newCardIndex = Math.floor(currentStep / STEPS_PER_CARD);
+                if (newCardIndex !== currentIndex) goToSlide(newCardIndex, true);
+                return true;
+            }
+
+            cards[0].classList.add('is-active');
+            setProgressFromStep(0);
+
+            function isCenterOverCards() {
+                if (window.innerWidth > 769) return false;
+                var r = wrap.getBoundingClientRect();
+                var centerY = window.innerHeight * 0.5;
+                return r.top <= centerY && centerY <= r.bottom;
+            }
+            function handleWheel(e) {
+                if (!isCenterOverCards()) return;
+                var dy = e.deltaY;
+                if (dy > 12) {
+                    if (stepForward()) e.preventDefault();
+                } else if (dy < -12) {
+                    if (stepBack()) e.preventDefault();
+                }
+            }
+            document.addEventListener('wheel', handleWheel, { passive: false });
+
+            var touchStartY = 0;
+            function handleTouchStart(e) {
+                if (window.innerWidth > 769) return;
+                touchStartY = e.touches[0].clientY;
+            }
+            function handleTouchEnd(e) {
+                if (window.innerWidth > 769 || !e.changedTouches[0]) return;
+                if (!isCenterOverCards()) return;
+                var dy = e.changedTouches[0].clientY - touchStartY;
+                if (dy < -35) stepForward();
+                else if (dy > 35) stepBack();
+            }
+            document.addEventListener('touchstart', handleTouchStart, { passive: true });
+            document.addEventListener('touchend', handleTouchEnd, { passive: true });
+        })();
         
         const allSections = Array.from(document.querySelectorAll('.shopify-section'));
         const footer = document.querySelector('footer') || document.getElementById('shopify-section-footer') || document.querySelector('.site-footer');

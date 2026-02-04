@@ -422,7 +422,7 @@
 
     /* --- MOBILNÍ LAYOUT: Karusel s peek --- */
 
-    @media (max-width: 768px) {
+    @media (max-width: 1023px) {
 
         .cosmic-wrapper {
 
@@ -492,7 +492,7 @@
             padding: 2.75rem 0.5rem 0 0.5rem;
 
             /* Vyšší blok – prostřední karta 420px + prostor pro translate/scale, aby nebyl ořízlý hořejšek */
-            min-height: 490px !important;
+            min-height: 510px !important;
 
             max-width: 100%;
 
@@ -507,7 +507,7 @@
 
         }
 
-        /* Spacery místo paddingu – umožní centrovat karty bez změny jejich šířky, konzistentní peek */
+        /* Spacery – flexibilní, vyplní prostor; karta max 340px (strop = grid při 1024px) */
 
         .cosmic-cards-grid::before,
 
@@ -515,9 +515,9 @@
 
             content: '';
 
-            flex: 0 0 16%;
+            flex: 1 1 0;
 
-            min-width: 16%;
+            min-width: 8%;
 
             flex-shrink: 0;
 
@@ -533,19 +533,21 @@
 
 
 
-        /* Šířka karet jako původně (68%), větší mezera mezi nimi */
+        /* Karta: strop 340px (šířka v gridu při 1024px), nikdy neširší než desktop */
 
         .cosmic-cards-grid .glass-panel {
 
-            flex: 0 0 68%;
+            flex: 0 0 min(40vw, 340px);
 
-            min-width: 68%;
+            min-width: 165px;
+
+            max-width: 340px;
 
             scroll-snap-align: center;
 
             scroll-snap-stop: always;
 
-            margin: 0 5%;
+            margin: 0 4%;
 
             transition: transform 0.4s ease, opacity 0.4s ease;
 
@@ -559,15 +561,15 @@
 
         .cosmic-cards-grid #card-3 {
 
-            height: 360px !important;
+            height: 450px !important;
 
         }
 
-        /* Prostřední karta vyšší než postranní – více místa pro blok s body výhod, min. 2 body vždy vidět */
+
 
         .cosmic-cards-grid #card-2 {
 
-            height: 395px !important;
+            height: 500px !important;
 
         }
 
@@ -579,9 +581,551 @@
 
 
 
+        .cosmic-cards-grid .glass-panel .text-right > div:last-child {
+
+            font-size: 1.5rem !important;
+
+        }
 
 
 
+        .cosmic-cards-grid .glass-panel .icon-box {
+
+            padding: 0.75rem !important;
+
+        }
+
+
+
+        .cosmic-cards-grid .glass-panel .icon-box .material-symbols-outlined {
+
+            font-size: 3rem !important;
+
+        }
+
+
+
+        .cosmic-cards-grid #card-2 .icon-box .material-symbols-outlined {
+
+            font-size: 3.75rem !important;
+
+        }
+
+
+
+        .cosmic-cards-grid .glass-panel h3 {
+
+            font-size: 1.875rem !important;
+
+        }
+
+
+
+        .cosmic-cards-grid #card-2 h3 {
+
+            font-size: 2.25rem !important;
+
+        }
+
+    }
+
+
+
+    @media (max-width: 900px) {
+
+        .cosmic-cards-grid { min-height: 445px !important; }
+
+        .cosmic-cards-grid .glass-panel { flex: 0 0 min(42vw, 340px); margin: 0 3%; }
+
+        .cosmic-cards-grid .glass-panel, .cosmic-cards-grid #card-1, .cosmic-cards-grid #card-3 { height: 410px !important; }
+
+        .cosmic-cards-grid #card-2 { height: 445px !important; }
+
+        .cosmic-cards-grid .glass-panel .text-right > div:last-child { font-size: 1.35rem !important; }
+
+        .cosmic-cards-grid .glass-panel .icon-box .material-symbols-outlined { font-size: 2.75rem !important; }
+
+        .cosmic-cards-grid #card-2 .icon-box .material-symbols-outlined { font-size: 3.25rem !important; }
+
+        .cosmic-cards-grid .glass-panel h3 { font-size: 1.65rem !important; }
+
+        .cosmic-cards-grid #card-2 h3 { font-size: 1.95rem !important; }
+
+    }
+
+
+
+    @media (max-width: 768px) {
+
+        .cosmic-cards-grid { min-height: 420px !important; }
+
+        .cosmic-cards-grid::before, .cosmic-cards-grid::after { min-width: 10%; }
+
+        .cosmic-cards-grid .glass-panel { flex: 0 0 min(44vw, 340px); margin: 0 4%; }
+
+        .cosmic-cards-grid .glass-panel, .cosmic-cards-grid #card-1, .cosmic-cards-grid #card-3 { height: 385px !important; }
+
+        .cosmic-cards-grid #card-2 { height: 420px !important; }
+
+        .cosmic-cards-grid #card-2 .feature-block { min-height: 3.75rem; }
+
+        .cosmic-cards-grid .glass-panel .text-right > div:last-child { font-size: 1.2rem !important; }
+
+        .cosmic-cards-grid .glass-panel .icon-box { padding: 0.6rem !important; }
+
+        .cosmic-cards-grid .glass-panel .icon-box .material-symbols-outlined { font-size: 2.4rem !important; }
+
+        .cosmic-cards-grid #card-2 .icon-box .material-symbols-outlined { font-size: 2.6rem !important; }
+
+        .cosmic-cards-grid .glass-panel h3 { font-size: 1.5rem !important; }
+
+        .cosmic-cards-grid #card-2 h3 { font-size: 1.7rem !important; }
+
+    }
+
+
+
+    @media (max-width: 620px) {
+
+        .cosmic-cards-grid::before, .cosmic-cards-grid::after { min-width: 12%; }
+
+        .cosmic-cards-grid .glass-panel { flex: 0 0 min(42vw, 340px); margin: 0 4%; }
+
+        .cosmic-cards-grid .glass-panel, .cosmic-cards-grid #card-1, .cosmic-cards-grid #card-3 { height: 370px !important; }
+
+        .cosmic-cards-grid #card-2 { height: 400px !important; }
+
+        .cosmic-cards-grid .glass-panel .text-right > div:last-child { font-size: 1.1rem !important; }
+
+        .cosmic-cards-grid .glass-panel .icon-box .material-symbols-outlined { font-size: 2.2rem !important; }
+
+        .cosmic-cards-grid .glass-panel h3 { font-size: 1.4rem !important; }
+
+        .cosmic-cards-grid #card-2 h3 { font-size: 1.55rem !important; }
+
+    }
+
+
+
+    @media (max-width: 571px) {
+
+        .cosmic-cards-grid .glass-panel { flex: 0 0 min(52vw, 340px); }
+
+    }
+
+
+
+    @media (max-width: 520px) {
+
+        .cosmic-cards-grid::before, .cosmic-cards-grid::after { min-width: 14%; }
+
+        .cosmic-cards-grid .glass-panel { flex: 0 0 min(52vw, 340px); margin: 0 5%; }
+
+        .cosmic-cards-grid .glass-panel, .cosmic-cards-grid #card-1, .cosmic-cards-grid #card-3 { height: 365px !important; }
+
+        .cosmic-cards-grid #card-2 { height: 400px !important; }
+
+        .cosmic-cards-grid .glass-panel .text-right > div:last-child { font-size: 1.05rem !important; }
+
+        .cosmic-cards-grid .glass-panel .icon-box .material-symbols-outlined { font-size: 2rem !important; }
+
+        .cosmic-cards-grid .glass-panel h3 { font-size: 1.38rem !important; }
+
+    }
+
+
+
+    @media (max-width: 420px) {
+
+        .cosmic-cards-grid::before, .cosmic-cards-grid::after { min-width: 14%; }
+
+        .cosmic-cards-grid .glass-panel { flex: 0 0 min(50vw, 340px); min-width: 155px; margin: 0 5%; }
+
+        .cosmic-cards-grid .glass-panel, .cosmic-cards-grid #card-1, .cosmic-cards-grid #card-3 { height: 360px !important; }
+
+        .cosmic-cards-grid #card-2 { height: 395px !important; }
+
+        .cosmic-cards-grid .glass-panel .text-right > div:last-child { font-size: 1rem !important; }
+
+        .cosmic-cards-grid .glass-panel .icon-box { padding: 0.5rem !important; }
+
+        .cosmic-cards-grid .glass-panel .icon-box .material-symbols-outlined { font-size: 2rem !important; }
+
+        .cosmic-cards-grid .glass-panel h3 { font-size: 1.35rem !important; }
+
+        .cosmic-cards-grid #card-2 h3 { font-size: 1.5rem !important; }
+
+    }
+
+
+
+    /* --- ÚZKÁ OBRAZOVKA (≤460px): širší karty + blok s body výhod – více šířky --- */
+
+    @media (max-width: 460px) {
+
+        .cosmic-cards-grid .glass-panel {
+            flex: 0 0 min(58vw, 340px) !important;
+            margin: 0 4% !important;
+        }
+
+        /* Méně paddingu v kartě – více místa pro obsah (blok s výhodami) */
+
+        .cosmic-cards-grid .glass-panel > div.flex.flex-col {
+
+            padding-left: 0.75rem !important;
+
+            padding-right: 0.75rem !important;
+
+        }
+
+
+
+        /* Blok s body výhod – roztáhnout do šířky, méně paddingu */
+
+        .cosmic-cards-grid .glass-panel .feature-block {
+
+            padding: 0.75rem !important;
+
+            min-width: 0;
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+        }
+
+
+
+        /* Seznam výhod – využití celé šířky, text + ikonka se vejdou */
+
+        .cosmic-cards-grid .glass-panel .feature-list-content {
+
+            min-width: 0;
+
+            width: 100%;
+
+            padding-right: 6px;
+
+            overflow-wrap: break-word;
+
+        }
+
+
+
+        .cosmic-cards-grid .glass-panel .feature-list-content li {
+
+            min-width: 0;
+
+            flex-wrap: wrap;
+
+            word-break: break-word;
+
+        }
+
+
+
+        .cosmic-cards-grid .glass-panel .feature-list-content li span {
+
+            flex-shrink: 0;
+
+        }
+
+    }
+
+
+
+    /* --- PULSUJÍCÍ ŠIPKY KARUSELU (jen do 1023px) --- */
+
+    .carousel-arrows-wrap {
+
+        position: relative;
+
+        width: 100%;
+
+        max-width: 100%;
+
+    }
+
+    @media (max-width: 1023px) {
+
+        .carousel-arrows-wrap {
+
+            margin-top: auto;
+
+            flex-shrink: 0;
+
+        }
+
+    }
+
+    .carousel-arrow {
+
+        display: none;
+
+        position: absolute;
+
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        z-index: 50;
+
+        width: 3rem;
+
+        height: 3rem;
+
+        border-radius: 50%;
+
+        border: 2px solid;
+
+        cursor: pointer;
+
+        align-items: center;
+
+        justify-content: center;
+
+        transition: opacity 0.2s, background 0.2s, border-color 0.2s, color 0.2s;
+
+        -webkit-tap-highlight-color: transparent;
+
+        animation: carousel-arrow-pulse 1.4s ease-in-out infinite;
+
+    }
+
+    .carousel-arrow-left {
+
+        left: 1.25rem;
+
+    }
+
+    .carousel-arrow-right {
+
+        right: 1.25rem;
+
+    }
+
+    .carousel-arrow .material-symbols-outlined {
+
+        font-size: 1.85rem;
+
+    }
+
+    .carousel-arrow.arrow-theme-lava {
+
+        background: rgba(255, 77, 0, 0.2);
+
+        border-color: rgba(255, 77, 0, 0.7);
+
+        color: #ff4d00;
+
+    }
+
+    .carousel-arrow.arrow-theme-lava:hover {
+
+        background: rgba(255, 77, 0, 0.35);
+
+    }
+
+    .carousel-arrow.arrow-theme-crystal {
+
+        background: rgba(217, 70, 239, 0.2);
+
+        border-color: rgba(217, 70, 239, 0.7);
+
+        color: #d946ef;
+
+    }
+
+    .carousel-arrow.arrow-theme-crystal:hover {
+
+        background: rgba(217, 70, 239, 0.35);
+
+    }
+
+    .carousel-arrow.arrow-theme-city {
+
+        background: rgba(6, 182, 212, 0.2);
+
+        border-color: rgba(6, 182, 212, 0.7);
+
+        color: #06b6d4;
+
+    }
+
+    .carousel-arrow.arrow-theme-city:hover {
+
+        background: rgba(6, 182, 212, 0.35);
+
+    }
+
+    @keyframes carousel-arrow-pulse {
+
+        0%, 100% { opacity: 1; transform: translateY(-50%) scale(1); }
+
+        50% { opacity: 0.72; transform: translateY(-50%) scale(1.08); }
+
+    }
+
+    .carousel-arrow.arrow-theme-lava { box-shadow: 0 0 0 0 rgba(255, 77, 0, 0.3); }
+
+    .carousel-arrow.arrow-theme-crystal { box-shadow: 0 0 0 0 rgba(217, 70, 239, 0.3); }
+
+    .carousel-arrow.arrow-theme-city { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.3); }
+
+    @media (max-width: 1023px) {
+
+        .carousel-arrows-wrap .carousel-arrow.carousel-arrow-visible {
+
+            display: flex;
+
+        }
+
+    }
+
+    @media (min-width: 1024px) {
+
+        .carousel-arrows-wrap .carousel-arrow {
+
+            display: none !important;
+
+        }
+
+    }
+
+
+
+    /* Overlay tlačítko jen na mobilu – na desktopu skryté */
+    @media (min-width: 1024px) {
+        .teraformace-overlay-btn { display: none !important; }
+    }
+
+    /* --- VYPNOUT VŠECHNY HOVER EFEKTY POD 1024px --- */
+
+    @media (max-width: 1023px) {
+
+        .cosmic-wrapper .glass-panel .hover-action-overlay {
+
+            opacity: 0 !important;
+
+            pointer-events: none;
+
+        }
+
+        .cosmic-wrapper .glass-panel h3,
+
+        .cosmic-wrapper .glass-panel:hover h3,
+
+        .cosmic-wrapper .glass-panel h3:hover,
+
+        .cosmic-wrapper .glass-panel h3:focus {
+
+            color: white !important;
+
+        }
+
+        .cosmic-wrapper .glass-panel.theme-lava button:hover,
+
+        .cosmic-wrapper .glass-panel.theme-lava button:focus {
+
+            background-color: transparent !important;
+
+            color: #ff4d00 !important;
+
+            box-shadow: none !important;
+
+        }
+
+        .cosmic-wrapper .glass-panel.theme-crystal button:hover,
+
+        .cosmic-wrapper .glass-panel.theme-crystal button:focus {
+
+            background-color: rgba(217, 70, 239, 1) !important;
+
+            color: white !important;
+
+            box-shadow: none !important;
+
+        }
+
+        .cosmic-wrapper .glass-panel.theme-city button:hover,
+
+        .cosmic-wrapper .glass-panel.theme-city button:focus {
+
+            background-color: transparent !important;
+
+            color: #06b6d4 !important;
+
+            box-shadow: none !important;
+
+        }
+
+        .cosmic-wrapper .feature-list-content::-webkit-scrollbar-thumb:hover {
+
+            background: rgba(255,255,255,0.15);
+
+        }
+
+        /* Na mobilu jen 1 button – teraformace. Původní button skrytý. Aktivní karta = žádný button. */
+        .cosmic-wrapper .glass-panel .card-action-btn { display: none !important; }
+        .cosmic-wrapper .glass-panel.card-active-1 .card-action-btn,
+        .cosmic-wrapper .glass-panel.card-active-2 .card-action-btn,
+        .cosmic-wrapper .glass-panel.card-active-3 .card-action-btn { display: none !important; }
+
+        /* Teraformace button – jediný button na mobilu, zmizí když je karta aktivní */
+        .teraformace-overlay-btn {
+            position: relative;
+            width: 100%;
+            z-index: 20;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: #000000;
+            border-radius: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            visibility: hidden;
+            pointer-events: none;
+            transition: visibility 0.2s ease;
+        }
+        .teraformace-overlay-btn.visible {
+            visibility: visible;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+        .glass-panel.card-active-1 .card-action-area,
+        .glass-panel.card-active-2 .card-action-area,
+        .glass-panel.card-active-3 .card-action-area {
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .glass-panel.card-active-1,
+        .glass-panel.card-active-2,
+        .glass-panel.card-active-3 {
+            transform: none !important;
+        }
+        .theme-lava .teraformace-overlay-btn { border: 2px solid #ff4d00; }
+        .theme-crystal .teraformace-overlay-btn { border: 2px solid #d946ef; }
+        .theme-city .teraformace-overlay-btn { border: 2px solid #06b6d4; }
+        .teraformace-overlay-btn .overlay-text {
+            text-align: center;
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            line-height: 1.2;
+        }
+        .teraformace-overlay-btn .material-symbols-outlined {
+            color: #fff;
+            font-size: 1.25rem;
+            animation: btn-teraformace-bounce 1.5s ease-in-out infinite;
+        }
+        .teraformace-overlay-btn .overlay-text span { display: block; }
+        @keyframes btn-teraformace-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
     }
 
 </style>
@@ -744,6 +1288,13 @@
 
 
 
+            <div id="carousel-arrows-wrap-{{ section.id }}" class="carousel-arrows-wrap w-full max-w-7xl mx-auto">
+                <button type="button" id="carousel-arrow-left-{{ section.id }}" class="carousel-arrow carousel-arrow-left" aria-label="Předchozí nabídka">
+                    <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <button type="button" id="carousel-arrow-right-{{ section.id }}" class="carousel-arrow carousel-arrow-right" aria-label="Další nabídka">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
             <div id="cosmic-cards-carousel" class="cosmic-cards-grid grid lg:grid-cols-3 gap-10 items-end max-w-7xl mx-auto lg:min-h-[600px] pb-10 lg:pb-0 w-full">
 
                 <div id="card-1" data-card-stage="1" class="glass-panel theme-lava rounded-3xl p-2 group flex flex-col h-[500px]" style="opacity: 0.5;">
@@ -776,7 +1327,13 @@
 
                         </div>
 
-                        <button class="w-full py-3 rounded-xl border border-lava hover:bg-lava hover:text-white transition-all font-display font-bold tracking-widest text-sm text-lava">INITIALIZE</button>
+                        <div class="card-action-area relative flex-shrink-0">
+                            <button class="card-action-btn w-full py-3 rounded-xl border border-lava hover:bg-lava hover:text-white transition-all font-display font-bold tracking-widest text-sm text-lava flex items-center justify-center gap-1">INITIALIZE</button>
+                            <div class="teraformace-overlay-btn" role="button" tabindex="0" aria-label="Spustit teraformaci">
+                                <span class="overlay-text"><span>SPUSTIT</span><span>TERAFORMACI</span></span>
+                                <span class="material-symbols-outlined">touch_app</span>
+                            </div>
+                        </div>
 
                     </div>
 
@@ -814,7 +1371,13 @@
 
                         </div>
 
-                        <button class="w-full py-4 rounded-xl bg-crystal hover:bg-fuchsia-600 hover:shadow-[0_0_30px_rgba(217,70,239,0.4)] transition-all font-display font-bold tracking-widest text-sm text-white">EVOLVE</button>
+                        <div class="card-action-area relative flex-shrink-0">
+                            <button class="card-action-btn w-full py-4 rounded-xl bg-crystal hover:bg-fuchsia-600 hover:shadow-[0_0_30px_rgba(217,70,239,0.4)] transition-all font-display font-bold tracking-widest text-sm text-white flex items-center justify-center gap-1">EVOLVE</button>
+                            <div class="teraformace-overlay-btn" role="button" tabindex="0" aria-label="Spustit teraformaci">
+                                <span class="overlay-text"><span>SPUSTIT</span><span>TERAFORMACI</span></span>
+                                <span class="material-symbols-outlined">touch_app</span>
+                            </div>
+                        </div>
 
                     </div>
 
@@ -850,11 +1413,19 @@
 
                         </div>
 
-                        <button class="w-full py-3 rounded-xl border border-city hover:bg-city hover:text-white transition-all font-display font-bold tracking-widest text-sm text-city">CONTACT</button>
+                        <div class="card-action-area relative flex-shrink-0">
+                            <button class="card-action-btn w-full py-3 rounded-xl border border-city hover:bg-city hover:text-white transition-all font-display font-bold tracking-widest text-sm text-city flex items-center justify-center gap-1">CONTACT</button>
+                            <div class="teraformace-overlay-btn" role="button" tabindex="0" aria-label="Spustit teraformaci">
+                                <span class="overlay-text"><span>SPUSTIT</span><span>TERAFORMACI</span></span>
+                                <span class="material-symbols-outlined">touch_app</span>
+                            </div>
+                        </div>
 
                     </div>
 
                 </div>
+
+            </div>
 
             </div>
 
@@ -916,7 +1487,7 @@
 
 
 
-        // === HOVER EFFEKTY ===
+        // === HOVER EFFEKTY (pouze od 1024px) ===
 
         cards.forEach((card, index) => {
 
@@ -925,6 +1496,8 @@
             const stageId = index;
 
             card.addEventListener('mouseenter', () => {
+
+                if (window.innerWidth <= 1023) return;
 
                 if (!isTransitioning && currentStage !== stageId) {
 
@@ -937,6 +1510,8 @@
             });
 
             card.addEventListener('mouseleave', () => {
+
+                if (window.innerWidth <= 1023) return;
 
                 card.classList.remove('card-hover-highlight');
 
@@ -980,7 +1555,7 @@
 
             card.addEventListener('click', (e) => {
 
-                if (window.innerWidth <= 768 && touchSwipeDetected) {
+                if (window.innerWidth <= 1023 && touchSwipeDetected) {
 
                     e.preventDefault();
 
@@ -1002,7 +1577,7 @@
 
         function scrollCarouselToCard(cardIndex, behavior) {
 
-            if (window.innerWidth > 768 || !carouselEl) return;
+            if (window.innerWidth > 1023 || !carouselEl) return;
 
             const card = cards[cardIndex];
 
@@ -1017,6 +1592,174 @@
             carouselEl.scrollTo({ left: cardLeft - (containerWidth - cardWidth) / 2, behavior: behavior || 'smooth' });
 
         }
+
+
+
+        // === PULSUJÍCÍ ŠIPKY: která karta je uprostřed, viditelnost šipek, klik = jen scroll ===
+
+        let carouselViewIndex = 2;
+
+        const arrowLeft = document.getElementById('carousel-arrow-left-{{ section.id }}');
+
+        const arrowRight = document.getElementById('carousel-arrow-right-{{ section.id }}');
+
+
+
+        function getCarouselCenteredCardIndex() {
+
+            if (!carouselEl || window.innerWidth > 1023) return 2;
+
+            const scrollCenter = carouselEl.scrollLeft + carouselEl.offsetWidth / 2;
+
+            let best = 2, bestDist = Infinity;
+
+            [1, 2, 3].forEach(i => {
+
+                const card = cards[i];
+
+                if (!card) return;
+
+                const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+
+                const dist = Math.abs(scrollCenter - cardCenter);
+
+                if (dist < bestDist) { bestDist = dist; best = i; }
+
+            });
+
+            return best;
+
+        }
+
+
+
+        const ARROW_THEMES = { 1: 'lava', 2: 'crystal', 3: 'city' };
+
+        function updateCarouselArrowsVisibility() {
+
+            if (window.innerWidth > 1023) return;
+
+            carouselViewIndex = getCarouselCenteredCardIndex();
+
+            if (arrowLeft) {
+
+                if (carouselViewIndex > 1) {
+
+                    arrowLeft.classList.add('carousel-arrow-visible');
+
+                    arrowLeft.classList.remove('arrow-theme-lava', 'arrow-theme-crystal', 'arrow-theme-city');
+
+                    arrowLeft.classList.add('arrow-theme-' + ARROW_THEMES[carouselViewIndex - 1]);
+
+                } else {
+
+                    arrowLeft.classList.remove('carousel-arrow-visible');
+
+                }
+
+            }
+
+            if (arrowRight) {
+
+                if (carouselViewIndex < 3) {
+
+                    arrowRight.classList.add('carousel-arrow-visible');
+
+                    arrowRight.classList.remove('arrow-theme-lava', 'arrow-theme-crystal', 'arrow-theme-city');
+
+                    arrowRight.classList.add('arrow-theme-' + ARROW_THEMES[carouselViewIndex + 1]);
+
+                } else {
+
+                    arrowRight.classList.remove('carousel-arrow-visible');
+
+                }
+
+            }
+
+            updateCardButtonsContent();
+
+        }
+
+
+
+        function updateCardButtonsContent() {
+
+            if (window.innerWidth > 1023) {
+
+                cards.forEach((card) => {
+
+                    if (!card) return;
+
+                    const overlay = card.querySelector('.teraformace-overlay-btn');
+
+                    if (overlay) overlay.classList.remove('visible');
+
+                });
+
+                return;
+
+            }
+
+            cards.forEach((card, idx) => {
+
+                if (!card) return;
+
+                const overlay = card.querySelector('.teraformace-overlay-btn');
+
+                if (!overlay) return;
+
+                if (carouselViewIndex === idx && currentStage !== idx) {
+
+                    overlay.classList.add('visible');
+
+                } else {
+
+                    overlay.classList.remove('visible');
+
+                }
+
+            });
+
+        }
+
+
+
+        if (carouselEl) {
+
+            carouselEl.addEventListener('scroll', () => { updateCarouselArrowsVisibility(); }, { passive: true });
+
+        }
+
+        if (arrowLeft) {
+
+            arrowLeft.addEventListener('click', () => {
+
+                if (window.innerWidth > 1023) return;
+
+                if (carouselViewIndex > 1) scrollCarouselToCard(carouselViewIndex - 1, 'smooth');
+
+            });
+
+        }
+
+        if (arrowRight) {
+
+            arrowRight.addEventListener('click', () => {
+
+                if (window.innerWidth > 1023) return;
+
+                if (carouselViewIndex < 3) scrollCarouselToCard(carouselViewIndex + 1, 'smooth');
+
+            });
+
+        }
+
+
+
+        setTimeout(updateCarouselArrowsVisibility, 100);
+
+        window.addEventListener('resize', updateCarouselArrowsVisibility);
 
 
 
@@ -1086,9 +1829,15 @@
 
             isTransitioning = false;
 
-            if (window.innerWidth <= 768) {
+            if (window.innerWidth <= 1023) {
 
-                requestAnimationFrame(() => scrollCarouselToCard(2, 'auto'));
+                requestAnimationFrame(() => {
+
+                    scrollCarouselToCard(2, 'auto');
+
+                    setTimeout(updateCarouselArrowsVisibility, 150);
+
+                });
 
             }
 
@@ -1102,11 +1851,17 @@
 
     cards.forEach(c => { if(c) c.classList.remove('card-hover-highlight', 'card-dimmed'); });
 
+    cards.forEach(c => {
+        if (!c) return;
+        const overlay = c.querySelector('.teraformace-overlay-btn');
+        if (overlay) overlay.classList.remove('visible');
+    });
+
     
 
     // Na mobilu: posunout karusel tak, aby kliknutá karta byla ve středu
 
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 1023) {
 
         scrollCarouselToCard(targetStage);
 
@@ -1290,21 +2045,19 @@
 
         function updateCardStyles(activeStage) {
 
-            cards.forEach(c => {
+            cards.forEach((c, idx) => {
 
                 if(!c) return;
 
                 c.classList.remove('card-active-1', 'card-active-2', 'card-active-3', 'card-hover-highlight', 'card-dimmed');
 
-                c.style.opacity = '0.5';
+                c.style.opacity = (idx === activeStage) ? '1' : '0.5';
 
             });
 
             const activeCard = cards[activeStage];
 
             if (activeCard) {
-
-                activeCard.style.opacity = '1';
 
                 if (activeStage === 1) activeCard.classList.add('card-active-1');
 
@@ -1314,7 +2067,7 @@
 
             }
 
-            // Linky už jsou aktualizované hned při kliknutí funkcí updateLineColors
+            updateCardButtonsContent();
 
         }
 
