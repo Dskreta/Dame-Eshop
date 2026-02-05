@@ -69,7 +69,7 @@
       color: var(--accent-color); /* Šipka se přebarví při focusu */
   }
 
-  /* Button Glow */
+  /* Button Glow - hover pouze od 1024px */
   .btn-cosmic-{{ section.id }} {
       background: var(--btn-bg) !important;
       box-shadow: none; 
@@ -77,9 +77,15 @@
       overflow: hidden;
       transition: all 0.5s ease;
   }
-  .btn-cosmic-{{ section.id }}:hover {
-      box-shadow: var(--btn-shadow);
-      transform: translateY(-2px);
+  @media (min-width: 1024px) {
+    .btn-cosmic-{{ section.id }}:hover {
+        box-shadow: var(--btn-shadow);
+        transform: translateY(-2px);
+    }
+    .btn-cosmic-{{ section.id }}:hover::after { left: 100%; }
+    .btn-cosmic-{{ section.id }}:hover .btn-icon-{{ section.id }} {
+        transform: translateX(0.25rem);
+    }
   }
   .btn-cosmic-{{ section.id }}::after {
       content: '';
@@ -89,7 +95,6 @@
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
       transition: 0.5s;
   }
-  .btn-cosmic-{{ section.id }}:hover::after { left: 100%; }
 
   /* Animace */
   @keyframes float-cosmic {
@@ -189,9 +194,9 @@
                             <textarea rows="3" name="contact[body]" id="ContactForm-body" placeholder="Detaily o vašem projektu..." class="cosmic-input-{{ section.id }} w-full rounded-xl px-5 py-4 placeholder:text-gray-600 resize-none"></textarea>
                         </div>
 
-                        <button type="submit" id="contact-submit-btn" class="btn-cosmic-{{ section.id }} w-full py-4 rounded-xl text-white font-display font-bold text-lg tracking-widest uppercase flex items-center justify-center gap-2 group">
+                        <button type="submit" id="contact-submit-btn" class="btn-cosmic-{{ section.id }} w-full py-4 rounded-xl text-white font-display font-bold text-lg tracking-widest uppercase flex items-center justify-center gap-2">
                             {{ section.settings.btn_text }}
-                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">send</span>
+                            <span class="material-symbols-outlined btn-icon-{{ section.id }} transition-transform">send</span>
                         </button>
                     </div>
                 {% endif %}

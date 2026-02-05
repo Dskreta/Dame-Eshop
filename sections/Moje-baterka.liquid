@@ -36,8 +36,8 @@
     opacity: 1;
   }
 
-  /* Na mobilu efekt nefunguje – skrytí overlay */
-  @media (max-width: 768px) {
+  /* Efekt aktivní pouze od šířky 1024px výše */
+  @media (max-width: 1023px) {
     #flashlight-global-overlay {
       display: none !important;
       opacity: 0 !important;
@@ -50,7 +50,7 @@
 (function() {
   const overlay = document.getElementById('flashlight-global-overlay');
   if (!overlay) return;
-  if (window.innerWidth <= 768) return;
+  if (window.innerWidth < 1024) return;
 
   const moveFlashlight = (e) => {
     overlay.style.setProperty('--cursor-x', e.clientX + 'px');
@@ -61,7 +61,7 @@
 
   if (window.Shopify && window.Shopify.designMode) {
     document.addEventListener('shopify:section:load', () => {
-      if (window.innerWidth <= 768) return;
+      if (window.innerWidth < 1024) return;
       const newOverlay = document.getElementById('flashlight-global-overlay');
       if (newOverlay) window.addEventListener('mousemove', moveFlashlight);
     });

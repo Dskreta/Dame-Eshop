@@ -146,25 +146,90 @@
       position: relative !important;
   }
 
-  /* Spacer: na desktopu skrytý, na mobilu vytváří pevnou mezeru (nelze přepsat marginem) */
+  /* Skrýt tab-panely (karty + monitor) - přepínáme jen vnitřní obsah, layout je sdílený */
+  #info-section-{{ section.id }} .tab-panel-cards.hidden,
+  #info-section-{{ section.id }} .tab-panel-monitor.hidden {
+    display: none !important;
+  }
+
+  /* Spacer: na desktopu (1280px+) skrytý, do 1279px vytváří pevnou mezeru */
   #info-section-{{ section.id }} .info-mobile-spacer { display: none; height: 0; }
-  @media (max-width: 767px) {
+  @media (max-width: 1279px) {
     #info-section-{{ section.id }} .info-mobile-spacer--below-buttons {
       display: block !important;
-      height: 5rem;
-      width: 100%;
-      min-height: 5rem;
-      flex-shrink: 0;
+      height: 6rem !important;
+      min-height: 6rem !important;
+      width: 100% !important;
+      flex-shrink: 0 !important;
+      visibility: visible !important;
     }
-    #info-section-{{ section.id }} .info-mobile-spacer--above-cards {
+    #info-section-{{ section.id }} .info-mobile-spacer--between-monitor-cards {
       display: block !important;
-      height: 3.25rem;
-      min-height: 3.25rem;
-      flex-shrink: 0;
+      height: 6rem !important;
+      min-height: 6rem !important;
+      width: 100% !important;
+      flex-shrink: 0 !important;
+      visibility: visible !important;
     }
   }
 
-  /* --- MOBIL: 3 buttony vedle sebe, na výšku – selektory s ID sekce, aby přepsaly Tailwind --- */
+  /* 0–1279px: pevné rozestupy – zabránit překrývání buttonů, monitoru a karet */
+  @media (max-width: 1279px) {
+    /* Hlavní sekce: zarovnání nahoru, nic se nesmí zmenšovat */
+    #info-section-{{ section.id }} #main-section {
+      justify-content: flex-start !important;
+      align-items: stretch !important;
+      min-height: auto !important;
+    }
+    #info-section-{{ section.id }} #main-section > * {
+      flex-shrink: 0 !important;
+    }
+    #info-section-{{ section.id }} .info-tabs-row {
+      margin-bottom: 0 !important;
+    }
+    /* Mezera mezi monitorem a kartami = spacer */
+    #info-section-{{ section.id }} .info-tab-content-grid {
+      gap: 0 !important;
+      align-items: stretch !important;
+    }
+    #info-section-{{ section.id }} .info-tab-content-grid .info-col-monitor,
+    #info-section-{{ section.id }} .info-tab-content-grid .info-col-info,
+    #info-section-{{ section.id }} .info-tab-content-grid .info-mobile-spacer--between-monitor-cards {
+      flex-shrink: 0 !important;
+    }
+    #info-section-{{ section.id }} .info-tab-content-grid .info-mobile-spacer--between-monitor-cards {
+      min-height: 6rem !important;
+      height: 6rem !important;
+    }
+    /* Content wrap: pevná mezera nahoře, žádné zmenšování */
+    #info-section-{{ section.id }} .info-section-content-wrap {
+      padding-top: 0 !important;
+      min-height: 0 !important;
+      flex-shrink: 0 !important;
+      margin-top: 0 !important;
+    }
+    #info-section-{{ section.id }} .info-tab-content-grid .info-col-monitor {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+      flex-shrink: 0 !important;
+    }
+    #info-section-{{ section.id }} .info-tab-content-grid .info-col-info {
+      padding-top: 0 !important;
+      margin-top: 0 !important;
+      flex-shrink: 0 !important;
+    }
+    /* Monitor: vypnout levitační animaci */
+    #info-section-{{ section.id }} .info-tab-content-grid .info-col-monitor .animate-float {
+      animation: none !important;
+    }
+    #info-section-{{ section.id }} .info-tab-content-grid .info-monitor-height-wrap {
+      min-height: 400px !important;
+      height: auto !important;
+      flex-shrink: 0 !important;
+    }
+  }
+
+  /* --- MOBIL / TABLET (do 769px): 3 buttony vedle sebe, sloupcové rozvržení --- */
   @media (max-width: 767px) {
     #info-section-{{ section.id }} .info-tabs-row {
       flex-wrap: nowrap;
@@ -192,34 +257,73 @@
     #info-section-{{ section.id }} .info-tab-btn-mobile .btn-inner-desktop { display: block; }
   }
 
-  /* --- MOBIL: pořadí bloků + velké mezery (ID sekce = vyšší specificita) --- */
-  @media (max-width: 767px) {
+  /* --- DO 1279px: monitor nahoře, spacer, karty dole (od 1280px grid vedle sebe) --- */
+  /* Jeden sdílený layout – monitor, spacer a karty jsou vždy stejný DOM strom */
+  @media (max-width: 1279px) {
     #info-section-{{ section.id }} .info-tab-content-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0 !important;
     }
     #info-section-{{ section.id }} .info-tab-content-grid .info-col-monitor {
-      order: 1;
-      padding-top: 0;
-      margin-top: 0;
-      padding-bottom: 1rem;
+      order: 1 !important;
+      padding-top: 0 !important;
+      margin-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+    #info-section-{{ section.id }} .info-tab-content-grid .info-mobile-spacer--between-monitor-cards {
+      order: 2 !important;
     }
     #info-section-{{ section.id }} .info-tab-content-grid .info-col-info {
-      order: 2;
-      padding-top: 1.5rem;
-      margin-top: 0;
+      order: 3 !important;
+      padding-top: 1.5rem !important;
+      margin-top: 0 !important;
     }
     #info-section-{{ section.id }} .info-section-content-wrap {
       min-height: 0;
       margin-top: 0;
-      padding-top: 5rem;
+      padding-top: 0;
     }
     #info-section-{{ section.id }} .info-monitor-height-wrap {
-      min-height: 0 !important;
+      min-height: 400px !important;
       height: auto !important;
     }
     #info-section-{{ section.id }} .info-col-info .flex-none.pb-6.mb-4 { padding-top: 0; margin-top: 0; }
+  }
+
+  /* Globální fallback */
+  @media (max-width: 1279px) {
+    .info-tab-content-grid {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0 !important;
+    }
+    .info-tab-content-grid .info-col-monitor {
+      order: 1 !important;
+      flex-shrink: 0 !important;
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+    .info-tab-content-grid .info-mobile-spacer--between-monitor-cards {
+      order: 2 !important;
+      flex-shrink: 0 !important;
+      min-height: 6rem !important;
+      height: 6rem !important;
+    }
+    .info-tab-content-grid .info-col-info {
+      order: 3 !important;
+      flex-shrink: 0 !important;
+      padding-top: 1.5rem !important;
+      margin-top: 0 !important;
+    }
+    .info-tab-content-grid .info-col-monitor .animate-float {
+      animation: none !important;
+    }
+    .info-tab-content-grid .info-monitor-height-wrap {
+      min-height: 400px !important;
+      height: auto !important;
+      flex-shrink: 0 !important;
+    }
   }
 </style>
 
@@ -294,124 +398,129 @@
 
     <div class="relative w-full max-w-full mx-auto flex flex-col justify-center min-h-[650px] info-section-content-wrap">
       
-      {% for i in (1..3) %}
-        {% assign current_tab = i | minus: 1 %}
+      <!-- Jeden sdílený layout: monitor, spacer, karty – vždy stejný DOM strom -->
+      <div class="info-tab-content-grid grid grid-cols-1 xl:grid-cols-12 xl:gap-16 items-stretch">
         
-        {% if i == 1 %}
-           {% assign theme_color_name = 'orange' %}
-           {% assign theme_color_hex = '#f97316' %} 
-           {% assign theme_icon = section.settings.icon_1 %}
-           {% assign theme_title = section.settings.tab_1_title %}
-           {% assign theme_img = section.settings.image_1 %}
-           {% capture fallback_svg %}data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjEyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzExMSIvPjxyZWN0IHg9IjQwIiB5PSI0MCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiM0NDQiIHJ4PSI4Ii8+PHJlY3QgeD0iNDAiIHk9IjM4MCIgd2lkdGg9IjQ0MCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2Y5NzMxNiIgcng9IjgiLz48cmVjdCB4PSI0MCIgeT0iNDYwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMzMzIiByeD0iNCIvPjxyZWN0IHg9IjQwIiB5PSI1MDAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMjAiIGZpbGw9IiMzMzMiIHJ4PSI0Ii8+PC9zdmc+{% endcapture %}
-        {% elsif i == 2 %}
-           {% assign theme_color_name = 'purple' %}
-           {% assign theme_color_hex = '#d946ef' %}
-           {% assign theme_icon = section.settings.icon_2 %}
-           {% assign theme_title = section.settings.tab_2_title %}
-           {% assign theme_img = section.settings.image_2 %}
-           {% capture fallback_svg %}data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjEyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzEwMDAyMCIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMjQwIiBmaWxsPSIjZDk0NmVmIiBvcGFjaXR5PSIwLjMiLz48cmVjdCB4PSIxMDAiIHk9IjIwMCIgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Q5NDZlZiIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHRleXQgeD0iMTAwIiB5PSI3NjAiIGZpbGw9IiNkOTQ2ZWYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iYm9sZCI+QUkgQ1JFQVRJVkU8L3RleHQ+PC9zdmc+{% endcapture %}
-        {% else %}
-           {% assign theme_color_name = 'cyan' %}
-           {% assign theme_color_hex = '#22d3ee' %}
-           {% assign theme_icon = section.settings.icon_3 %}
-           {% assign theme_title = section.settings.tab_3_title %}
-           {% assign theme_img = section.settings.image_3 %}
-           {% capture fallback_svg %}data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjEyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwMCIvPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI4MDAiIGhlaWdodD0iMTIwIiBmaWxsPSIjMGQyNTI4Ii8+PHJlY3QgeD0iNDAiIHk9IjQwIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMjJkM2VlIi8+PHJlY3QgeD0iNDAiIHk9IjE2MCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxMTIiIHJ4PSI4Ii8+PHRleXQgeD0iNDAiIHk9IjUyMCIgZmlsbD0iIzIyZDNlZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDAiPkVOVEVSUFJJU0UgU1RPUkU8L3RleHQ+PC9zdmc+{% endcapture %}
-        {% endif %}
-
-        <div class="tab-content {% unless forloop.first %}hidden{% endunless %} grid grid-cols-1 xl:grid-cols-12 gap-16 items-stretch info-tab-content-grid" id="content-{{ current_tab }}">
-          
-          <div class="xl:col-span-5 flex flex-col h-full relative info-col-info" style="z-index: 2;">
-            <!-- Spacer na mobilu: mezeru mezi monitorem a kartami -->
-            <div class="info-mobile-spacer info-mobile-spacer--above-cards" aria-hidden="true"></div>
-            <div class="flex-none pb-6 mb-4 relative">
-              <h4 class="font-display text-3xl text-white flex items-center w-full relative z-10 pl-2 tracking-tight">
-  <span class="material-symbols-outlined align-bottom mr-4 text-4xl" style="color: {{ theme_color_hex }};">{{ theme_icon }}</span>
-  {{ theme_title }}
-</h4>
-              
-              <div class="absolute bottom-0 left-0 w-full h-[2px]" 
-                   style="background: linear-gradient(90deg, {{ theme_color_hex }} 0%, rgba(0,0,0,0) 100%); opacity: 0.8; box-shadow: 0 0 10px {{ theme_color_hex }};">
+        <!-- Spacer mezi monitorem a kartami (mobil/tablet) -->
+        <div class="info-mobile-spacer info-mobile-spacer--between-monitor-cards" aria-hidden="true"></div>
+        
+        <!-- Karty: 3 panely, přepínáme visibility -->
+        <div class="xl:col-span-5 flex flex-col h-full relative info-col-info" style="z-index: 2;">
+          {% for i in (1..3) %}
+            {% assign current_tab = i | minus: 1 %}
+            {% if i == 1 %}
+               {% assign theme_color_name = 'orange' %}
+               {% assign theme_color_hex = '#f97316' %}
+               {% assign theme_icon = section.settings.icon_1 %}
+               {% assign theme_title = section.settings.tab_1_title %}
+            {% elsif i == 2 %}
+               {% assign theme_color_name = 'purple' %}
+               {% assign theme_color_hex = '#d946ef' %}
+               {% assign theme_icon = section.settings.icon_2 %}
+               {% assign theme_title = section.settings.tab_2_title %}
+            {% else %}
+               {% assign theme_color_name = 'cyan' %}
+               {% assign theme_color_hex = '#22d3ee' %}
+               {% assign theme_icon = section.settings.icon_3 %}
+               {% assign theme_title = section.settings.tab_3_title %}
+            {% endif %}
+            <div class="tab-panel-cards {% unless forloop.index == 2 %}hidden{% endunless %}" id="tab-cards-{{ current_tab }}" data-tab="{{ current_tab }}">
+              <div class="flex-none pb-6 mb-4 relative">
+                <h4 class="font-display text-3xl text-white flex items-center w-full relative z-10 pl-2 tracking-tight">
+                  <span class="material-symbols-outlined align-bottom mr-4 text-4xl" style="color: {{ theme_color_hex }};">{{ theme_icon }}</span>
+                  {{ theme_title }}
+                </h4>
+                <div class="absolute bottom-0 left-0 w-full h-[2px]" style="background: linear-gradient(90deg, {{ theme_color_hex }} 0%, rgba(0,0,0,0) 100%); opacity: 0.8; box-shadow: 0 0 10px {{ theme_color_hex }};"></div>
+                <div class="absolute bottom-0 left-0 w-[5px] h-[2px]" style="background: {{ theme_color_hex }}; box-shadow: 0 0 5px {{ theme_color_hex }};"></div>
               </div>
-              <div class="absolute bottom-0 left-0 w-[5px] h-[2px]" style="background: {{ theme_color_hex }}; box-shadow: 0 0 5px {{ theme_color_hex }};"></div>
-            </div>
-
-            <div class="h-[500px] overflow-y-auto scifi-scroll scroll-thumb-{{ theme_color_name }} space-y-5 pr-4 flex flex-col justify-start pt-2">
-              {% for block in section.blocks %}
-                {% assign block_tab = block.settings.tab_select | plus: 0 %}
-                
-                {% if block_tab == i %}
-                  <div class="bg-black/50 border border-{{ theme_color_name }}-500/30 p-5 rounded-lg group hover:border-{{ theme_color_name }}-500/70 transition-colors glow-border-{{ theme_color_name }}" {{ block.shopify_attributes }}>
-                    <div class="flex justify-between items-center cursor-pointer accordion-trigger">
-                      <div class="flex items-center gap-5">
-                        <div class="p-3 bg-{{ theme_color_name }}-900/30 rounded border border-{{ theme_color_name }}-500/20">
-                          <span class="material-symbols-outlined text-2xl text-{{ theme_color_name }}-500">{{ block.settings.icon }}</span>
+              <div class="h-[500px] overflow-y-auto scifi-scroll scroll-thumb-{{ theme_color_name }} space-y-5 pr-4 flex flex-col justify-start pt-2">
+                {% for block in section.blocks %}
+                  {% assign block_tab = block.settings.tab_select | plus: 0 %}
+                  {% if block_tab == i %}
+                    <div class="bg-black/50 border border-{{ theme_color_name }}-500/30 p-5 rounded-lg group hover:border-{{ theme_color_name }}-500/70 transition-colors glow-border-{{ theme_color_name }}" {{ block.shopify_attributes }}>
+                      <div class="flex justify-between items-center cursor-pointer accordion-trigger">
+                        <div class="flex items-center gap-5">
+                          <div class="p-3 bg-{{ theme_color_name }}-900/30 rounded border border-{{ theme_color_name }}-500/20">
+                            <span class="material-symbols-outlined text-2xl text-{{ theme_color_name }}-500">{{ block.settings.icon }}</span>
+                          </div>
+                          <div>
+                            <h4 class="font-header text-white text-lg tracking-wide flex items-center gap-3">
+                              {{ block.settings.title }}
+                              {% if block.settings.badge != blank %}
+                                <span class="text-[10px] bg-{{ theme_color_name }}-500 text-black px-2 py-0.5 rounded font-bold uppercase tracking-wider">{{ block.settings.badge }}</span>
+                              {% endif %}
+                            </h4>
+                            <p class="text-xs text-{{ theme_color_name }}-400/80 uppercase tracking-wider mt-1">{{ block.settings.subtitle }}</p>
+                          </div>
                         </div>
-                        <div>
-                          <h4 class="font-header text-white text-lg tracking-wide flex items-center gap-3">
-                            {{ block.settings.title }}
-                            {% if block.settings.badge != blank %}
-                              <span class="text-[10px] bg-{{ theme_color_name }}-500 text-black px-2 py-0.5 rounded font-bold uppercase tracking-wider">{{ block.settings.badge }}</span>
-                            {% endif %}
-                          </h4>
-                          <p class="text-xs text-{{ theme_color_name }}-400/80 uppercase tracking-wider mt-1">{{ block.settings.subtitle }}</p>
-                        </div>
+                        <span class="material-symbols-outlined text-gray-500 text-2xl rotate-icon group-hover:text-{{ theme_color_name }}-400 transition-colors {% if block.settings.open_default %}open{% endif %}">expand_more</span>
                       </div>
-                      <span class="material-symbols-outlined text-gray-500 text-2xl rotate-icon group-hover:text-{{ theme_color_name }}-400 transition-colors {% if block.settings.open_default %}open{% endif %}">expand_more</span>
+                      <div class="detail-content border-t border-dashed border-{{ theme_color_name }}-500/30 text-sm text-gray-300 text-justify leading-relaxed {% if block.settings.open_default %}open{% endif %}">
+                        <div class="pt-4">{{ block.settings.content }}</div>
+                      </div>
                     </div>
-                    <div class="detail-content border-t border-dashed border-{{ theme_color_name }}-500/30 text-sm text-gray-300 text-justify leading-relaxed {% if block.settings.open_default %}open{% endif %}">
-                      <div class="pt-4">{{ block.settings.content }}</div>
-                    </div>
-                  </div>
+                  {% endif %}
+                {% endfor %}
+                {% assign block_count = 0 %}
+                {% for block in section.blocks %}
+                  {% assign block_tab = block.settings.tab_select | plus: 0 %}
+                  {% if block_tab == i %}{% assign block_count = block_count | plus: 1 %}{% endif %}
+                {% endfor %}
+                {% if block_count == 0 %}
+                  <p class="text-gray-500 italic p-6 text-center text-lg">Tato kategorie je prázdná.</p>
                 {% endif %}
-              {% endfor %}
-              
-              {% assign block_count = 0 %}
-              {% for block in section.blocks %}
-                {% assign block_tab = block.settings.tab_select | plus: 0 %}
-                {% if block_tab == i %}{% assign block_count = block_count | plus: 1 %}{% endif %}
-              {% endfor %}
-              
-              {% if block_count == 0 %}
-                <p class="text-gray-500 italic p-6 text-center text-lg">Tato kategorie je prázdná.</p>
-              {% endif %}
+              </div>
             </div>
-          </div>
+          {% endfor %}
+        </div>
 
-          <div class="xl:col-span-7 flex flex-col h-full items-center relative info-col-monitor" style="z-index: 10;">
-            
-            <div class="flex-none h-20 w-full hidden xl:block"></div> 
-
-            <div class="h-[600px] flex items-center justify-center w-full info-monitor-height-wrap">
-              
-              <div class="relative w-full max-w-4xl animate-float flex flex-col items-center z-10" style="--backlight-color: {{ theme_color_hex }};">
-                
-                <div class="sleek-monitor-wrapper w-full">
-                  <div class="sleek-monitor-screen aspect-video">
+        <!-- Monitor: 3 panely, přepínáme visibility -->
+        <div class="xl:col-span-7 flex flex-col h-full items-center relative info-col-monitor" style="z-index: 10;">
+          <div class="flex-none h-20 w-full hidden xl:block"></div>
+          <div class="h-[600px] flex items-center justify-center w-full info-monitor-height-wrap">
+            {% for i in (1..3) %}
+              {% assign current_tab = i | minus: 1 %}
+              {% if i == 1 %}
+                 {% assign theme_color_name = 'orange' %}
+                 {% assign theme_color_hex = '#f97316' %}
+                 {% assign theme_title = section.settings.tab_1_title %}
+                 {% assign theme_img = section.settings.image_1 %}
+                 {% capture fallback_svg %}data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjEyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzExMSIvPjxyZWN0IHg9IjQwIiB5PSI0MCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiM0NDQiIHJ4PSI4Ii8+PHJlY3QgeD0iNDAiIHk9IjM4MCIgd2lkdGg9IjQ0MCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2Y5NzMxNiIgcng9IjgiLz48cmVjdCB4PSI0MCIgeT0iNDYwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjIwIiBmaWxsPSIjMzMzIiByeD0iNCIvPjxyZWN0IHg9IjQwIiB5PSI1MDAiIHdpZHRoPSI3MjAiIGhlaWdodD0iMjAiIGZpbGw9IiMzMzMiIHJ4PSI0Ii8+PC9zdmc+{% endcapture %}
+              {% elsif i == 2 %}
+                 {% assign theme_color_name = 'purple' %}
+                 {% assign theme_color_hex = '#d946ef' %}
+                 {% assign theme_title = section.settings.tab_2_title %}
+                 {% assign theme_img = section.settings.image_2 %}
+                 {% capture fallback_svg %}data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjEyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzEwMDAyMCIvPjxjaXJjbGUgY3g9IjQwMCIgY3k9IjQwMCIgcj0iMjQwIiBmaWxsPSIjZDk0NmVmIiBvcGFjaXR5PSIwLjMiLz48cmVjdCB4PSIxMDAiIHk9IjIwMCIgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2Q5NDZlZiIgc3Ryb2tlLXdpZHRoPSI0Ii8+PHRleXQgeD0iMTAwIiB5PSI3NjAiIGZpbGw9IiNkOTQ2ZWYiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iYm9sZCI+QUkgQ1JFQVRJVkU8L3RleHQ+PC9zdmc+{% endcapture %}
+              {% else %}
+                 {% assign theme_color_name = 'cyan' %}
+                 {% assign theme_color_hex = '#22d3ee' %}
+                 {% assign theme_title = section.settings.tab_3_title %}
+                 {% assign theme_img = section.settings.image_3 %}
+                 {% capture fallback_svg %}data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjEyMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzAwMCIvPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI4MDAiIGhlaWdodD0iMTIwIiBmaWxsPSIjMGQyNTI4Ii8+PHJlY3QgeD0iNDAiIHk9IjQwIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjMjJkM2VlIi8+PHJlY3QgeD0iNDAiIHk9IjE2MCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMxMTIiIHJ4PSI4Ii8+PHRleXQgeD0iNDAiIHk9IjUyMCIgZmlsbD0iIzIyZDNlZSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iNDAiPkVOVEVSUFJJU0UgU1RPUkU8L3RleHQ+PC9zdmc+{% endcapture %}
+              {% endif %}
+              <div class="tab-panel-monitor w-full flex items-center justify-center {% unless forloop.index == 2 %}hidden{% endunless %}" id="tab-monitor-{{ current_tab }}" data-tab="{{ current_tab }}">
+                <div class="relative w-full max-w-4xl animate-float flex flex-col items-center z-10" style="--backlight-color: {{ theme_color_hex }};">
+                  <div class="sleek-monitor-wrapper w-full">
+                    <div class="sleek-monitor-screen aspect-video">
                       <div class="relative w-full h-full bg-black rounded relative overflow-hidden">
                         {% if theme_img != blank %}
                           <img src="{{ theme_img | image_url: width: 1200 }}" width="1200" height="1800" loading="lazy" class="scrolling-image object-cover object-top opacity-90 hover:opacity-100 transition-opacity" alt="{{ theme_title }}">
                         {% else %}
                           <img src="{{ fallback_svg }}" width="800" height="1200" class="scrolling-image object-cover object-top opacity-80" alt="Wireframe Preview">
                         {% endif %}
-
                         <div class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none z-10"></div>
-                        <div class="absolute top-4 right-4 bg-black/50 text-{{ theme_color_name }}-300 text-[10px] px-3 py-1 rounded-full border border-{{ theme_color_name }}-500/50 uppercase font-mono z-20 backdrop-blur-sm">
-                          ● Live Feed
-                        </div>
+                        <div class="absolute top-4 right-4 bg-black/50 text-{{ theme_color_name }}-300 text-[10px] px-3 py-1 rounded-full border border-{{ theme_color_name }}-500/50 uppercase font-mono z-20 backdrop-blur-sm">● Live Feed</div>
                       </div>
+                    </div>
+                    <div class="sleek-monitor-stand"></div>
                   </div>
-                  <div class="sleek-monitor-stand"></div>
                 </div>
-
               </div>
-            </div>
+            {% endfor %}
           </div>
-
         </div>
-      {% endfor %}
-
+      </div>
     </div>
   </section>
 </div>
@@ -422,7 +531,6 @@ document.addEventListener("DOMContentLoaded", function() {
   if(!container) return;
   
   const buttons = container.querySelectorAll('.tab-btn');
-  const contents = container.querySelectorAll('.tab-content');
   const headerLine = container.querySelector('#main-header-bar');
   const mistLayer = document.getElementById('dynamic-mist-layer');
 
@@ -454,12 +562,12 @@ document.addEventListener("DOMContentLoaded", function() {
       switchTab(targetIndex);
   });
 
-  // Zbytek existujícího kódu pro záložky...
   function switchTab(index) {
-    contents.forEach(el => el.classList.add('hidden'));
-    
-    const targetContent = container.querySelector(`#content-${index}`);
-    if(targetContent) targetContent.classList.remove('hidden');
+    container.querySelectorAll('.tab-panel-cards, .tab-panel-monitor').forEach(el => el.classList.add('hidden'));
+    const targetCards = container.querySelector('#tab-cards-' + index);
+    const targetMonitor = container.querySelector('#tab-monitor-' + index);
+    if(targetCards) targetCards.classList.remove('hidden');
+    if(targetMonitor) targetMonitor.classList.remove('hidden');
 
     buttons.forEach(btn => {
       btn.classList.remove('active-tab-btn', 'active-orange', 'active-purple', 'active-cyan');
