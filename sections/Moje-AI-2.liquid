@@ -10,7 +10,7 @@
   }
   @media (max-width: 1024px) {
     #shopify-section-{{ section.id }} {
-      padding-top: 4rem;
+      padding-top: 6rem;
       padding-bottom: 4rem;
     }
   }
@@ -146,7 +146,7 @@
   @media (max-width: 1024px) {
     .features-mobile-scroll-section {
       display: block;
-      margin-top: 5rem;
+      margin-top: 6.5rem;
     }
     .features-mobile-scroll-sticky {
       display: flex !important;
@@ -396,8 +396,21 @@
   }
   @media (max-width: 1024px) {
     .cta-wrapper {
-      margin-top: 12rem;
+      margin-top: 18rem;
       padding-bottom: 4rem;
+    }
+    /* Tlačítko vidět jen když je progress bar na konci (třídu přidá JS) */
+    #shopify-section-{{ section.id }} .cta-wrapper:not(.cta-visible) {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 1.5s ease, visibility 1.5s ease;
+    }
+    #shopify-section-{{ section.id }} .cta-wrapper.cta-visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity 2.2s ease, visibility 2.2s ease;
     }
   }
 
@@ -584,7 +597,7 @@
     </div>
   </div>
 
-  <div class="cta-wrapper">
+  <div class="cta-wrapper" id="features-cta-wrap-{{ section.id }}">
     <button type="button" id="trigger-cosmic-intro" class="cyber-pill-button">
       {{ section.settings.btn_text }}
       <span class="material-symbols-outlined arrow-icon">keyboard_double_arrow_down</span>
@@ -610,6 +623,7 @@
             var stage = document.getElementById('features-mobile-scroll-{{ section.id }}');
             var progressFill = document.getElementById('features-progress-fill-{{ section.id }}');
             var progressCap = document.getElementById('features-progress-cap-{{ section.id }}');
+            var ctaWrap = document.getElementById('features-cta-wrap-{{ section.id }}');
             if (!cardsBlock || !stage) return;
             var cards = stage.querySelectorAll('.feature-card-mobile');
             var total = cards.length;
@@ -624,14 +638,18 @@
             }
             if (cardColors.length === 0) cardColors = ['#f97316', '#d946ef', '#06b6d4'];
             var PROGRESS_GRADIENT = 'linear-gradient(to bottom, #d946ef 0%, #a78bfa 35%, #38bdf8 65%, #06b6d4 100%)';
+            var STEPS_PER_CARD = 5;
+            var totalSteps = Math.max(1, total * STEPS_PER_CARD);
+            var currentStep = 0;
 
             function hexToRgba(hex, a) {
                 hex = String(hex).replace('#', '');
                 var r = parseInt(hex.substr(0, 2), 16), g = parseInt(hex.substr(2, 2), 16), b = parseInt(hex.substr(4, 2), 16);
                 return 'rgba(' + r + ',' + g + ',' + b + ',' + (a !== undefined ? a : 1) + ')';
             }
-            function setProgressFromIndex(idx) {
-                var pct = total > 1 ? ((idx + 1) / total) * 100 : 100;
+            function setProgressFromStep(step) {
+                var pct = totalSteps > 1 ? (step / (totalSteps - 1)) * 100 : 100;
+                var idx = Math.min(total - 1, Math.floor(step / STEPS_PER_CARD));
                 var capColor = cardColors[idx] || '#d946ef';
                 if (progressFill) {
                     progressFill.style.height = pct + '%';
@@ -642,6 +660,10 @@
                     progressCap.style.top = pct + '%';
                     progressCap.style.background = capColor;
                     progressCap.style.boxShadow = '0 0 14px ' + hexToRgba(capColor, 0.75) + ', 0 0 8px ' + hexToRgba(capColor, 0.5);
+                }
+                if (ctaWrap && window.innerWidth <= 1024) {
+                    if (step === totalSteps - 1) ctaWrap.classList.add('cta-visible');
+                    else ctaWrap.classList.remove('cta-visible');
                 }
             }
             function goToSlide(nextIndex) {
@@ -661,7 +683,6 @@
                     nextCard.classList.add('is-active');
                     currentIndex = nextIndex;
                     animating = false;
-                    setProgressFromIndex(currentIndex);
                 }, duration);
             }
 
@@ -674,21 +695,33 @@
             }
 
             cards[0].classList.add('is-active');
-            setProgressFromIndex(0);
+            setProgressFromStep(0);
+            if (ctaWrap && window.innerWidth <= 1024) ctaWrap.classList.remove('cta-visible');
+
+            function stepForward() {
+                if (currentStep >= totalSteps - 1) return false;
+                currentStep++;
+                var newIdx = Math.floor(currentStep / STEPS_PER_CARD);
+                if (newIdx !== currentIndex) goToSlide(newIdx);
+                setProgressFromStep(currentStep);
+                return true;
+            }
+            function stepBack() {
+                if (currentStep <= 0) return false;
+                currentStep--;
+                var newIdx = Math.floor(currentStep / STEPS_PER_CARD);
+                if (newIdx !== currentIndex) goToSlide(newIdx);
+                setProgressFromStep(currentStep);
+                return true;
+            }
 
             function onWheel(e) {
                 if (!isCardsCentered()) return;
                 var dy = e.deltaY;
                 if (dy > 15) {
-                    if (currentIndex < total - 1) {
-                        e.preventDefault();
-                        goToSlide(currentIndex + 1);
-                    }
+                    if (stepForward()) e.preventDefault();
                 } else if (dy < -15) {
-                    if (currentIndex > 0) {
-                        e.preventDefault();
-                        goToSlide(currentIndex - 1);
-                    }
+                    if (stepBack()) e.preventDefault();
                 }
             }
             document.addEventListener('wheel', onWheel, { passive: false });
@@ -702,11 +735,8 @@
                 if (window.innerWidth > 1024 || !e.changedTouches[0]) return;
                 if (!isCardsCentered()) return;
                 var dy = touchStartY - e.changedTouches[0].clientY;
-                if (dy > 40 && currentIndex < total - 1) {
-                    goToSlide(currentIndex + 1);
-                } else if (dy < -40 && currentIndex > 0) {
-                    goToSlide(currentIndex - 1);
-                }
+                if (dy > 40) stepForward();
+                else if (dy < -40) stepBack();
             }, { passive: true });
         })();
         
