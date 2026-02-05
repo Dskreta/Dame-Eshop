@@ -5,8 +5,14 @@
     color: #ffffff;
     font-family: 'Inter', sans-serif;
     position: relative;
-    overflow: hidden; 
+    overflow: hidden;
     padding: 6rem 0;
+  }
+  @media (max-width: 1024px) {
+    #shopify-section-{{ section.id }} {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
   }
 
   /* UTILITY & LAYOUT */
@@ -49,6 +55,9 @@
     font-size: 1.125rem;
     max-width: 42rem;
     margin: 0 auto 4rem auto;
+  }
+  @media (max-width: 1024px) {
+    .section-subtitle { margin-bottom: 2rem; }
   }
 
   /* GLASS CARD STYLES */
@@ -124,28 +133,55 @@
     line-height: 1.6;
   }
 
-  /* Desktop: klasický grid – na mobilu skrytý */
-  @media (max-width: 769px) {
+  /* Desktop: klasický grid – při šířce do 1024px skrytý (místo toho scroll karty + progress) */
+  @media (max-width: 1024px) {
     .features-grid { display: none !important; }
   }
 
-  /* ========== MOBIL (< 770px): jedna karta v rozměru jako na PC, přepínání + progress ========== */
-  .features-mobile-scroll-wrap {
+  /* ========== Do 1024px: pevné rozložení jako originál (text → karty+progress → button), scroll se zachytí na kartách ========== */
+  .features-mobile-scroll-section {
     display: none;
     position: relative;
-    margin: 0 -1.5rem;
   }
-  @media (max-width: 769px) {
+  @media (max-width: 1024px) {
+    .features-mobile-scroll-section {
+      display: block;
+      margin-top: 5rem;
+    }
+    .features-mobile-scroll-sticky {
+      display: flex !important;
+      flex-direction: row;
+      justify-content: center;
+      align-items: stretch;
+      gap: 0.75rem;
+      padding: 0 1.5rem;
+      box-sizing: border-box;
+      margin: 0 -1.5rem;
+      min-height: 240px;
+    }
+    .features-mobile-scroll-sticky-bg {
+      display: none;
+    }
     .features-mobile-scroll-wrap {
-      display: flex;
+      display: flex !important;
       flex-direction: row;
       justify-content: center;
       align-items: stretch;
       gap: 0.75rem;
       min-height: 240px;
       overflow: visible;
-      padding: 0 1.5rem 0 1.5rem;
+      padding: 0;
       box-sizing: border-box;
+      flex: 1 1 auto;
+      min-width: 0;
+      width: 100%;
+      position: relative;
+    }
+    .features-mobile-scroll {
+      display: block !important;
+      flex: 1 1 0%;
+      min-width: 0;
+      max-width: none;
     }
   }
 
@@ -162,7 +198,7 @@
     position: relative;
     touch-action: pan-y;
   }
-  @media (max-width: 769px) and (max-height: 500px) {
+  @media (max-width: 1024px) and (max-height: 500px) {
     .features-mobile-scroll { min-height: 200px; }
   }
 
@@ -256,7 +292,7 @@
     pointer-events: none;
     align-self: stretch;
   }
-  @media (max-width: 769px) {
+  @media (max-width: 1024px) {
     #shopify-section-{{ section.id }} .features-progress-wrap {
       display: flex !important;
       flex-direction: column;
@@ -357,6 +393,12 @@
     padding-bottom: 8rem;
     position: relative;
     z-index: 10;
+  }
+  @media (max-width: 1024px) {
+    .cta-wrapper {
+      margin-top: 12rem;
+      padding-bottom: 4rem;
+    }
   }
 
   @keyframes float-animation {
@@ -477,9 +519,10 @@
       .desktop-top-shadow { display: block; }
   }
 
+
 {%- endstyle -%}
 
-<div style="position: absolute; inset: 0; z-index: 0; pointer-events: none;">
+<div class="section-bg-layer" style="position: absolute; inset: 0; z-index: 0; pointer-events: none;">
     {% if section.settings.bg_image != blank %}
         {%- assign bg_style = 'width: 100%; height: 100%; object-fit: cover; opacity: 0.4; object-position: ' | append: section.settings.bg_position -%}
         {{ section.settings.bg_image | image_url: width: 2000 | image_tag: class: 'object-cover', style: bg_style, loading: 'lazy' }}
@@ -492,7 +535,7 @@
 <div class="desktop-top-shadow"></div>
 
 <div class="features-container">
-  <div style="position: relative; z-index: 2;">
+  <div class="features-header" style="position: relative; z-index: 2;">
     <h2>{{ section.settings.title }}</h2>
     <p class="section-subtitle">{{ section.settings.subtitle }}</p>
   </div>
@@ -512,27 +555,31 @@
     {%- endfor -%}
   </div>
 
-  <!-- Mobil (< 770px): jedna karta na výšku, scroll mezi kartami, progress lišta vpravo -->
-  <div class="features-mobile-scroll-wrap" id="features-mobile-wrap-{{ section.id }}">
-    <div class="features-mobile-scroll" id="features-mobile-scroll-{{ section.id }}" role="region" aria-label="Karty s informacemi">
-      {%- for block in section.blocks -%}
-        <div class="feature-card-mobile{% if forloop.first %} is-active{% endif %}" style="border-top: 2px solid {{ block.settings.color }};" data-card-index="{{ forloop.index0 }}" data-color="{{ block.settings.color }}">
-          <div class="icon-bg">
-            <span class="material-symbols-outlined" style="color: {{ block.settings.color }};">{{ block.settings.icon }}</span>
-          </div>
-          <div class="icon-wrapper" style="background-color: {{ block.settings.color }}1A; border-color: {{ block.settings.color }}4D;">
-            <span class="material-symbols-outlined icon-main" style="color: {{ block.settings.color }};">{{ block.settings.icon }}</span>
-          </div>
-          <h3 class="card-title">{{ block.settings.title }}</h3>
-          <p class="card-desc">{{ block.settings.text }}</p>
+  <!-- Do 1024px: pevné rozložení (text → karty+progress → button); scroll se zachytí, když je střed obrazovky na kartách -->
+  <div class="features-mobile-scroll-section" id="features-mobile-scroll-section-{{ section.id }}">
+    <div class="features-mobile-scroll-sticky" id="features-cards-block-{{ section.id }}">
+      <div class="features-mobile-scroll-wrap" id="features-mobile-wrap-{{ section.id }}">
+        <div class="features-mobile-scroll" id="features-mobile-scroll-{{ section.id }}" role="region" aria-label="Karty s informacemi">
+          {%- for block in section.blocks -%}
+            <div class="feature-card-mobile{% if forloop.first %} is-active{% endif %}" style="border-top: 2px solid {{ block.settings.color }};" data-card-index="{{ forloop.index0 }}" data-color="{{ block.settings.color }}">
+              <div class="icon-bg">
+                <span class="material-symbols-outlined" style="color: {{ block.settings.color }};">{{ block.settings.icon }}</span>
+              </div>
+              <div class="icon-wrapper" style="background-color: {{ block.settings.color }}1A; border-color: {{ block.settings.color }}4D;">
+                <span class="material-symbols-outlined icon-main" style="color: {{ block.settings.color }};">{{ block.settings.icon }}</span>
+              </div>
+              <h3 class="card-title">{{ block.settings.title }}</h3>
+              <p class="card-desc">{{ block.settings.text }}</p>
+            </div>
+          {%- endfor -%}
         </div>
-      {%- endfor -%}
-    </div>
-    <div class="features-progress-wrap" id="features-progress-wrap-{{ section.id }}" aria-hidden="true">
-      <div class="features-progress-track"></div>
-      <div class="features-progress-fill" id="features-progress-fill-{{ section.id }}"></div>
-      <div class="features-progress-cap cap-custom" id="features-progress-cap-{{ section.id }}" style="top: 33.33%;">
-        <span class="material-symbols-outlined progress-cap-icon">star</span>
+        <div class="features-progress-wrap" id="features-progress-wrap-{{ section.id }}" aria-hidden="true">
+          <div class="features-progress-track"></div>
+          <div class="features-progress-fill" id="features-progress-fill-{{ section.id }}"></div>
+          <div class="features-progress-cap cap-custom" id="features-progress-cap-{{ section.id }}" style="top: 33.33%;">
+            <span class="material-symbols-outlined progress-cap-icon">star</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -551,14 +598,19 @@
         const currentSectionDiv = document.getElementById('shopify-section-{{ section.id }}');
         const mistLayer = document.getElementById('neon-mist-layer');
 
-        /* Mobil: 1 karta, scroll KDEKOLIV přepíná karty (dokud sekce v viewportu); progress bar z barev karet */
+        /* Do 1024px: pevné rozložení; když je střed obrazovky na kartách, scroll se zachytí a přepínají se karty */
         (function() {
-            var sectionEl = document.getElementById('shopify-section-{{ section.id }}');
-            var wrap = document.getElementById('features-mobile-wrap-{{ section.id }}');
+            // #region agent log
+            var _log = function(hypothesisId, message, data) {
+                var payload = { location: 'Moje-AI-2.liquid:scroll', message: message, data: data || {}, timestamp: Date.now(), sessionId: 'debug-session', hypothesisId: hypothesisId };
+                fetch('http://127.0.0.1:7242/ingest/6fb57309-5c94-40a8-aea0-c7d0a11bd966', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(function() {});
+            };
+            // #endregion
+            var cardsBlock = document.getElementById('features-cards-block-{{ section.id }}');
             var stage = document.getElementById('features-mobile-scroll-{{ section.id }}');
             var progressFill = document.getElementById('features-progress-fill-{{ section.id }}');
             var progressCap = document.getElementById('features-progress-cap-{{ section.id }}');
-            if (!wrap || !stage || !sectionEl) return;
+            if (!cardsBlock || !stage) return;
             var cards = stage.querySelectorAll('.feature-card-mobile');
             var total = cards.length;
             if (total === 0) return;
@@ -571,13 +623,6 @@
                 if (c) cardColors.push(c);
             }
             if (cardColors.length === 0) cardColors = ['#f97316', '#d946ef', '#06b6d4'];
-
-            var STEPS_PER_CARD = 5;
-            var totalSteps = total * STEPS_PER_CARD;
-            var currentStep = 0;
-
-            var PROGRESS_PURPLE = { r: 217, g: 70, b: 239 };
-            var PROGRESS_BLUE = { r: 6, g: 182, b: 212 };
             var PROGRESS_GRADIENT = 'linear-gradient(to bottom, #d946ef 0%, #a78bfa 35%, #38bdf8 65%, #06b6d4 100%)';
 
             function hexToRgba(hex, a) {
@@ -585,10 +630,9 @@
                 var r = parseInt(hex.substr(0, 2), 16), g = parseInt(hex.substr(2, 2), 16), b = parseInt(hex.substr(4, 2), 16);
                 return 'rgba(' + r + ',' + g + ',' + b + ',' + (a !== undefined ? a : 1) + ')';
             }
-            function setProgressFromStep(step) {
-                var pct = totalSteps > 0 ? ((step + 1) / totalSteps) * 100 : 0;
-                var cardIndex = Math.floor(step / STEPS_PER_CARD);
-                var capColor = cardColors[cardIndex] || '#d946ef';
+            function setProgressFromIndex(idx) {
+                var pct = total > 1 ? ((idx + 1) / total) * 100 : 100;
+                var capColor = cardColors[idx] || '#d946ef';
                 if (progressFill) {
                     progressFill.style.height = pct + '%';
                     progressFill.style.setProperty('--progress-fill-gradient', PROGRESS_GRADIENT);
@@ -600,7 +644,7 @@
                     progressCap.style.boxShadow = '0 0 14px ' + hexToRgba(capColor, 0.75) + ', 0 0 8px ' + hexToRgba(capColor, 0.5);
                 }
             }
-            function goToSlide(nextIndex, skipProgress) {
+            function goToSlide(nextIndex) {
                 if (animating || nextIndex < 0 || nextIndex >= total) return;
                 if (nextIndex === currentIndex) return;
                 animating = true;
@@ -611,66 +655,59 @@
                 nextCard.classList.add('is-enter-from');
                 nextCard.offsetHeight;
                 nextCard.classList.add('is-enter');
-                if (!skipProgress) setProgressFromStep((nextIndex + 1) * STEPS_PER_CARD - 1);
                 setTimeout(function() {
                     currentCard.classList.remove('is-exit');
                     nextCard.classList.remove('is-enter-from', 'is-enter');
                     nextCard.classList.add('is-active');
                     currentIndex = nextIndex;
                     animating = false;
+                    setProgressFromIndex(currentIndex);
                 }, duration);
             }
-            function stepForward() {
-                if (currentStep >= totalSteps - 1) return false;
-                currentStep++;
-                setProgressFromStep(currentStep);
-                var newCardIndex = Math.floor(currentStep / STEPS_PER_CARD);
-                if (newCardIndex !== currentIndex) goToSlide(newCardIndex, true);
-                return true;
-            }
-            function stepBack() {
-                if (currentStep <= 0) return false;
-                currentStep--;
-                setProgressFromStep(currentStep);
-                var newCardIndex = Math.floor(currentStep / STEPS_PER_CARD);
-                if (newCardIndex !== currentIndex) goToSlide(newCardIndex, true);
-                return true;
+
+            function isCardsCentered() {
+                if (window.innerWidth > 1024) return false;
+                var r = cardsBlock.getBoundingClientRect();
+                var viewportCenter = window.innerHeight * 0.5;
+                var blockCenter = r.top + r.height * 0.5;
+                return Math.abs(viewportCenter - blockCenter) < window.innerHeight * 0.4;
             }
 
             cards[0].classList.add('is-active');
-            setProgressFromStep(0);
+            setProgressFromIndex(0);
 
-            function isCenterOverCards() {
-                if (window.innerWidth > 769) return false;
-                var r = wrap.getBoundingClientRect();
-                var centerY = window.innerHeight * 0.5;
-                return r.top <= centerY && centerY <= r.bottom;
-            }
-            function handleWheel(e) {
-                if (!isCenterOverCards()) return;
+            function onWheel(e) {
+                if (!isCardsCentered()) return;
                 var dy = e.deltaY;
-                if (dy > 12) {
-                    if (stepForward()) e.preventDefault();
-                } else if (dy < -12) {
-                    if (stepBack()) e.preventDefault();
+                if (dy > 15) {
+                    if (currentIndex < total - 1) {
+                        e.preventDefault();
+                        goToSlide(currentIndex + 1);
+                    }
+                } else if (dy < -15) {
+                    if (currentIndex > 0) {
+                        e.preventDefault();
+                        goToSlide(currentIndex - 1);
+                    }
                 }
             }
-            document.addEventListener('wheel', handleWheel, { passive: false });
+            document.addEventListener('wheel', onWheel, { passive: false });
 
             var touchStartY = 0;
-            function handleTouchStart(e) {
-                if (window.innerWidth > 769) return;
+            document.addEventListener('touchstart', function(e) {
+                if (window.innerWidth > 1024) return;
                 touchStartY = e.touches[0].clientY;
-            }
-            function handleTouchEnd(e) {
-                if (window.innerWidth > 769 || !e.changedTouches[0]) return;
-                if (!isCenterOverCards()) return;
-                var dy = e.changedTouches[0].clientY - touchStartY;
-                if (dy < -35) stepForward();
-                else if (dy > 35) stepBack();
-            }
-            document.addEventListener('touchstart', handleTouchStart, { passive: true });
-            document.addEventListener('touchend', handleTouchEnd, { passive: true });
+            }, { passive: true });
+            document.addEventListener('touchend', function(e) {
+                if (window.innerWidth > 1024 || !e.changedTouches[0]) return;
+                if (!isCardsCentered()) return;
+                var dy = touchStartY - e.changedTouches[0].clientY;
+                if (dy > 40 && currentIndex < total - 1) {
+                    goToSlide(currentIndex + 1);
+                } else if (dy < -40 && currentIndex > 0) {
+                    goToSlide(currentIndex - 1);
+                }
+            }, { passive: true });
         })();
         
         const allSections = Array.from(document.querySelectorAll('.shopify-section'));
